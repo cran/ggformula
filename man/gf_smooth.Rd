@@ -5,13 +5,13 @@
 \alias{gf_lm}
 \title{Formula interface to geom_smooth()}
 \usage{
-gf_smooth(object = NULL, gformula = NULL, data = NULL, geom = type,
-  verbose = FALSE, add = inherits(object, c("gg", "ggplot")), ...,
-  position = NULL, show.help = NULL)
+gf_smooth(object = NULL, gformula = NULL, data = NULL, geom = "smooth",
+  stat = "smooth", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, ...)
 
-gf_lm(object = NULL, gformula = NULL, data = NULL, geom = type,
-  verbose = FALSE, add = inherits(object, c("gg", "ggplot")), ...,
-  position = NULL, show.help = NULL)
+gf_lm(object = NULL, gformula = NULL, data = NULL, geom = "lm",
+  stat = "lm", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,16 +19,24 @@ of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
 \item{gformula}{A formula with shape \code{y ~ x}.
-Faceting can be acheived by including \code{|} in the formula.}
+Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
-\item{geom}{A way to specify ggplot geoms that are not aliased to gf functions.}
+\item{geom}{A character string naming the geom used to make the layer.}
 
-\item{verbose}{If \code{TRUE} print the ggplot2 command in the console.}
+\item{stat}{A character string naming the stat used to make the layer.}
 
-\item{add}{If \code{TRUE} then construct just the layer with no frame.  The result
-can be added to an existing frame.}
+\item{position}{Either a character string naming the position function used
+for the layer or a position object returned from a call to a position function.}
+
+\item{show.legend}{A logical indicating whether this layer should be included in
+the legends.  \code{NA}, the default, includes layer in the legends if any
+of the attributes of the layer are mapped.}
+
+\item{show.help}{If \code{TRUE}, display some minimal help.}
+
+\item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -36,10 +44,6 @@ can be added to an existing frame.}
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 Available attributes include
 \code{method}, \code{formula}, \code{se}, \code{method.args}, \code{n}, \code{span}, \code{fullrange}, \code{level}}
-
-\item{position}{Position adjustment, either as a string, or the result of a call to a position adjustment function.}
-
-\item{show.help}{If \code{TRUE}, display some minimal help.}
 }
 \value{
 a gg object
@@ -49,8 +53,6 @@ a gg object
 functions.
 For plots with just one layer, the formula interface
 is more compact and is consistent with modeling and \pkg{mosaic} notation.
-The functions generate a \code{ggplot} command string which can be displayed by
-setting \code{verbose = TRUE} as an argument.
 }
 \details{
 Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
@@ -74,9 +76,31 @@ be the right thing if formulas created in one environment are used to create plo
 in another.
 }
 \examples{
+gf_smooth()
+gf_lm()
 if (require(mosaicData)) {
   gf_smooth(births ~ date, color = ~wday, data = Births78)
+  gf_smooth(births ~ date, color = ~wday, data = Births78, fullrange = TRUE)
+  gf_smooth(births ~ date, color = ~wday, data = Births78, show.legend = FALSE, se = FALSE)
+  gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, alpha = 0.2) \%>\%
+    gf_point()
+  gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, fullrange = FALSE, alpha = 0.2)
+    gf_point()
+  gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
+        formula = y ~ poly(x,2), linetype = "dashed") \%>\%
+    gf_point()
+  gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
+        formula = log(y) ~ x, backtrans = exp) \%>\%
+    gf_point()
 }
+gf_lm(hwy ~ displ, data = mpg,
+      formula = log(y) ~ poly(x,3), backtrans = exp,
+     interval = "prediction", fill = "skyblue") \%>\%
+  gf_lm(
+     formula = log(y) ~ poly(x,3), backtrans = exp,
+     interval = "confidence", color = "red") \%>\%
+  gf_point()
+
 }
 \seealso{
 \code{\link{geom_smooth}()}

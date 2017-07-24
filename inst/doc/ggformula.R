@@ -2,7 +2,7 @@
 library(ggformula)
 library(dplyr)
 library(ggplot2)
-library(mosaic)
+library(mosaicData)
 knitr::opts_chunk$set(
   fig.show = "hold",
   out.width = "45%"
@@ -17,7 +17,7 @@ library(ggformula)
 gf_point(mpg ~ hp, data = mtcars)
 
 ## ------------------------------------------------------------------------
-gf_point(mpg ~ hp + color:cyl + size:carb + alpha:0.50, data = mtcars) 
+gf_point(mpg ~ hp, color = ~ cyl, size = ~carb, alpha = 0.50, data = mtcars) 
 
 ## ------------------------------------------------------------------------
 # set alpha using a function argument instead of in the formula
@@ -183,7 +183,4 @@ gf_histogram( ~ age, data = Runners, alpha = 0.5, fill = "white",
   gf_labs(x = "age (years)", title = "Age of runners") %>%
   gf_lims(x = c(20, 80)) %>%
   gf_theme(theme = theme_dark())
-
-## ------------------------------------------------------------------------
-gf_jitter(age ~ sex, alpha = 0.05, data = Runners, verbose = TRUE)
 

@@ -11,3 +11,10 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+#' @importFrom mosaicCore makeFun df_stats
+#' @export
+mosaicCore::makeFun
+
+#' @export
+mosaicCore::df_stats

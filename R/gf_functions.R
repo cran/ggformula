@@ -1,3 +1,6 @@
+#' @importFrom mosaicCore makeFun
+NA
+
 #' Formula interface to ggplot2
 #'
 #' The functions in \pkg{ggformula} provide a formula interface to \code{ggplot2} layer
@@ -7,8 +10,6 @@
 #' is more compact than native \pkg{ggplot2} code and is consistent with modeling
 #' functions like \code{\link{lm}()} that use a formula interface and with the
 #' numerical summary functions in the \pkg{mosaic} package.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Setting and mapping of additional attributes can be done within the formula or
@@ -45,8 +46,6 @@ NA
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -72,40 +71,44 @@ NA
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression},
+#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
+#'   (d) arguments for the geom, stat, or position function.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{size}, \code{shape}, \code{fill}, \code{group}, \code{stroke}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_point}()}
 #' @export
 #' @examples
 #' gf_point()
-#' gf_point(mpg ~ hp + color:cyl + size:wt, data = mtcars, verbose = TRUE)
+#' gf_point(mpg ~ hp, color = ~ cyl, size = ~wt, data = mtcars)
 #' # faceting -- two ways
 #' gf_point(mpg ~ hp, data = mtcars) %>%
 #'   gf_facet_wrap(~ am)
-#' gf_point(mpg ~ hp + group:cyl | am, data = mtcars)
-#' gf_point(mpg ~ hp + group:cyl | ~ am, data = mtcars)
-#' gf_point(mpg ~ hp + group:cyl | am ~ ., data = mtcars)
+#' gf_point(mpg ~ hp | am, group = ~ cyl, data = mtcars)
+#' gf_point(mpg ~ hp | ~ am, group = ~ cyl, data = mtcars)
+#' gf_point(mpg ~ hp | am ~ ., group = ~ cyl,  data = mtcars)
 #'
 #' # Chaining in the data
 #' mtcars %>% gf_point(mpg ~ wt)
 #'
 
 gf_point <-
-  gf_factory(
-    type = "point",
+  layer_factory(
+    geom = "point",
     extras = alist(alpha = ,  color = , size = , shape = , fill = , group = , stroke = )
   )
 
@@ -115,8 +118,6 @@ gf_point <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -142,7 +143,7 @@ gf_point <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -151,16 +152,20 @@ gf_point <-
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{size}, \code{shape}, \code{fill}, \code{group},
 #'   \code{stroke}, \code{width}, \code{height}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_jitter}()}
 #' @export
 #' @examples
+#' gf_jitter()
 #' if (require(mosaicData)) {
 #'   # without jitter
 #'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct)
@@ -168,13 +173,13 @@ gf_point <-
 #'   gf_jitter(age ~ sex, alpha = 0.25, data = HELPrct, width = 0.2, height = 0)
 #'   # alternative way to get jitter
 #'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct,
-#'     position = position_jitter(width = 0.2, height = 0))
+#'     position = "jitter", width = 0.2, height = 0)
 #' }
 gf_jitter <-
-  gf_factory(
-    type = "jitter",
-    extras = alist(alpha = ,  color = , size = , shape = , fill = , group = , stroke = ,
-                   width = , height = )
+  layer_factory(
+    geom = "point",
+    position = "jitter",
+    extras = alist(alpha = ,  color = , size = , shape = , fill = , group = , stroke = )
     )
 
 #' Formula interface to geom_line()
@@ -183,8 +188,6 @@ gf_jitter <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -210,7 +213,7 @@ gf_jitter <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -218,16 +221,20 @@ gf_jitter <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{arrow}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_line}()}
 #' @export
 #' @examples
+#' gf_line()
 #' if (require(mosaicData)) {
 #'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct)
 #'   gf_point(births ~ date, color = ~wday, data = Births78)
@@ -235,8 +242,8 @@ gf_jitter <-
 #'   gf_line(births ~ date, color = ~wday, data = Births78)
 #'   }
 gf_line <-
-  gf_factory(
-    type = "line",
+  layer_factory(
+    geom = "line",
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = ,
                    lineend = , linejoin = , linemitre = , arrow = )
     )
@@ -247,8 +254,6 @@ gf_line <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -274,7 +279,7 @@ gf_line <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -282,16 +287,20 @@ gf_line <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{arrow}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_path}()}
 #' @export
 #' @examples
+#' gf_path()
 #' if (require(dplyr)) {
 #'   data.frame(t = seq(1, 10 * pi, length.out = 400)) %>%
 #'   mutate( x = t * cos(t), y = t * sin(t)) %>%
@@ -299,8 +308,8 @@ gf_line <-
 #'   }
 
 gf_path <-
-  gf_factory(
-    type = "path",
+  layer_factory(
+    geom = "path",
     extras = alist(alpha = , color = , group = , linetype = , size = ,
                    lineend = "butt", linejoin = "round", linemitre = 1, arrow = NULL)
   )
@@ -311,8 +320,6 @@ gf_path <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -338,7 +345,7 @@ gf_path <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -346,22 +353,48 @@ gf_path <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{method}, \code{formula}, \code{se}, \code{method.args}, \code{n}, \code{span}, \code{fullrange}, \code{level}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_smooth}()}
 #' @export
 #' @examples
+#' gf_smooth()
+#' gf_lm()
 #' if (require(mosaicData)) {
 #'   gf_smooth(births ~ date, color = ~wday, data = Births78)
+#'   gf_smooth(births ~ date, color = ~wday, data = Births78, fullrange = TRUE)
+#'   gf_smooth(births ~ date, color = ~wday, data = Births78, show.legend = FALSE, se = FALSE)
+#'   gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, alpha = 0.2) %>%
+#'     gf_point()
+#'   gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, fullrange = FALSE, alpha = 0.2)
+#'     gf_point()
+#'   gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
+#'         formula = y ~ poly(x,2), linetype = "dashed") %>%
+#'     gf_point()
+#'   gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
+#'         formula = log(y) ~ x, backtrans = exp) %>%
+#'     gf_point()
 #' }
+#' gf_lm(hwy ~ displ, data = mpg,
+#'       formula = log(y) ~ poly(x,3), backtrans = exp,
+#'      interval = "prediction", fill = "skyblue") %>%
+#'   gf_lm(
+#'      formula = log(y) ~ poly(x,3), backtrans = exp,
+#'      interval = "confidence", color = "red") %>%
+#'   gf_point()
+#'
 gf_smooth <-
-  gf_factory(
-    type = "smooth",
+  layer_factory(
+    geom = "smooth",
+    stat = "smooth",
     extras = alist(method = "auto", formula = y ~ x, se = TRUE, method.args = ,
                    n = 80 , span = 0.75 , fullrange = FALSE, level = 0.95)
     )
@@ -370,12 +403,12 @@ gf_smooth <-
 #' @export
 
 gf_lm <-
-  gf_factory(
-    type = "smooth",
-    extras = alist(method = "lm", formula = y ~ x, se = TRUE, method.args = ,
-                   n = 80 , span = 0.75 , fullrange = FALSE, level = 0.95)
-    )
-
+  layer_factory(
+    geom = "lm",
+    stat = "lm",
+    aes_form = y ~ x,
+    extras = alist(alpha = 0.3, lm.args = list(), interval = "none", level = 0.95, fullrange = TRUE)
+  )
 
 
 #' Formula interface to geom_spline()
@@ -384,8 +417,6 @@ gf_lm <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -411,7 +442,7 @@ gf_lm <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -419,25 +450,29 @@ gf_lm <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{weight}, \code{df}, \code{spar}, \code{tol}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_spline}()}
-#' @importFrom mosaic geom_spline
 #' @export
 #' @examples
-#' if (require(mosaic)) {
+#' if (require(mosaicData)) {
 #'   gf_spline(births ~ date, color = ~wday, data = Births78)
 #'   gf_spline(births ~ date, color = ~wday, data = Births78, df = 20)
 #'   gf_spline(births ~ date, color = ~wday, data = Births78, df = 4)
 #' }
+
 gf_spline <-
-  gf_factory(
-    type = "spline",
+  layer_factory(
+    geom = "line",
+    stat = "spline",
     extras = alist(alpha = , color = , group = , linetype = , size = ,
                    weight = , df = , spar = , tol = )
     )
@@ -448,8 +483,6 @@ gf_spline <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -475,7 +508,7 @@ gf_spline <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -483,12 +516,15 @@ gf_spline <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{hjust}, \code{vjust}, \code{interpolate}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_raster}()}
 #' @export
@@ -503,8 +539,8 @@ gf_spline <-
 #' gf_raster(z ~ x + y, data = D, hjust = 0, vjust = 0)
 
 gf_raster <-
-  gf_factory(
-    type = "raster",
+  layer_factory(
+    geom = "raster",
     aes_form = list(y ~ x, fill ~ x + y),
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = ,
                    hjust = 0.5, vjust = 0.5, interpolate = FALSE)
@@ -516,8 +552,6 @@ gf_raster <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -543,7 +577,7 @@ gf_raster <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -551,12 +585,15 @@ gf_raster <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{weight}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{quantiles}, \code{formula}, \code{method}, \code{method.args}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_quantile}()}
 #' @export
@@ -565,8 +602,9 @@ gf_raster <-
 #'   gf_quantile((1/hwy) ~ displ)
 
 gf_quantile <-
-  gf_factory(
-    type = "quantile",
+  layer_factory(
+    geom = "quantile",
+    stat = "quantile",
     extras = alist(alpha = , color = , group = , linetype = , size = , weight =,
                    lineend = "butt", linejoin = "round", linemitre = 1, quantiles = ,
                    formula = , method = ,  method.args =  )
@@ -578,8 +616,6 @@ gf_quantile <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -605,7 +641,7 @@ gf_quantile <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -613,12 +649,15 @@ gf_quantile <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{contour}, \code{n}, \code{h}, \code{lineend}, \code{linejoin}, \code{linemitre}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_density_2d}()}
 #' @export
@@ -629,8 +668,9 @@ gf_quantile <-
 #' }
 
 gf_density_2d <-
-  gf_factory(
-    type = "density_2d",
+  layer_factory(
+    geom = "density_2d",
+    stat = "density_2d",
     extras = alist(alpha = , color = , group = , linetype = , size = ,
                    contour = TRUE, n = 100 , h = NULL , lineend = "butt", linejoin = "round",
                    linemitre = 1 )
@@ -642,8 +682,6 @@ gf_density_2d <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -669,7 +707,7 @@ gf_density_2d <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -677,12 +715,15 @@ gf_density_2d <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{contour}, \code{n}, \code{h}, \code{lineend}, \code{linejoin}, \code{linemitre}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_density2d}()}
 #' @export
@@ -693,8 +734,9 @@ gf_density_2d <-
 #' }
 
 gf_density2d <-
-  gf_factory(
-    type = "density2d",
+  layer_factory(
+    geom = "density2d",
+    stat = "density2d",
     extras = alist(alpha = , color = , group = , linetype = , size = ,
                    contour = TRUE, n = 100 , h = NULL , lineend = "butt", linejoin = "round",
                    linemitre = 1 )
@@ -706,8 +748,6 @@ gf_density2d <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -733,7 +773,7 @@ gf_density2d <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -741,12 +781,15 @@ gf_density2d <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{bins}, \code{binwidth}, \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_hex}()}
 #' @export
@@ -756,8 +799,9 @@ gf_density2d <-
 #'   gf_density2d(i1 ~ age, data = HELPrct, color = "red", alpha = 0.5)
 #' }
 gf_hex <-
-  gf_factory(
-    type = "hex",
+  layer_factory(
+    geom = "hex",
+    stat = "binhex",
     extras = alist(bins = , binwidth = , alpha = , color = , fill = , group = , size = )
   )
 
@@ -767,8 +811,6 @@ gf_hex <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -784,6 +826,7 @@ gf_hex <-
 #' \code{\link{gf_facet_wrap}()} and
 #' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 #' This will typically do the right thing when formulas are created on the fly, but might not
@@ -794,7 +837,7 @@ gf_hex <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -802,12 +845,14 @@ gf_hex <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{shape}, \code{size}, \code{weight}, \code{coef}, \code{outlier.color}, \code{outlier.fill}, \code{outlier.shape}, \code{outlier.size}, \code{outlier.stroke}, \code{outlier.alpha}, \code{notch}, \code{notchwidth}, \code{varwidth}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
 #'
 #' @seealso \code{\link{geom_boxplot}()}
 #' @export
@@ -822,8 +867,10 @@ gf_hex <-
 #'   gf_boxplot(age ~ substance, data = HELPrct, color = ~sex, position = position_dodge(width = 0.9))
 #' }
 gf_boxplot <-
-  gf_factory(
-    type = "boxplot",
+  layer_factory(
+    geom = "boxplot",
+    stat = "boxplot",
+    position = "dodge",
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , shape = , size = ,
       weight =, coef = ,
@@ -838,8 +885,6 @@ gf_boxplot <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -865,7 +910,7 @@ gf_boxplot <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -873,12 +918,15 @@ gf_boxplot <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{label}, \code{alpha}, \code{angle}, \code{color}, \code{family}, \code{fontface}, \code{group}, \code{hjust}, \code{lineheight}, \code{size}, \code{vjust}, \code{parse}, \code{nudge_x}, \code{nudge_y}, \code{check_overlap}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_text}()}
 #' @export
@@ -887,8 +935,8 @@ gf_boxplot <-
 #'   label = ~Species, color = ~Species, size = 2, angle = 30)
 #'
 gf_text <-
-  gf_factory(
-    type = "text",
+  layer_factory(
+    geom = "text",
     extras = alist(
       label =, alpha = , angle = , color = , family = , fontface = , group = , hjust = ,
       lineheight = , size = , vjust = , parse = FALSE, nudge_x = 0, nudge_y = 0,
@@ -902,8 +950,6 @@ gf_text <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -929,7 +975,7 @@ gf_text <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -937,12 +983,15 @@ gf_text <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{label}, \code{alpha}, \code{angle}, \code{color}, \code{family}, \code{fontface}, \code{group}, \code{hjust}, \code{lineheight}, \code{size}, \code{vjust}, \code{parse}, \code{nudge_x}, \code{nudge_y}, \code{lparse}, \code{nudge_x}, \code{nudge_y}, \code{label.padding}, \code{label.r}, \code{label.size}, \code{check_overlap}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_label}()}
 #' @export
@@ -958,8 +1007,8 @@ gf_text <-
 #' }
 
 gf_label <-
-  gf_factory(
-    type = "label",
+  layer_factory(
+    geom = "label",
     extras = alist(
       label =, alpha = , angle = , color = , family = , fontface = , group = , hjust = ,
       lineheight = , size = , vjust = ,
@@ -975,8 +1024,6 @@ gf_label <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1002,7 +1049,7 @@ gf_label <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1010,12 +1057,15 @@ gf_label <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_area}()}
 #' @export
@@ -1054,8 +1104,8 @@ gf_label <-
 #' }
 #'
 gf_area <-
-  gf_factory(
-    type = "area",
+  layer_factory(
+    geom = "area",
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
     )
 
@@ -1065,8 +1115,6 @@ gf_area <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1092,7 +1140,7 @@ gf_area <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1100,12 +1148,15 @@ gf_area <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{}, \code{draw_quatiles}, \code{trim}, \code{scale}, \code{bw}, \code{adjust}, \code{kernel}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_violin}()}
 #' @export
@@ -1116,10 +1167,13 @@ gf_area <-
 #' }
 #'
 gf_violin <-
-  gf_factory(
-    type = "violin",
+  layer_factory(
+    geom = "violin",
+    stat = "ydensity",
+    position = "dodge",
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = , weight,
-      draw_quantiles = NULL, trim = TRUE, scale = "area", bw = , adjust = , kernel = )
+      draw_quantiles = NULL, trim = TRUE, scale = "area", bw = , adjust = 1,
+      kernel = "gaussian")
   )
 
 #' Formula interface to geom_spoke()
@@ -1128,8 +1182,6 @@ gf_violin <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1155,7 +1207,7 @@ gf_violin <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1163,13 +1215,16 @@ gf_violin <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{angle}, \code{radius}, \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
 #' @section Note \code{angle} and \code{radius} must be set or mapped.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_spoke}()}
 #' @export
@@ -1185,8 +1240,8 @@ gf_violin <-
 #'   gf_spoke(y ~ x, angle = ~angle, radius = ~speed)
 
 gf_spoke <-
-  gf_factory(
-    type = "spoke",
+  layer_factory(
+    geom = "spoke",
     extras = alist(
       angle = , radius = ,
       alpha = , color = , group = , linetype = , size = ),
@@ -1200,8 +1255,6 @@ gf_spoke <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1227,7 +1280,7 @@ gf_spoke <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1235,12 +1288,15 @@ gf_spoke <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{direction}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_step}()}
 #' @export
@@ -1250,8 +1306,8 @@ gf_spoke <-
 #' }
 
 gf_step <-
-  gf_factory(
-    type = "step",
+  layer_factory(
+    geom = "step",
     extras = alist(alpha = , color = , group = , linetype = , size = , direction = "hv" )
     )
 
@@ -1261,8 +1317,6 @@ gf_step <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1288,7 +1342,7 @@ gf_step <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1296,12 +1350,15 @@ gf_step <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_tile}()}
 #' @export
@@ -1312,8 +1369,8 @@ gf_step <-
 #' gf_tile(z ~ x + y, data = D)
 
 gf_tile <-
-  gf_factory(
-    type = "tile",
+  layer_factory(
+    geom = "tile",
     aes_form = list(y ~ x, fill ~ x + y),
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
   )
@@ -1324,8 +1381,6 @@ gf_tile <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1351,7 +1406,7 @@ gf_tile <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1359,12 +1414,15 @@ gf_tile <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{shape}, \code{size}, \code{stroke}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_count}()}
 #' @export
@@ -1377,8 +1435,9 @@ gf_tile <-
 #'   gf_refine(scale_size_area())
 #'
 gf_count <-
-  gf_factory(
-    type = "count",
+  layer_factory(
+    geom = "point",
+    stat = "sum",
     extras = alist(
       alpha = , color = , fill = , group = , shape = , size = , stroke =
     )
@@ -1390,8 +1449,6 @@ gf_count <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1417,7 +1474,7 @@ gf_count <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1425,12 +1482,15 @@ gf_count <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_col}()}
 #' @export
@@ -1442,8 +1502,9 @@ gf_count <-
 #' gf_col(count ~ group, data = D)
 
 gf_col <-
-  gf_factory(
-    type = "col",
+  layer_factory(
+    geom = "col",
+    position = "stack",
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size =
     )
@@ -1454,8 +1515,6 @@ gf_col <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1481,7 +1540,7 @@ gf_col <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1489,12 +1548,15 @@ gf_col <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_blank}()}
 #' @export
@@ -1503,9 +1565,15 @@ gf_col <-
 #'
 #' gf_point((c(0,1)) ~ (c(0,5)))
 #' gf_frame((c(0,1)) ~ (c(0,5)))
+#' gf_blank((c(0,1)) ~ (c(0,5)))
 
 gf_frame <-
-  gf_factory(type = "blank", function_name = "gf_frame")
+  layer_factory(geom = "blank")
+
+#' @export
+#' @rdname gf_frame
+gf_blank <-
+  layer_factory(geom = "blank")
 
 #' Formula interface to geom_histogram()
 #'
@@ -1513,8 +1581,6 @@ gf_frame <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1541,7 +1607,7 @@ gf_frame <-
 #'
 #' @param gformula A formula with shape \code{~x} or \code{y ~ x}.
 #'   \code{y} may be \code{..density..} or \code{..count..} or \code{..ndensity..} or \code{..ncount..}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1549,12 +1615,15 @@ gf_frame <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_histogram}()}
 #' @export
@@ -1563,12 +1632,31 @@ gf_frame <-
 #' gf_histogram(  ~ x, bins = 30)
 #' gf_histogram( ..density.. ~ x, bins = 30)
 #' gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+#' if (require(mosaicData)) {
+#'   gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black")
+#'   # bins can be adjusted left/right using center or boundary
+#'   gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
+#'   gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
+#' }
+
 
 gf_histogram <-
-  gf_factory(
-    type = "histogram", aes_form = list(~x, y ~ x),
-    extras = alist(alpha = , color = , fill = , group = , linetype = , size = ),
+  layer_factory(
+    geom = "bar", stat = "bin", position = "stack",
+    aes_form = list(~x, y ~ x),
+    extras = alist(bins = 25, binwidth = , alpha = , color = , fill = , group = , linetype = , size = ),
     note = "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.."
+  )
+
+#' @rdname gf_histogram
+#' @export
+gf_dhistogram <-
+  layer_factory(
+    geom = "bar", stat = "bin", position = "stack",
+    aes_form = list(~x, y ~ x),
+    extras = alist(bins = 25, binwidth = , alpha = , color = , fill = , group = , linetype = , size = ),
+    note = "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount..",
+    aesthetics = aes(y = ..density..)
   )
 
 #' Formula interface to geom_density()
@@ -1577,8 +1665,6 @@ gf_histogram <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1604,7 +1690,7 @@ gf_histogram <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1612,12 +1698,15 @@ gf_histogram <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{weight}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_density}()}
 #' @export
@@ -1629,20 +1718,23 @@ gf_histogram <-
 #' # Chaining in the data
 #' iris %>% gf_dens(~ Sepal.Length, color = ~Species)
 gf_density <-
-  gf_factory(
-    type = "density", aes_form = ~ x,
-    extras = alist(alpha = , color = , fill = , group = , linetype = , size = , weight = )
+  layer_factory(
+    geom = "area", stat = "density",
+    aes_form = ~ x,
+    extras = alist(alpha = 0.5 , color = , fill = ,
+                   group = , linetype = , size = , weight = ,
+                   kernel = "gaussian", n = 512, trim = FALSE),
+    aesthetics = aes(y = ..density..)
   )
 
 # modified version of density plot without line along bottom and sides
+
 #' Formula interface to geom_line() and stat_density()
 #'
 #' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1668,7 +1760,7 @@ gf_density <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1676,12 +1768,15 @@ gf_density <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{stat}, \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{weight}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_line}()}
 #' @export
@@ -1693,11 +1788,13 @@ gf_density <-
 #' # Chaining in the data
 #' iris %>% gf_dens(~ Sepal.Length, color = ~Species)
 gf_dens <-
-  gf_factory(
-    type = "line",
+  layer_factory(
+    geom = "line", stat = "density",
     aes_form = ~ x,
-    extras = alist(stat = "density", alpha = , color = , fill = , group = , linetype = , size = , weight = ),
-    function_name = "gf_dens"
+    extras = alist(alpha = 0.5 , color = ,
+                   group = , linetype = , size = , weight = ,
+                   kernel = "gaussian", n = 512, trim = FALSE),
+    aesthetics = aes(y = ..density..)
   )
 
 #' Formula interface to geom_dotplot()
@@ -1706,8 +1803,6 @@ gf_dens <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1733,7 +1828,7 @@ gf_dens <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1741,12 +1836,15 @@ gf_dens <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{binwidth}, \code{binaxis}, \code{method}, \code{binpositions}, \code{stackdir}, \code{stackratio}, \code{dotsize}, \code{stackgroups}, \code{origin}, \code{right}, \code{width}, \code{drop}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_dotplot}()}
 #' @export
@@ -1754,8 +1852,8 @@ gf_dens <-
 #' gf_dotplot(~ Sepal.Length, fill = ~Species, data = iris)
 
 gf_dotplot <-
-  gf_factory(
-    type = "dotplot",
+  layer_factory(
+    geom = "dotplot", stat = "bindot",
     aes_form = ~x,
     extras = alist(
       alpha = , color = , fill =, group = ,
@@ -1771,8 +1869,6 @@ gf_dotplot <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1798,7 +1894,7 @@ gf_dotplot <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1806,12 +1902,15 @@ gf_dotplot <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{width}, \code{binwidth}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_bar}()}
 #' @export
@@ -1825,8 +1924,9 @@ gf_dotplot <-
 #' }
 
 gf_bar <-
-  gf_factory(
-    type = "bar", aes_form = ~ x,
+  layer_factory(
+    geom = "bar", stat = "count", position = "stack",
+    aes_form = ~ x,
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
       width = NULL, binwidth = NULL )
@@ -1836,12 +1936,12 @@ gf_bar <-
 #' @export
 
 gf_counts <-
-  gf_factory(
-    type = "bar", aes_form = ~ x,
+  layer_factory(
+    geom = "bar", stat = "count", position = "stack",
+    aes_form = ~ x,
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL, binwidth = NULL ),
-    function_name = "gf_counts"
+      width = NULL, binwidth = NULL)
   )
 
 #' Formula interface to geom_freqpoly()
@@ -1850,8 +1950,6 @@ gf_counts <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1877,7 +1975,7 @@ gf_counts <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1885,12 +1983,15 @@ gf_counts <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{binwidth}, \code{bins}, \code{center}, \code{boundary}, \code{}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_freqpoly}()}
 #' @export
@@ -1902,8 +2003,9 @@ gf_counts <-
 #' gf_freqpoly(~ Sepal.Length, y = ~..density.., data = iris, color = "red", bins = 20)
 
 gf_freqpoly <-
-  gf_factory(
-    type = "freqpoly", aes_form = ~ x,
+  layer_factory(
+    geom = "path", stat = "bin",
+    aes_form = ~ x,
     extras = alist(
       alpha = , color = , group = , linetype = , size =,
       binwidth =, bins = , center = , boundary = ,
@@ -1912,12 +2014,15 @@ gf_freqpoly <-
 
 #' Formula interface to geom_qq()
 #'
+#' \code{gf_qq()} an \code{gf_qqstep()} both create quantile-quantile plots. They
+#' differ in how they display the qq-plot.
+#' \code{gf_qq()} uses points and \code{gf_qqstep()} plots a step function
+#' through these points.
+#'
 #' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -1943,7 +2048,7 @@ gf_freqpoly <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~sample}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -1951,24 +2056,51 @@ gf_freqpoly <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{group}, \code{x}, \code{y}, \code{distribution}, \code{dparams}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_qq}()}
 #' @export
 #' @examples
 #' gf_qq(~rnorm(100))
-#' gf_qq(~Sepal.Length | Species, data = iris)
-#' gf_qq(~Sepal.Length, color = ~Species, data = iris)
+#' gf_qq(~Sepal.Length | Species, data = iris) %>% gf_qqline()
+#' gf_qq(~Sepal.Length | Species, data = iris) %>% gf_qqline(tail = 0.10)
+#' gf_qq(~Sepal.Length, color = ~Species, data = iris) %>%
+#' gf_qqstep(~Sepal.Length, color = ~Species, data = iris)
 gf_qq <-
-  gf_factory(
-    type = "qq", aes_form = ~ sample,
+  layer_factory(
+    geom = "point", stat = "qq",
+    aes_form = ~ sample,
     extras = alist(group = , x = , y =, distribution = stats::qnorm , dparams = list())
   )
+#' @rdname gf_qq
+#' @export
+
+gf_qqline <-
+  layer_factory(
+    geom = "line", stat = "qqline",
+    aes_form = ~ sample,
+    extras = alist(group = , x = , y =, distribution = stats::qnorm , dparams = list(),
+                   linetype = "dashed", alpha = 0.7)
+  )
+
+#' @export
+#' @rdname gf_qq
+
+gf_qqstep <-
+  layer_factory(
+    geom = "step", stat = "qq", position = "identity",
+    aes_form = ~ sample,
+    extras = alist(group = , x = , y =, distribution = stats::qnorm , dparams = list())
+  )
+
 
 #' Formula interface to geom_rug()
 #'
@@ -1976,8 +2108,6 @@ gf_qq <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2003,7 +2133,7 @@ gf_qq <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{~x} or \code{y ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2011,12 +2141,15 @@ gf_qq <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{sides}, \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_rug}()}
 #' @export
@@ -2030,8 +2163,9 @@ gf_qq <-
 #' gf_rug( x = ~ Sepal.Width, data = iris, color = "navy") %>%
 #' gf_rug( y = ~ Sepal.Length, data = iris, color = "red")
 gf_rug <-
-  gf_factory(
-    type = "rug", aes_form = list(~ x, y ~ x, NULL),
+  layer_factory(
+    geom = "rug",
+    aes_form = list(~ x, y ~ x, NULL),
     extras = alist(sides = "bl", alpha = , color = , group = , linetype = , size = )
     )
 
@@ -2043,8 +2177,6 @@ gf_rug <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2070,7 +2202,7 @@ gf_rug <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{z ~ x + y}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2078,12 +2210,15 @@ gf_rug <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_contour}()}
 #' @export
@@ -2092,7 +2227,9 @@ gf_rug <-
 #'   gf_contour(density ~ waiting + eruptions, data = faithfuld, bins = 10, color = "red")
 
 gf_contour <-
-  gf_factory(type = "contour", aes_form = z ~ x + y)
+  layer_factory(
+    geom = "contour", stat = "contour",
+    aes_form = z ~ x + y)
 
 #' Formula interface to geom_ribbon()
 #'
@@ -2100,8 +2237,6 @@ gf_contour <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2127,7 +2262,7 @@ gf_contour <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2135,12 +2270,15 @@ gf_contour <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_ribbon}()}
 #' @export
@@ -2170,8 +2308,8 @@ gf_contour <-
 #' }
 
 gf_ribbon <-
-  gf_factory(
-    type = "ribbon", aes_form = ymin + ymax ~ x,
+  layer_factory(
+    geom = "ribbon", aes_form = ymin + ymax ~ x,
     extras = list(alpha = 0.3))
 
 #' Formula interface to geom_curve()
@@ -2180,8 +2318,6 @@ gf_ribbon <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2207,7 +2343,7 @@ gf_ribbon <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y + yend ~ x + xend}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2215,12 +2351,15 @@ gf_ribbon <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{curvature}, \code{angle}, \code{ncp}, \code{arrow}, \code{lineend}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_curve}()}
 #' @export
@@ -2231,8 +2370,8 @@ gf_ribbon <-
 #'   gf_segment(y1 + y2 ~ x1 + x2, data = D, color = "red")
 
 gf_curve <-
-  gf_factory(
-    type = "curve", aes_form = y + yend ~ x + xend,
+  layer_factory(
+    geom = "curve", aes_form = y + yend ~ x + xend,
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       curvature = 0.5, angle = 90, ncp = 5, arrow = NULL, lineend = "butt")
@@ -2244,8 +2383,6 @@ gf_curve <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2271,7 +2408,7 @@ gf_curve <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y + yend ~ x + xend}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2279,12 +2416,15 @@ gf_curve <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{arrow}, \code{lineend}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_segment}()}
 #' @export
@@ -2295,8 +2435,9 @@ gf_curve <-
 #'   gf_segment(y1 + y2 ~ x1 + x2, data = D, color = "red")
 
 gf_segment <-
-  gf_factory(
-    type = "segment", aes_form = y + yend ~ x + xend,
+  layer_factory(
+    geom = "segment",
+    aes_form = y + yend ~ x + xend,
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       arrow = NULL, lineend = "butt"
@@ -2309,8 +2450,6 @@ gf_segment <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2336,7 +2475,7 @@ gf_segment <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2344,12 +2483,15 @@ gf_segment <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_linerange}()}
 #' @export
@@ -2379,8 +2521,9 @@ gf_segment <-
 #' }
 #'
 gf_linerange <-
-  gf_factory(
-    type = "linerange", aes_form = ymin + ymax ~ x,
+  layer_factory(
+    geom = "linerange",
+    aes_form = ymin + ymax ~ x,
     extras = alist( alpha = , color = , group = , linetype = , size = )
   )
 
@@ -2390,8 +2533,6 @@ gf_linerange <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2417,7 +2558,7 @@ gf_linerange <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y + ymin + ymax ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2425,12 +2566,15 @@ gf_linerange <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{fatten}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_pointrange}()}
 #' @export
@@ -2459,8 +2603,8 @@ gf_linerange <-
 #' }
 
 gf_pointrange <-
-  gf_factory(
-    type = "pointrange",
+  layer_factory(
+    geom = "pointrange",
     aes_form = y + ymin + ymax ~ x,
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
@@ -2473,8 +2617,6 @@ gf_pointrange <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2500,7 +2642,7 @@ gf_pointrange <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y + ymin + ymax ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2508,12 +2650,15 @@ gf_pointrange <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{fatten}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_crossbar}()}
 #' @export
@@ -2547,8 +2692,8 @@ gf_pointrange <-
 #' }
 
 gf_crossbar <-
-  gf_factory(
-    type = "crossbar",
+  layer_factory(
+    geom = "crossbar",
     aes_form = y + ymin + ymax ~ x,
     extras = alist(
       alpha = , color = , group = , linetype = , size = , fatten = 2.5
@@ -2561,8 +2706,6 @@ gf_crossbar <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2588,7 +2731,7 @@ gf_crossbar <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2596,12 +2739,15 @@ gf_crossbar <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @seealso \code{\link{geom_errorbar}()}
 #' @export
@@ -2634,9 +2780,10 @@ gf_crossbar <-
 #'     gf_facet_grid( ~ sex)
 #' }
 gf_errorbar <-
-  gf_factory(
-    type = "errorbar",
+  layer_factory(
+    geom = "errorbar",
     aes_form = ymin + ymax ~ x,
+    inherit.aes = FALSE,
     extras = alist(
       alpha = , color = , group = , linetype = , size =
       )
@@ -2648,8 +2795,6 @@ gf_errorbar <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2675,7 +2820,9 @@ gf_errorbar <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{y ~ x + xmin + xmax}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
+#'   Note: The odd shape for this is due to a quirk in \pkg{ggplot2} which has
+#'   been changed on github, but not yet on CRAN.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2683,12 +2830,16 @@ gf_errorbar <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
+#' @return a gg object
 #'
 #' @seealso \code{\link{geom_errorbarh}()}
 #' @export
@@ -2716,8 +2867,8 @@ gf_errorbar <-
 #'     gf_facet_grid( ~ sex)
 #' }
 gf_errorbarh <-
-  gf_factory(
-    type = "errorbarh",
+  layer_factory(
+    geom = "errorbarh",
     aes_form = y ~ x + xmin + xmax,
     extras = alist(
       alpha = , color = , group = , linetype = , size =
@@ -2730,8 +2881,6 @@ gf_errorbarh <-
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
-#' The functions generate a \code{ggplot} command string which can be displayed by
-#' setting \code{verbose = TRUE} as an argument.
 #'
 #' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
 #' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
@@ -2757,7 +2906,7 @@ gf_errorbarh <-
 #' See details and examples.
 #'
 #' @param gformula A formula with shape \code{ymin + ymax ~ xmin + xmax}.
-#'   Faceting can be acheived by including \code{|} in the formula.
+#'   Faceting can be achieved by including \code{|} in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
@@ -2765,12 +2914,16 @@ gf_errorbarh <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
+#' @param inherit A logical indicating whether default attributes are inherited.
+#' @return a gg object
 #'
 #' @seealso \code{\link{geom_rect}()}
 #' @export
@@ -2778,8 +2931,8 @@ gf_errorbarh <-
 #' gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
 #'
 gf_rect <-
-  gf_factory(
-    type = "rect",
+  layer_factory(
+    geom = "rect",
     aes_form = ymin + ymax ~ xmin + xmax,
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
   )
@@ -2787,8 +2940,8 @@ gf_rect <-
 
 #' Reference lines -- horizontal, vertical, and diagonal.
 #'
-#' These fuctions create layers that display lines described i various ways.  Unlike most
-#' of the plotting functions in \code{ggformula}, these functions do not take a formala
+#' These functions create layers that display lines described i various ways.  Unlike most
+#' of the plotting functions in \code{ggformula}, these functions do not take a formula
 #' as input for describing positional attributes of the plot.
 #'
 #'
@@ -2804,50 +2957,89 @@ gf_rect <-
 #'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
 #'   Available attributes include
 #'   \code{slope}, \code{intercept}
-#' @param add If \code{TRUE} then construct just the layer with no frame.  The result
-#'   can be added to an existing frame.
-#' @param verbose If \code{TRUE} print the ggplot2 command in the console.
-#' @param geom A way to specify ggplot geoms that are not aliased to gf functions.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
 #' @param show.help If \code{TRUE}, display some minimal help.
-#' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
 #' @param coef A numeric vector of length at least 2, treated as intercept and slope.
 #' Additional components, if any, are ignored (with a warning).
 #' @param model An object with a method for \code{coef()} that returns a
 #' numeric vector, the first two elements of which are intercept and slope.
 #' This is equivalent to \code{coef = coef(model)}.
+#' @param inherit A logical indicating whether default attributes are inherited.
+#' @return a gg object
 #' @rdname gf_lines
 #' @seealso \code{\link{geom_abline}()},
 #'   \code{\link{geom_vline}()},
 #'   \code{\link{geom_hline}()}
 #' @export
 #' @examples
+#' mtcars2 <- df_stats( wt ~ cyl, data = mtcars)
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_abline(slope = 0, intercept = ~median, color = ~cyl, data = mtcars2)
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_hline(slope = 0, yintercept = ~median, color = ~cyl, data = mtcars2)
+#'
 #' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
 #'   gf_abline(color="red", slope = -0.10, intercept = 35)
 #' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
-#'   gf_abline(color = "red", slope = -0.10, intercept = 33:36) %>%
-#'   gf_hline(color = "navy", yintercept = c(20, 25)) %>%
-#'   gf_vline(color = "brown", xintercept = c(200, 300))
+#'   gf_abline(color = "red", slope = ~slope, intercept = ~intercept,
+#'   data = data.frame(slope = -0.10, intercept = 33:35))
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
+#'   gf_abline(intercept = ~ c(10, 20, 30), slope = ~c(1, 0, -1)/100,
+#'     color = c("red", "green", "blue"))
+#'
+#' # We can set the color of the guidelines while mapping color in other
+#' # layers
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
+#'   gf_hline(color = "navy", yintercept = ~c(20, 25)) %>%
+#'   gf_vline(color = "brown", xintercept = ~c(200, 300))
+#'
+#' # If we want to map the color of the guidelines, it must work with the
+#' # scale of the other colors in the plot.
+#' gf_point(mpg ~ hp, size = ~wt, data = mtcars, alpha = 0.3) %>%
+#'   gf_hline(color = ~"horizontal", yintercept = ~c(20, 25)) %>%
+#'   gf_vline(color = ~"vertical", xintercept = ~c(100, 200, 300), data = NA)
+#' gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) %>%
+#'   gf_hline(color = "orange", yintercept = 20, data = NA) %>%
+#'   gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) %>%
+#' # reversing the layers requires using inherit = FALSE
+#' gf_hline(color = "orange", yintercept = 20, data = NA) %>%
+#'   gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) %>%
+#'   gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3,
+#'     inherit = FALSE)
+#'
+#'
 gf_abline <-
-  gf_factory(
-    type = "abline", aes_form = NULL,
-    extras = alist( slope =, intercept = )
+  layer_factory(
+    geom = "abline", aes_form = NULL,
+    extras = alist( slope =, intercept = ),
+    inherit.aes = FALSE,
+    data = NA
   )
-
 
 #' @rdname gf_lines
 #' @export
 gf_hline <-
-  gf_factory(
-    type = "hline", aes_form = NULL,
-    extras = alist(yintercept = )
+  layer_factory(
+    geom = "hline", aes_form = NULL,
+    extras = alist(yintercept = ),
+    inherit.aes = FALSE,
+    data = NA
   )
 
 #' @rdname gf_lines
 #' @export
 gf_vline <-
-  gf_factory(
-    type = "vline", aes_form = NULL,
-    extras = alist(xintercept = )
+  layer_factory(
+    geom = "vline", aes_form = NULL,
+    extras = alist(xintercept = ),
+    inherit.aes = FALSE,
+    data = NA
     )
 
 #' @rdname gf_lines
@@ -2859,8 +3051,10 @@ gf_coefline <- function(object = NULL, coef = NULL, model = NULL, ...) {
   if (is.null(coef)) coef <- coef(model)
   if (length(coef) > 2) warning("Ignoring all but first two values of coef.")
   if (length(coef) < 2) stop("coef must be of length at least 2.")
-  gf_abline(object = object, intercept = coef[1], slope = coef[2], ...)
+  gf_abline(object = object, intercept = coef[1], slope = coef[2], ..., inherit.aes = FALSE)
 }
+
+utils::globalVariables(c("x"))
 
 #' Layers displaying graphs of functions
 #'
@@ -2872,9 +3066,11 @@ gf_coefline <- function(object = NULL, coef = NULL, model = NULL, ...) {
 #' See details and examples.
 #' @param ... Other arguments such as \code{position="dodge"}.
 #' @param fun A function.
+#' @param inherit A logical indicating whether attributes should be inherited.
 #' @rdname gf_functions
 #' @export
 #' @examples
+#' gf_function(fun = sqrt, xlim = c(0, 10))
 #' if (require(mosaicData)) {
 #'   gf_histogram(..density.. ~ age, data = HELPrct, binwidth = 3, alpha = 0.6) %>%
 #'     gf_function(fun = dnorm,
@@ -2883,27 +3079,63 @@ gf_coefline <- function(object = NULL, coef = NULL, model = NULL, ...) {
 #' }
 
 
-gf_function <- function(object, fun, ...) {
-  object + stat_function(fun = fun, ...)
+gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
+  if (rlang::is_function(object) || rlang::is_character(object)) {
+    fun <- object
+    object <- NULL
+  }
+  if (is.null(object)) {
+    object <- ggplot(data = data.frame(x = xlim), aes(x))
+    inherit <- TRUE
+  }
+  qdots <- rlang::quos(...)
+  afq <- aes_from_qdots(qdots)
+  object +
+    do.call(
+      ggplot2::layer,
+      list(geom = "path", stat = "function", position = "identity",
+           mapping = afq$mapping,
+           inherit.aes = inherit,
+           data = if (missing(xlim)) NULL else data.frame(x = xlim),
+           params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
+      )
+    )
 }
 
 #' @rdname gf_functions
-#' @param formula A formula describing a function.  See examples.
+#' @param formula A formula describing a function.  See examples and \code{\link[mosaicCore]{makeFun}()}.
+#' @param xlim A numeric vector providing the extent of the x-axis when creating
+#'   the first layer in a plot.  Ignored when creating a subsequent layer.
 #' @export
 #' @examples
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_fun(5 + 3 * cos(10 * x) ~ x)
+#' gf_fun(5 + 3 * cos(10 * x) ~ x, xlim = c(0,2))
 #' # Utility bill is quadratic in month?
-#' if (require(mosaic)) {
-#'   f <- makeFun(lm(totalbill ~ poly(month, 2), data = Utilities))
-#'   gf_point(totalbill ~ month, data = Utilities, alpha = 0.6) %>%
-#'     gf_fun(f(m) ~ m, color = "red")
-#'   }
+#' f <- makeFun(lm(totalbill ~ poly(month, 2), data = Utilities))
+#' gf_point(totalbill ~ month, data = Utilities, alpha = 0.6) %>%
+#'   gf_fun(f(m) ~ m, color = "red")
 
-gf_fun <- function(object, formula, ...) {
-  fun <- function(x, ...) mosaic::makeFun(formula)(x, ...)
-  object + stat_function(fun = fun, ...)
+gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
+  if (rlang::is_formula(object) && missing(formula)) {
+    formula <- object
+    object <- NULL
+  }
+
+  if (is.null(object)) {
+    object <- ggplot(data = data.frame(x = xlim), aes(x))
+    inherit <- TRUE
+  }
+  qdots <- rlang::quos(...)
+  fun <- function(x, ...) mosaicCore::makeFun(formula)(x, ...)
+  afq <- aes_from_qdots(qdots)
+  object +
+    do.call(
+      ggplot2::layer,
+        list(geom = "path", stat = "function", position = "identity",
+             mapping = afq$mapping,
+             inherit.aes = inherit,
+             data = if (missing(xlim)) NULL else data.frame(x = xlim),
+             params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
+      )
+    )
 }
-
-
 

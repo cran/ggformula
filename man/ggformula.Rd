@@ -11,8 +11,6 @@ For plots with just one layer, the formula interface
 is more compact than native \pkg{ggplot2} code and is consistent with modeling
 functions like \code{\link{lm}()} that use a formula interface and with the
 numerical summary functions in the \pkg{mosaic} package.
-The functions generate a \code{ggplot} command string which can be displayed by
-setting \code{verbose = TRUE} as an argument.
 }
 \details{
 Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).

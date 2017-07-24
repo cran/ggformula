@@ -13,7 +13,7 @@ vignette: >
 library(ggformula)
 library(dplyr)
 library(ggplot2)
-library(mosaic)
+library(mosaicData)
 knitr::opts_chunk$set(
   fig.show = "hold",
   out.width = "45%"
@@ -95,8 +95,8 @@ Commonly used functions include
 - `gf_bar()` for more general bar-graph style graphics
 
 The function names generally match the corresponding function name from `ggplot2`,
-although `gf_counts()` is a simplified special case, and `gg_dens()` is an 
-alternative to `gg_density()` that displays the density plot slightly differently
+although `gf_counts()` is a simplified special case, and `gf_dens()` is an 
+alternative to `gf_density()` that displays the density plot slightly differently
 than the default in `ggplot2`.
 
 Each of the `gf_` functions can create the coordinate axes and fill it in one
@@ -114,7 +114,7 @@ We've told R to put `mpg` along the y-axis and `hp` along the x-asis, as is clea
 from the plot. 
 But each point also has other attributes, including color, shape, size, stroke, fill, 
 and alpha (transparency).  We didn't specify
-those in our example, so `gg_point()` uses some default values for those --
+those in our example, so `gf_point()` uses some default values for those --
 in this case smallish black filled-in circles.
 
 ### Specifying attributes
@@ -126,23 +126,16 @@ or they can be **mapped** to a variable in the data or some
 expression involving the variables 
 (e.g., map the color to `sex`, so sex determines the color groupings)
 
-Attributes can be specified in 4 ways:
+Attributes are set or mapped using additional arguments.
 
- * adding an argument of the form `attribute = value` [set]
- * adding an argument of the form `attribute = ~ expression` [map]
- * adding a formula term of the form `+ attribute:value` to the formula [auto chooses set or map]
- * adding a formula term of the form `+ attribute::value` [map]
+ * adding an argument of the form `attribute = value` **sets** `attribute` to `value`.
+ * adding an argument of the form `attribute = ~ expression` **maps** `attribute` to `expression`
  
-where `attribute` is one of `color`, `shape`, etc. and `value` is either a constant 
-(e.g. `"red"` or `0.5`, as appropriate), a variable (e.g. `cyl`), and `expression`
+where `attribute` is one of `color`, `shape`, etc., `value` is a constant 
+(e.g. `"red"` or `0.5`, as appropriate), and `expression`
 may be some more general expression that can be computed using the variables in `data` 
 (although often is is better to create a new variable in the data and to
 use that variable instead of an on-the-fly calculation within the plot).
-When using the `:` separator, mapping will be used if `value` is the name of 
-a variable in `data`, otherwise setting will be used.  The other forms 
-can be used to make things explicit when this auto-detection method doesn't yield the 
-desired results.  In general, the use of function arguments is preferable over adding additional
-terms to the formula.
 
 
 The following plot, for instance, 
@@ -150,14 +143,14 @@ The following plot, for instance,
  * We use `cyl` to determine the color and `carb` to  determine the size of each
  dot.  Color and size are **mapped** to `cyl` and `carb`. 
  A legend is provided to show us how the mapping is being done.
- (Later, we can use scales to control precisly how the mapping is done -- 
+ (Later, we can use scales to control precisely how the mapping is done -- 
  which colors and sizes are used to represent which values of `cyl` and `carb`.)  
  
- * We also **set** the transpaency to 50%.  The gives the same value of `alpha` to
+ * We also **set** the transparency to 50%.  The gives the same value of `alpha` to
  all glyphs in this layer.
  
 ```{r}
-gf_point(mpg ~ hp + color:cyl + size:carb + alpha:0.50, data = mtcars) 
+gf_point(mpg ~ hp, color = ~ cyl, size = ~carb, alpha = 0.50, data = mtcars) 
 ```
 
 Here is the same plot where mapping and setting are indicated 
@@ -167,7 +160,7 @@ explicitly.
 gf_point(mpg ~ hp, color = ~cyl, size = ~carb, alpha = 0.50, data = mtcars) 
 ```
 
-### On-the-fly caclulations
+### On-the-fly calculations
 
 `ggformula` allows for on-the-fly calculations of attributes, although the default labeling 
 of the plot is often better if we create a new variable in our data frame.  In the 
@@ -184,7 +177,7 @@ gf_point(mpg ~ hp,  color = ~cylinders, size = ~carb, alpha = 0.75,
 
 ## "One-variable" plots
 
-For some plots, we only have to specify the x-position because the y-position is cacluated
+For some plots, we only have to specify the x-position because the y-position is calculated
 from the x-values.  Histograms, densityplots, and frequency polygons are examples.
 To illustrate, we'll use density plots, but the same ideas apply to 
 `gf_histogram()`, and `gf_freqpolygon()` as well. 
@@ -201,7 +194,7 @@ gf_dens( ~ net, color = ~sex, alpha = 0.7, data = Runners)
 
 Several of the plotting functions include additional arguments that do not modify
 attributes of individual glyphs but control some other aspect of the plot.  In this
-case, `adjust` can be used to increase or decrease the amount of smothing.
+case, `adjust` can be used to increase or decrease the amount of smoothing.
 
 ```{r}
 # less smoothing
@@ -224,8 +217,8 @@ gf_density( ~ net, fill = ~sex, color = NA, position = "fill", data = Runners, a
 ```
 
 Similar commands can be constructed with `gf_histogram()` and `gf_freqpoly()`,
-but note that `color`, not `fill`, is the active aesthetic for frequency
-polygons and `position:"fill"` doesn't work.  It's also rarely good to overlay
+but note that `color`, not `fill`, is the active attribute for frequency
+polygons.  It's also rarely good to overlay
 histograms on top of one another -- better to use a density plot or a frequency 
 polygon for that application.
 
@@ -236,8 +229,8 @@ polygon for that application.
 Sometimes you have so many points in a scatter plot that they obscure one another. 
 The `ggplot2` system provides two easy ways to deal with this: translucency and jittering.
 
-Use `alpha:0.5` to make the points semi-translucent. If there are many points
-overlapping at one point, a much smaller value of alpha, say `alpha:0.01`. 
+Use `alpha = 0.5` to make the points semi-translucent. If there are many points
+overlapping at one point, a much smaller value of alpha, say `alpha = 0.01`. 
 We've already seen this above.
 
 Using `gf_jitter()` in place of `gf_point()` will move the plotted points to
@@ -269,7 +262,7 @@ gf_boxplot(net ~ year, data = Runners)
 
 This plot is placing a single box and whisker plot at the mean value of `year`.
 The warning message suggests that we need to tell R how to form the groups
-when using a quantitive variable for `x`.
+when using a quantitative variable for `x`.
 It suggests using the `group` aesthetic, and sometimes, this is 
 just what we want.
 
@@ -379,7 +372,7 @@ gf_ribbon(lo + hi ~ date, data = Temps, color = "navy", alpha = 0.3)
 `position_jitterdodge()` can be used to adjust the positions at which 
 glyphs are placed.  Jittering adds some random noise and can be useful when
 many observations have the same value.  Dodging moves groups of glyphs a fixed
-difference to make it easier to distingish the groups.
+difference to make it easier to distinguish the groups.
 
 ```{r}
 gf_point(length ~ sex, color = ~ domhand, data = KidsFeet,
@@ -408,7 +401,7 @@ gf_bar( ~ age, data = HELPrct, stat = "bin")
 Mostly, the stats selected by default are just the ones you need. But sometimes
 it is useful to select a different stat.  The `stat_summary()` and 
 `stat_summary_bin()` stats are particularly useful in this respect.
-These stats use a function to aggegrate over unique values of `x` or over 
+These stats use a function to aggregate over unique values of `x` or over 
 bins of `x` values and save the user needing to do that data transformation
 manually. 
 
@@ -423,7 +416,7 @@ gf_jitter(length ~ sex, color = ~domhand, data = KidsFeet,
           group = ~domhand, stat="summary")
 ```
 
-The other two values computed by `mean_se()` are availble as
+The other two values computed by `mean_se()` are available as
 `..ymin..` and `..ymax..`.
 
 ```{r}
@@ -539,18 +532,4 @@ gf_histogram( ~ age, data = Runners, alpha = 0.5, fill = "white",
   gf_theme(theme = theme_dark())
 ```
 
-
-## For ggplot2 users: gf and gg together
-
-The `gf_` functions generate a ggplot object as well as a character string
-containing the `ggplot()` command to generate the graphic. This can be useful
-when you want to use the `gf_` functions to remind you about how `ggplot()`
-works, but you want to have the `ggplot()` commands directly in your document
-for future modification.
-
-Use `verbose = TRUE` to see the string being generated.
-
-```{r}
-gf_jitter(age ~ sex, alpha = 0.05, data = Runners, verbose = TRUE)
-```
 

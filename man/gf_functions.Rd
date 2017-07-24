@@ -5,9 +5,9 @@
 \alias{gf_fun}
 \title{Layers displaying graphs of functions}
 \usage{
-gf_function(object, fun, ...)
+gf_function(object = NULL, fun, xlim, ..., inherit = FALSE)
 
-gf_fun(object, formula, ...)
+gf_fun(object = NULL, formula, xlim, ..., inherit = FALSE)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -16,27 +16,30 @@ See details and examples.}
 
 \item{fun}{A function.}
 
+\item{xlim}{A numeric vector providing the extent of the x-axis when creating
+the first layer in a plot.  Ignored when creating a subsequent layer.}
+
 \item{...}{Other arguments such as \code{position="dodge"}.}
 
-\item{formula}{A formula describing a function.  See examples.}
+\item{inherit}{A logical indicating whether attributes should be inherited.}
+
+\item{formula}{A formula describing a function.  See examples and \code{\link[mosaicCore]{makeFun}()}.}
 }
 \description{
 These functions provide two different
 interfaces for creating a layer that contains the graph of a function.
 }
 \examples{
+gf_function(fun = sqrt, xlim = c(0, 10))
 if (require(mosaicData)) {
   gf_histogram(..density.. ~ age, data = HELPrct, binwidth = 3, alpha = 0.6) \%>\%
     gf_function(fun = dnorm,
       args = list(mean = mean(HELPrct$age), sd = sd(HELPrct$age)),
       color = "red")
 }
-gf_point(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
-gf_fun(5 + 3 * cos(10 * x) ~ x)
+gf_fun(5 + 3 * cos(10 * x) ~ x, xlim = c(0,2))
 # Utility bill is quadratic in month?
-if (require(mosaic)) {
-  f <- makeFun(lm(totalbill ~ poly(month, 2), data = Utilities))
-  gf_point(totalbill ~ month, data = Utilities, alpha = 0.6) \%>\%
-    gf_fun(f(m) ~ m, color = "red")
-  }
+f <- makeFun(lm(totalbill ~ poly(month, 2), data = Utilities))
+gf_point(totalbill ~ month, data = Utilities, alpha = 0.6) \%>\%
+  gf_fun(f(m) ~ m, color = "red")
 }

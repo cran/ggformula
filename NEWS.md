@@ -1,3 +1,28 @@
+# ggformula 0.5.0
+
+For version 0.5, the internals of `ggformula` have been largely redesigned to allow 
+implementation of some new features.  The new version relies much less on string parsing.
+
+  * Some important changes to formula parsing include
+    * `attribute:value` and `attribute::expression` are no longer supported within the main formula.
+    * In exchange, things like `gf_point(1:10 ~ 1:10)` work, making it simpler to create on the fly plots
+      without having to build a data frame first.
+    * `y ~ 1` is equivalent to `~ y` in functions that allow the `~ y` formula shape.  Example: `gf_histogram(age ~ 1)` and `gf_histogram( ~ age)` are equivalent
+    
+  * Some new functions have been added
+    * `gf_dist()` can plot distributions
+    * `gf_dhistogram()` plots density histograms by default
+    * `gf_ash()` creates ASH plots
+    
+  * `df_stats()` has been improved to handle one-sided formulas better.
+  
+  * Secondary layers are now able to inherit both data and formula-defined attributes from the primary layer.  Use 
+  `inherit = FALSE` if you don't want inheritance.  (A few functions have `inherit = FALSE` as their default because
+  it seems unlikely that inheriting will be desireable.)
+  
+  
+  
+  
 # ggformula 0.4.0
 
 Version 0.4.0 constitutes a stable beta release.  Changes to the API are still possible, but more 
