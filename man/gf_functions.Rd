@@ -23,7 +23,7 @@ the first layer in a plot.  Ignored when creating a subsequent layer.}
 
 \item{inherit}{A logical indicating whether attributes should be inherited.}
 
-\item{formula}{A formula describing a function.  See examples and \code{\link[mosaicCore]{makeFun}()}.}
+\item{formula}{A formula describing a function.  See examples and \code{\link[mosaicCore:makeFun]{mosaicCore::makeFun()}}.}
 }
 \description{
 These functions provide two different

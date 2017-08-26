@@ -48,10 +48,10 @@ a call to a position adjustment function.}
 \item{formula}{a formula describing the model in terms of \code{y} (response)
 and \code{x} (predictor).}
 
-\item{lm.args}{A list of arguments supplied to [lm()] when performing the fit.}
+\item{lm.args}{A list of arguments supplied to \code{\link[=lm]{lm()}} when performing the fit.}
 
 \item{backtrans}{a function that transforms the response back to
-the original scale when the \code{formula} includes a transformtion on
+the original scale when the \code{formula} includes a transformation on
 \code{y}.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
@@ -78,7 +78,7 @@ equivalent.  Use \code{geom_lm()} unless you want a non-standard geom.
 \details{
 Stat calculation is performed by the (currently undocumented)
 \code{predictdf}.  Pointwise confidence or prediction bands are
-calculated using the [predict()] method.
+calculated using the \code{\link[=predict]{predict()}} method.
 }
 \examples{
 if (require(mosaicData)) {
@@ -105,5 +105,5 @@ ggplot(mpg, aes(displ, hwy)) +
 }
 }
 \seealso{
-[lm()] for details on linear model fitting.
+\code{\link[=lm]{lm()}} for details on linear model fitting.
 }

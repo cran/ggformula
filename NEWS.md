@@ -1,3 +1,13 @@
+# ggformula 0.6.0
+
+Mostly minor changes:
+
+  * Improved documentation of gf_ functions.
+  * na.warn() is now re-exported.
+  * Bug fix in gf_violin().
+  * Reformatted quick help messages.
+
+
 # ggformula 0.5.0
 
 For version 0.5, the internals of `ggformula` have been largely redesigned to allow 

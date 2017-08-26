@@ -106,7 +106,7 @@ gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
 
 }
 \seealso{
-\code{\link{geom_abline}()},
-  \code{\link{geom_vline}()},
-  \code{\link{geom_hline}()}
+\code{\link[=geom_abline]{geom_abline()}},
+\code{\link[=geom_vline]{geom_vline()}},
+\code{\link[=geom_hline]{geom_hline()}}
 }

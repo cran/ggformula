@@ -21,7 +21,7 @@ to the layer.  Note: avoid possible ambiguities using \code{params}.}
 portion of the distribution that will be displayed.  The default is to attempt
 to determine reasonable bounds using quantiles of the distribution.}
 
-\item{kind}{One of `"density"`, `"cdf"`, `"qq"`, `"qqstep"`, or `"histogram"`
+\item{kind}{One of \code{"density"}, \code{"cdf"}, \code{"qq"}, \code{"qqstep"}, or \code{"histogram"}
 describing what kind of plot to create.}
 
 \item{resolution}{An integer specifying the number of points to use for creating

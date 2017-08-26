@@ -24,24 +24,24 @@ These are typically accessed through their associated \code{geom_*}, \code{stat_
 \code{gf_*} functions.
 }
 \seealso{
-\code{\link{stat_ash}()}
+\code{\link[=stat_ash]{stat_ash()}}
 
-\code{\link{gf_ash}()}
+\code{\link[=gf_ash]{gf_ash()}}
 
-\code{\link{stat_spline}()}
+\code{\link[=stat_spline]{stat_spline()}}
 
-\code{\link{gf_spline}()}
+\code{\link[=gf_spline]{gf_spline()}}
 
-\code{\link{stat_qq}()}
+\code{\link[=stat_qq]{stat_qq()}}
 
-\code{\link{gf_qq}()}
+\code{\link[=gf_qq]{gf_qq()}}
 
-\code{\link{stat_lm}()}
+\code{\link[=stat_lm]{stat_lm()}}
 
-\code{\link{gf_lm}()}
+\code{\link[=gf_lm]{gf_lm()}}
 
-\code{\link{geom_lm}()}
+\code{\link[=geom_lm]{geom_lm()}}
 
-\code{\link{gf_lm}()}
+\code{\link[=gf_lm]{gf_lm()}}
 }
 \keyword{datasets}

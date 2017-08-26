@@ -3,31 +3,26 @@ NA
 
 #' Formula interface to ggplot2
 #'
-#' The functions in \pkg{ggformula} provide a formula interface to \code{ggplot2} layer
+#' The functions in \pkg{ggformula} provide a formula interface to \pkg{ggplot2} layer
 #' functions and a system for working with pipes to create multi-layer
 #' plots and to refine plots.
 #' For plots with just one layer, the formula interface
 #' is more compact than native \pkg{ggplot2} code and is consistent with modeling
-#' functions like \code{\link{lm}()} that use a formula interface and with the
+#' functions like [lm()] that use a formula interface and with the
 #' numerical summary functions in the \pkg{mosaic} package.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Setting and mapping of additional attributes can be done within the formula or
-#' through the use of additional arguments.  The latter is considered preferable.
-#' Attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}; terms of the form \code{+ attribute:value} will map
-#' \code{attribute} to \code{value} if \code{value} is the name of a variable in
-#' \code{data}, else \code{attribute} will be set to the constant \code{value}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
 #'
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
-#' This provides an alternative to \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
+#' This provides an alternative to [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -42,27 +37,24 @@ NA
 
 #' Formula interface to geom_point()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -70,27 +62,27 @@ NA
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression},
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`,
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`, or
 #'   (d) arguments for the geom, stat, or position function.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{size}, \code{shape}, \code{fill}, \code{group}, \code{stroke}
+#'   `alpha`, `color`, `size`, `shape`, `fill`, `group`, `stroke`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_point}()}
+#' @seealso [geom_point()]
 #' @export
 #' @examples
 #' gf_point()
@@ -114,27 +106,24 @@ gf_point <-
 
 #' Formula interface to geom_jitter()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -142,27 +131,27 @@ gf_point <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{size}, \code{shape}, \code{fill}, \code{group},
-#'   \code{stroke}, \code{width}, \code{height}
+#'   `alpha`, `color`, `size`, `shape`, `fill`, `group`,
+#'   `stroke`, `width`, `height`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_jitter}()}
+#' @seealso [geom_jitter()]
 #' @export
 #' @examples
 #' gf_jitter()
@@ -184,27 +173,24 @@ gf_jitter <-
 
 #' Formula interface to geom_line()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -212,26 +198,26 @@ gf_jitter <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{arrow}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`, `lineend`, `linejoin`, `linemitre`, `arrow`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_line}()}
+#' @seealso [geom_line()]
 #' @export
 #' @examples
 #' gf_line()
@@ -250,27 +236,24 @@ gf_line <-
 
 #' Formula interface to geom_path()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -278,26 +261,26 @@ gf_line <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{arrow}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `lineend`, `linejoin`, `linemitre`, `arrow`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_path}()}
+#' @seealso [geom_path()]
 #' @export
 #' @examples
 #' gf_path()
@@ -316,27 +299,24 @@ gf_path <-
 
 #' Formula interface to geom_smooth()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -344,26 +324,26 @@ gf_path <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{method}, \code{formula}, \code{se}, \code{method.args}, \code{n}, \code{span}, \code{fullrange}, \code{level}
+#'   `method`, `formula`, `se`, `method.args`, `n`, `span`, `fullrange`, `level`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_smooth}()}
+#' @seealso [geom_smooth()]
 #' @export
 #' @examples
 #' gf_smooth()
@@ -413,27 +393,24 @@ gf_lm <-
 
 #' Formula interface to geom_spline()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -441,26 +418,26 @@ gf_lm <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{weight}, \code{df}, \code{spar}, \code{tol}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `weight`, `df`, `spar`, `tol`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_spline}()}
+#' @seealso [geom_spline()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -479,27 +456,24 @@ gf_spline <-
 
 #' Formula interface to geom_raster()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -507,26 +481,26 @@ gf_spline <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{hjust}, \code{vjust}, \code{interpolate}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`, `hjust`, `vjust`, `interpolate`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_raster}()}
+#' @seealso [geom_raster()]
 #' @export
 #' @examples
 #' # Justification controls where the cells are anchored
@@ -548,27 +522,24 @@ gf_raster <-
 
 #' Formula interface to geom_quantile()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -576,26 +547,26 @@ gf_raster <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{weight}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{quantiles}, \code{formula}, \code{method}, \code{method.args}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `weight`, `lineend`, `linejoin`, `linemitre`, `quantiles`, `formula`, `method`, `method.args`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_quantile}()}
+#' @seealso [geom_quantile()]
 #' @export
 #' @examples
 #' gf_point((1/hwy) ~ displ, data = mpg) %>%
@@ -612,27 +583,24 @@ gf_quantile <-
 
 #' Formula interface to geom_density_2d()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -640,26 +608,26 @@ gf_quantile <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{contour}, \code{n}, \code{h}, \code{lineend}, \code{linejoin}, \code{linemitre}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `contour`, `n`, `h`, `lineend`, `linejoin`, `linemitre`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_density_2d}()}
+#' @seealso [geom_density_2d()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -678,27 +646,24 @@ gf_density_2d <-
 
 #' Formula interface to geom_density2d()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -706,26 +671,26 @@ gf_density_2d <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{contour}, \code{n}, \code{h}, \code{lineend}, \code{linejoin}, \code{linemitre}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `contour`, `n`, `h`, `lineend`, `linejoin`, `linemitre`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_density2d}()}
+#' @seealso [geom_density2d()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -744,27 +709,24 @@ gf_density2d <-
 
 #' Formula interface to geom_hex()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -772,26 +734,26 @@ gf_density2d <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{bins}, \code{binwidth}, \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{size}
+#'   `bins`, `binwidth`, `alpha`, `color`, `fill`, `group`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_hex}()}
+#' @seealso [geom_hex()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -807,28 +769,25 @@ gf_hex <-
 
 #' Formula interface to geom_boxplot()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -836,25 +795,25 @@ gf_hex <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{shape}, \code{size}, \code{weight}, \code{coef}, \code{outlier.color}, \code{outlier.fill}, \code{outlier.shape}, \code{outlier.size}, \code{outlier.stroke}, \code{outlier.alpha}, \code{notch}, \code{notchwidth}, \code{varwidth}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `shape`, `size`, `weight`, `coef`, `outlier.color`, `outlier.fill`, `outlier.shape`, `outlier.size`, `outlier.stroke`, `outlier.alpha`, `notch`, `notchwidth`, `varwidth`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #'
-#' @seealso \code{\link{geom_boxplot}()}
+#' @seealso [geom_boxplot()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -881,27 +840,24 @@ gf_boxplot <-
 
 #' Formula interface to geom_text()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -909,26 +865,26 @@ gf_boxplot <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{label}, \code{alpha}, \code{angle}, \code{color}, \code{family}, \code{fontface}, \code{group}, \code{hjust}, \code{lineheight}, \code{size}, \code{vjust}, \code{parse}, \code{nudge_x}, \code{nudge_y}, \code{check_overlap}
+#'   `label`, `alpha`, `angle`, `color`, `family`, `fontface`, `group`, `hjust`, `lineheight`, `size`, `vjust`, `parse`, `nudge_x`, `nudge_y`, `check_overlap`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_text}()}
+#' @seealso [geom_text()]
 #' @export
 #' @examples
 #' gf_text(Sepal.Length ~ Sepal.Width, data = iris,
@@ -946,27 +902,24 @@ gf_text <-
 
 #' Formula interface to geom_label()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -974,26 +927,26 @@ gf_text <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{label}, \code{alpha}, \code{angle}, \code{color}, \code{family}, \code{fontface}, \code{group}, \code{hjust}, \code{lineheight}, \code{size}, \code{vjust}, \code{parse}, \code{nudge_x}, \code{nudge_y}, \code{lparse}, \code{nudge_x}, \code{nudge_y}, \code{label.padding}, \code{label.r}, \code{label.size}, \code{check_overlap}
+#'   `label`, `alpha`, `angle`, `color`, `family`, `fontface`, `group`, `hjust`, `lineheight`, `size`, `vjust`, `parse`, `nudge_x`, `nudge_y`, `lparse`, `nudge_x`, `nudge_y`, `label.padding`, `label.r`, `label.size`, `check_overlap`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_label}()}
+#' @seealso [geom_label()]
 #' @export
 #' @examples
 #' if (require(dplyr)) {
@@ -1020,27 +973,24 @@ gf_label <-
 
 #' Formula interface to geom_area()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1048,26 +998,26 @@ gf_label <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_area}()}
+#' @seealso [geom_area()]
 #' @export
 #' @examples
 #' if (require(weatherData) && require(dplyr)) {
@@ -1111,27 +1061,24 @@ gf_area <-
 
 #' Formula interface to geom_violin()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1139,26 +1086,26 @@ gf_area <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{}, \code{draw_quatiles}, \code{trim}, \code{scale}, \code{bw}, \code{adjust}, \code{kernel}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`, \code{}, `draw_quatiles`, `trim`, `scale`, `bw`, `adjust`, `kernel`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_violin}()}
+#' @seealso [geom_violin()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -1171,34 +1118,31 @@ gf_violin <-
     geom = "violin",
     stat = "ydensity",
     position = "dodge",
-    extras = alist(alpha = , color = , fill = , group = , linetype = , size = , weight,
+    extras = alist(alpha = , color = , fill = , group = , linetype = , size = , weight = ,
       draw_quantiles = NULL, trim = TRUE, scale = "area", bw = , adjust = 1,
       kernel = "gaussian")
   )
 
 #' Formula interface to geom_spoke()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1206,27 +1150,27 @@ gf_violin <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{angle}, \code{radius}, \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
+#'   `angle`, `radius`, `alpha`, `color`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
-#' @section Note \code{angle} and \code{radius} must be set or mapped.
+#' @param show.help If `TRUE`, display some minimal help.
+#' @section Note `angle` and `radius` must be set or mapped.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_spoke}()}
+#' @seealso [geom_spoke()]
 #' @export
 #' @examples
 #' D <- expand.grid(x = 1:10, y=1:10)
@@ -1251,27 +1195,24 @@ gf_spoke <-
 
 #' Formula interface to geom_step()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1279,26 +1220,26 @@ gf_spoke <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{direction}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `direction`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_step}()}
+#' @seealso [geom_step()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -1313,27 +1254,24 @@ gf_step <-
 
 #' Formula interface to geom_tile()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1341,26 +1279,26 @@ gf_step <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_tile}()}
+#' @seealso [geom_tile()]
 #' @export
 #' @examples
 #' D <- expand.grid(x = 0:5, y = 0:5)
@@ -1377,27 +1315,24 @@ gf_tile <-
 
 #' Formula interface to geom_count()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1405,26 +1340,26 @@ gf_tile <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{shape}, \code{size}, \code{stroke}
+#'   `alpha`, `color`, `fill`, `group`, `shape`, `size`, `stroke`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_count}()}
+#' @seealso [geom_count()]
 #' @export
 #' @examples
 #' # Best used in conjunction with scale_size_area which ensures that
@@ -1445,27 +1380,24 @@ gf_count <-
 
 #' Formula interface to geom_col()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1473,26 +1405,26 @@ gf_count <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_col}()}
+#' @seealso [geom_col()]
 #' @export
 #' @examples
 #' D <- data.frame(
@@ -1511,27 +1443,24 @@ gf_col <-
   )
 #' Formula interface to geom_blank()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1539,13 +1468,13 @@ gf_col <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
 #'   \code{}
 #' @param geom A character string naming the geom used to make the layer.
@@ -1553,12 +1482,12 @@ gf_col <-
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_blank}()}
+#' @seealso [geom_blank()]
 #' @export
 #' @examples
 #'
@@ -1577,27 +1506,21 @@ gf_blank <-
 
 #' Formula interface to geom_histogram()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1605,27 +1528,27 @@ gf_blank <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x} or \code{y ~ x}.
-#'   \code{y} may be \code{..density..} or \code{..count..} or \code{..ndensity..} or \code{..ncount..}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x` or `y ~ x`.
+#'   `y` may be `..density..` or `..count..` or `..ndensity..` or `..ncount..`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_histogram}()}
+#' @seealso [geom_histogram()]
 #' @export
 #' @examples
 #' x <- rnorm(1000)
@@ -1661,27 +1584,24 @@ gf_dhistogram <-
 
 #' Formula interface to geom_density()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1689,26 +1609,26 @@ gf_dhistogram <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{weight}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`, `weight`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_density}()}
+#' @seealso [geom_density()]
 #' @export
 #' @examples
 #' gf_dens()
@@ -1731,27 +1651,24 @@ gf_density <-
 
 #' Formula interface to geom_line() and stat_density()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1759,26 +1676,26 @@ gf_density <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{stat}, \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{weight}
+#'   `stat`, `alpha`, `color`, `fill`, `group`, `linetype`, `size`, `weight`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_line}()}
+#' @seealso [geom_line()]
 #' @export
 #' @examples
 #' gf_dens()
@@ -1799,27 +1716,24 @@ gf_dens <-
 
 #' Formula interface to geom_dotplot()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1827,26 +1741,26 @@ gf_dens <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{binwidth}, \code{binaxis}, \code{method}, \code{binpositions}, \code{stackdir}, \code{stackratio}, \code{dotsize}, \code{stackgroups}, \code{origin}, \code{right}, \code{width}, \code{drop}
+#'   `alpha`, `color`, `fill`, `group`, `binwidth`, `binaxis`, `method`, `binpositions`, `stackdir`, `stackratio`, `dotsize`, `stackgroups`, `origin`, `right`, `width`, `drop`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_dotplot}()}
+#' @seealso [geom_dotplot()]
 #' @export
 #' @examples
 #' gf_dotplot(~ Sepal.Length, fill = ~Species, data = iris)
@@ -1865,27 +1779,24 @@ gf_dotplot <-
 
 #' Formula interface to geom_bar()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1893,26 +1804,26 @@ gf_dotplot <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{width}, \code{binwidth}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`, `width`, `binwidth`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_bar}()}
+#' @seealso [geom_bar()]
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
@@ -1946,27 +1857,24 @@ gf_counts <-
 
 #' Formula interface to geom_freqpoly()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -1974,26 +1882,26 @@ gf_counts <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{binwidth}, \code{bins}, \code{center}, \code{boundary}, \code{}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `binwidth`, `bins`, `center`, `boundary`, \code{}
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_freqpoly}()}
+#' @seealso [geom_freqpoly()]
 #' @export
 #' @examples
 #' gf_histogram(~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) %>%
@@ -2014,32 +1922,29 @@ gf_freqpoly <-
 
 #' Formula interface to geom_qq()
 #'
-#' \code{gf_qq()} an \code{gf_qqstep()} both create quantile-quantile plots. They
+#' `gf_qq()` an `gf_qqstep()` both create quantile-quantile plots. They
 #' differ in how they display the qq-plot.
-#' \code{gf_qq()} uses points and \code{gf_qqstep()} plots a step function
+#' `gf_qq()` uses points and `gf_qqstep()` plots a step function
 #' through these points.
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2047,26 +1952,26 @@ gf_freqpoly <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~sample}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~sample`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{group}, \code{x}, \code{y}, \code{distribution}, \code{dparams}
+#'   `group`, `x`, `y`, `distribution`, `dparams`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_qq}()}
+#' @seealso [geom_qq()]
 #' @export
 #' @examples
 #' gf_qq(~rnorm(100))
@@ -2104,27 +2009,24 @@ gf_qqstep <-
 
 #' Formula interface to geom_rug()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2132,26 +2034,26 @@ gf_qqstep <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x} or \code{y ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x` or `y ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{sides}, \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
+#'   `sides`, `alpha`, `color`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_rug}()}
+#' @seealso [geom_rug()]
 #' @export
 #' @examples
 #' gf_histogram(~eruptions, data = faithful) %>%
@@ -2173,27 +2075,24 @@ gf_rug <-
 
 #' Formula interface to geom_contour()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2201,13 +2100,13 @@ gf_rug <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{z ~ x + y}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `z ~ x + y`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
 #'   \code{}
 #' @param geom A character string naming the geom used to make the layer.
@@ -2215,12 +2114,12 @@ gf_rug <-
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_contour}()}
+#' @seealso [geom_contour()]
 #' @export
 #' @examples
 #' gf_density_2d(eruptions ~ waiting, data = faithful, alpha = 0.5, color = "navy") %>%
@@ -2233,27 +2132,24 @@ gf_contour <-
 
 #' Formula interface to geom_ribbon()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2261,26 +2157,26 @@ gf_contour <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `ymin + ymax ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}
+#'   `alpha`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_ribbon}()}
+#' @seealso [geom_ribbon()]
 #' @export
 #' @examples
 #' gf_ribbon()
@@ -2314,27 +2210,24 @@ gf_ribbon <-
 
 #' Formula interface to geom_curve()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2342,26 +2235,26 @@ gf_ribbon <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y + yend ~ x + xend}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y + yend ~ x + xend`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{curvature}, \code{angle}, \code{ncp}, \code{arrow}, \code{lineend}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `curvature`, `angle`, `ncp`, `arrow`, `lineend`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_curve}()}
+#' @seealso [geom_curve()]
 #' @export
 #' @examples
 #' D <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
@@ -2379,27 +2272,24 @@ gf_curve <-
 
 #' Formula interface to geom_segment()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2407,26 +2297,26 @@ gf_curve <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y + yend ~ x + xend}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y + yend ~ x + xend`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{arrow}, \code{lineend}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `arrow`, `lineend`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_segment}()}
+#' @seealso [geom_segment()]
 #' @export
 #' @examples
 #' D <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
@@ -2446,27 +2336,24 @@ gf_segment <-
 
 #' Formula interface to geom_linerange()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2474,26 +2361,26 @@ gf_segment <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `ymin + ymax ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_linerange}()}
+#' @seealso [geom_linerange()]
 #' @export
 #' @examples
 #' gf_linerange()
@@ -2529,27 +2416,24 @@ gf_linerange <-
 
 #' Formula interface to geom_pointrange()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2557,26 +2441,26 @@ gf_linerange <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y + ymin + ymax ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y + ymin + ymax ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{fatten}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `fatten`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_pointrange}()}
+#' @seealso [geom_pointrange()]
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
@@ -2613,27 +2497,24 @@ gf_pointrange <-
 
 #' Formula interface to geom_crossbar()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2641,26 +2522,26 @@ gf_pointrange <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y + ymin + ymax ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y + ymin + ymax ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{fatten}
+#'   `alpha`, `color`, `group`, `linetype`, `size`, `fatten`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_crossbar}()}
+#' @seealso [geom_crossbar()]
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
@@ -2702,27 +2583,24 @@ gf_crossbar <-
 
 #' Formula interface to geom_errorbar()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2730,26 +2608,26 @@ gf_crossbar <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{ymin + ymax ~ x}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `ymin + ymax ~ x`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_errorbar}()}
+#' @seealso [geom_errorbar()]
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
@@ -2791,27 +2669,24 @@ gf_errorbar <-
 
 #' Formula interface to geom_errorbarh()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2819,29 +2694,29 @@ gf_errorbar <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{y ~ x + xmin + xmax}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `y ~ x + xmin + xmax`.
+#'   Faceting can be achieved by including `|` in the formula.
 #'   Note: The odd shape for this is due to a quirk in \pkg{ggplot2} which has
 #'   been changed on github, but not yet on CRAN.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #'
-#' @seealso \code{\link{geom_errorbarh}()}
+#' @seealso [geom_errorbarh()]
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
@@ -2877,27 +2752,24 @@ gf_errorbarh <-
 
 #' Formula interface to geom_rect()
 #'
-#' \pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+#' \pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 #' functions.
 #' For plots with just one layer, the formula interface
 #' is more compact and is consistent with modeling and \pkg{mosaic} notation.
 #'
-#' Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-#' Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-#' to \code{value}.
-#' Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-#' to \code{value} if \code{value} is the name of a variable in \code{data}, else
-#' \code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-#' attributes can be set can be set using arguments of the form \code{attribute = value} or
-#' mapped using arguments of the form \code{attribute = ~ expression}.
-#' In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-#' \code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+#' Positional aesthetics are typically specified using a formula (see the `gformula` argument).
+#' Setting and mapping of additional attributes can be done through the use of additional arguments.
+#' Attributes can be set can be set using arguments of the form `attribute = value` or
+#' mapped using arguments of the form `attribute = ~ expression`.
+#'
+#' In formulas of the form `A | B`, `B` will be used to form facets using
+#' [facet_wrap()] or [facet_grid()].
 #' This provides an alternative to
-#' \code{\link{gf_facet_wrap}()} and
-#' \code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+#' [gf_facet_wrap()] and
+#' [gf_facet_grid()] that is terser and may feel more familiar to users
 #' of \pkg{lattice}.
 #'
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
 #' This will typically do the right thing when formulas are created on the fly, but might not
 #' be the right thing if formulas created in one environment are used to create plots
 #' in another.
@@ -2905,27 +2777,27 @@ gf_errorbarh <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{ymin + ymax ~ xmin + xmax}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `ymin + ymax ~ xmin + xmax`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #'
-#' @seealso \code{\link{geom_rect}()}
+#' @seealso [geom_rect()]
 #' @export
 #' @examples
 #' gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
@@ -2941,7 +2813,7 @@ gf_rect <-
 #' Reference lines -- horizontal, vertical, and diagonal.
 #'
 #' These functions create layers that display lines described i various ways.  Unlike most
-#' of the plotting functions in \code{ggformula}, these functions do not take a formula
+#' of the plotting functions in `ggformula`, these functions do not take a formula
 #' as input for describing positional attributes of the plot.
 #'
 #'
@@ -2949,33 +2821,33 @@ gf_rect <-
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula Must be \code{NULL}.
+#' @param gformula Must be `NULL`.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{slope}, \code{intercept}
+#'   `slope`, `intercept`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param coef A numeric vector of length at least 2, treated as intercept and slope.
 #' Additional components, if any, are ignored (with a warning).
-#' @param model An object with a method for \code{coef()} that returns a
+#' @param model An object with a method for `coef()` that returns a
 #' numeric vector, the first two elements of which are intercept and slope.
-#' This is equivalent to \code{coef = coef(model)}.
+#' This is equivalent to `coef = coef(model)`.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @return a gg object
 #' @rdname gf_lines
-#' @seealso \code{\link{geom_abline}()},
-#'   \code{\link{geom_vline}()},
-#'   \code{\link{geom_hline}()}
+#' @seealso [geom_abline()],
+#'   [geom_vline()],
+#'   [geom_hline()]
 #' @export
 #' @examples
 #' mtcars2 <- df_stats( wt ~ cyl, data = mtcars)
@@ -3064,7 +2936,7 @@ utils::globalVariables(c("x"))
 #' @param object When chaining, this holds an object produced in the earlier portions
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
-#' @param ... Other arguments such as \code{position="dodge"}.
+#' @param ... Other arguments such as `position="dodge"`.
 #' @param fun A function.
 #' @param inherit A logical indicating whether attributes should be inherited.
 #' @rdname gf_functions
@@ -3103,7 +2975,7 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
 }
 
 #' @rdname gf_functions
-#' @param formula A formula describing a function.  See examples and \code{\link[mosaicCore]{makeFun}()}.
+#' @param formula A formula describing a function.  See examples and [mosaicCore::makeFun()].
 #' @param xlim A numeric vector providing the extent of the x-axis when creating
 #'   the first layer in a plot.  Ignored when creating a subsequent layer.
 #' @export

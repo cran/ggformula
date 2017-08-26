@@ -10,12 +10,12 @@ NA
 #' @param object a gg object.
 #' @param dist A character string providing the name of a distribution.  Any
 #'   distribution for which the functions with names formed by prepending
-#'   "d", "p", or "q" to \code{dist} exist can be used.
+#'   "d", "p", or "q" to `dist` exist can be used.
 #' @param xlim A numeric vector of length 2 providing lower and upper bounds for the
 #'   portion of the distribution that will be displayed.  The default is to attempt
 #'   to determine reasonable bounds using quantiles of the distribution.
 #' @param ... additional arguments passed both to the distribution functions and
-#'   to the layer.  Note: avoid possible ambiguities using \code{params}.
+#'   to the layer.  Note: avoid possible ambiguities using `params`.
 #' @param kind One of `"density"`, `"cdf"`, `"qq"`, `"qqstep"`, or `"histogram"`
 #'   describing what kind of plot to create.
 #' @param resolution An integer specifying the number of points to use for creating

@@ -59,7 +59,7 @@ formula_slots <- function(x, stop_binops = c(":", "::")) {
 
 # add quotes to character elements of list x and returns a vector of character
 .quotify <- function(x) {
-  if(is_null(x)) return(x)
+  if(is_null(x)) return("NULL")
   x <- if (rlang::is_character(x)) paste0('"', x, '"') else x
   x <- if (is.name(x)) as.character(x) else x
   x <- if (rlang::is_character(x)) x else format(x)
@@ -68,8 +68,9 @@ formula_slots <- function(x, stop_binops = c(":", "::")) {
 
 
 .default_value <- function(x) {
-  sapply(x,
-         function(x) ifelse (is.symbol(x), "", paste0(" = ", lapply(x, .quotify)))
+  sapply(
+    x,
+    function(x) if (is.symbol(x))  "" else paste0(" = ", .quotify(x))
   )
 }
 
@@ -91,28 +92,46 @@ aes_from_qdots <- function(qdots, mapping = aes()) {
 
 emit_help <- function(function_name, aes_form, extras = list(), note = NULL,
                       geom, stat = "identity", position = "identity"){
+  message_text <- ""
   if (any(sapply(aes_form, is.null))) {
-    message(function_name, "() does not require a formula.")
+    message_text <-
+      paste(message_text, function_name, "() does not require a formula.")
   } else {
-    message(function_name, "() uses \n    * a formula with shape ",
+    message_text <-
+      paste(message_text, function_name, "() uses \n    * a formula with shape ",
             paste(sapply(aes_form, format), collapse = " or "), ".")
   }
-  if (is.character(geom))                               message("    * geom: ", geom)
-  if (is.character(stat)     && stat != "identity")     message("    * stat: ", stat)
-  if (is.character(position) && position != "identity") message("    * position: ", position)
+  if (is.character(geom))
+    message_text <- paste(message_text, "\n    * geom: ", geom)
+  if (is.character(stat) && stat != "identity")
+    message_text <- paste(message_text, "\n    * stat: ", stat)
+  if (is.character(position) && position != "identity")
+    message_text <- paste(message_text, "\n    * stat: ", position)
 
   if(length(extras) > 0) {
-    message("    * attributes: ",
-            strwrap(width = options("width")[[1]] - 20,
-              paste(names(extras), .default_value(extras),
-                    collapse = ", ", sep = ""),
-              initial = "",
-              prefix = "\n                  "
-            )
-    )
+    message_text <-
+      paste(
+        message_text,
+        "\n    * attributes: ",
+        paste(
+          strwrap(
+            width = options("width")[[1]] - 20, simplify = TRUE,
+            paste(
+              names(extras), .default_value(extras),
+              collapse = ", ", sep = ""),
+            initial = "",
+            prefix = "\n                   "
+          ),
+        collapse = "", sep = ""
+        )
+      )
   }
-  if (!is.null(note)) message("Note: ", note)
-  message("\nFor more information, try ?", function_name)
+  if (!is.null(note))
+    message_text <- paste(message_text, "\nNote: ", note)
+  message_text <- paste0(message_text, "\n\nFor more information, try ?", function_name)
+
+  message(message_text)
+
   return(invisible(NULL))
 }
 

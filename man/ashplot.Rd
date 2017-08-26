@@ -51,8 +51,8 @@ of the attributes of the layer are mapped.}
 Available attributes include
 \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}}
 
-\item{mapping}{set of aesthetic mappings created by \code{\link{aes}()}
-or \code{\link{aes_}()}.}
+\item{mapping}{set of aesthetic mappings created by \code{\link[=aes]{aes()}}
+or \code{\link[=aes_]{aes_()}}.}
 
 \item{na.rm}{If FALSE (the default), removes missing values with a warning.
 If TRUE silently removes missing values.}
@@ -87,5 +87,5 @@ ggplot(faithful, aes(x = eruptions)) +
   theme_minimal()
 }
 \seealso{
-\code{\link{geom_histogram}()}, \code{link{gf_histogram}()}.
+\code{\link[=geom_histogram]{geom_histogram()}}, \code{link{gf_histogram}()}.
 }

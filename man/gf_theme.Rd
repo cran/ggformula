@@ -9,10 +9,10 @@ gf_theme(object, theme, ...)
 \arguments{
 \item{object}{a gg object}
 
-\item{theme}{a ggplot2 theme function like \code{\link{theme_minimal}}.}
+\item{theme}{a ggplot2 theme function like \code{\link[=theme_minimal]{theme_minimal()}}.}
 
 \item{...}{If \code{theme} is missing, then these additional arguments are theme elements
-of the sort handled by \code{\link[ggplot2]{theme}()}.}
+of the sort handled by \code{\link[ggplot2:theme]{ggplot2::theme()}}.}
 }
 \value{
 a modified gg object

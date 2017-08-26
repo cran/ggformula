@@ -9,8 +9,8 @@ stat_qqline(mapping = NULL, data = NULL, geom = "line",
   dparams = list(), na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
-\item{mapping}{An aesthetic mapping produced with \code{\link{aes}()} or
-\code{\link{aes_string}()}.}
+\item{mapping}{An aesthetic mapping produced with \code{\link[=aes]{aes()}} or
+\code{\link[=aes_string]{aes_string()}}.}
 
 \item{data}{A data frame.}
 

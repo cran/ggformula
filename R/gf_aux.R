@@ -4,12 +4,12 @@
 #' ggplot2 plots. They are wrappers around functions in ggplot2 that allow for
 #' chaining syntax.
 #'
-#' \code{gf_refine()} provides a mechanism to replace \code{+} with the
+#' `gf_refine()` provides a mechanism to replace `+` with the
 #' chaining operator from \pkg{magrittr}.
-#' Each of its \code{\dots} arguments is added in turn to the
-#' base plot in \code{object}.  The other functions are thin wrappers around
-#' specific \code{ggplot2} refinement functions and pass their \code{\dots}
-#' arguments through to the similarly named \code{ggplot2} functions.
+#' Each of its `\dots` arguments is added in turn to the
+#' base plot in `object`.  The other functions are thin wrappers around
+#' specific `ggplot2` refinement functions and pass their `\dots`
+#' arguments through to the similarly named `ggplot2` functions.
 #'
 #' @param object a gg object
 #' @param ... additional arguments passed through to the similarly named function in
@@ -65,9 +65,9 @@ gf_lims <- function(object, ...) {
 #'
 #' @rdname gf_theme
 #' @param object a gg object
-#' @param theme a ggplot2 theme function like \code{\link{theme_minimal}}.
-#' @param ... If \code{theme} is missing, then these additional arguments are theme elements
-#'   of the sort handled by \code{\link[ggplot2]{theme}()}.
+#' @param theme a ggplot2 theme function like [theme_minimal()].
+#' @param ... If `theme` is missing, then these additional arguments are theme elements
+#'   of the sort handled by [ggplot2::theme()].
 #' @return a modified gg object
 #' @export
 gf_theme <- function(object, theme, ...) {

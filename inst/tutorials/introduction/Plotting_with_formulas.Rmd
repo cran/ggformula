@@ -24,7 +24,7 @@ for (y in unique(Births$year)) {
 }
 Births1978 <- Births %>% filter(year == 1978)
 data(Galton, package = "mosaicData")
-knitr::opts_chunk$set(exercise.checker = checkr::checkr_tutor)
+# knitr::opts_chunk$set(exercise.checker = checkr::checkr_tutor)
 knitr::opts_chunk$set(
   echo = FALSE,
   fig.align = "center",
@@ -228,7 +228,7 @@ For the record, here are the first few rows of `Births1978`.
 Births1978 %>% head(3) %>% select(births, date, day_of_year)
 ```
 
-## Formulas
+## Using formulas to describe plots
 
 The most distinctive feature of `ggformula` plots is the use of formulas to 
 describe the positional information of a plot.
@@ -245,30 +245,31 @@ The position of ![](images/tilde-small.png) on the keyboard varies from brand to
 knitr::include_graphics("images/keyboard-tilde.png")
 ```
 
-#### Exercise
+<!-- #### Exercise -->
 
-Find the ![](images/tilde-small.png) on your keyboard and type `births ~ date` in 
-the code block.  That's the formula we need for our plot.
+<!-- Find the ![](images/tilde-small.png) on your keyboard and type `births ~ date` in  -->
+<!-- the code block.  That's the formula we need for our plot. -->
 
-```{r type-tilde, exercise=TRUE, exercise.lines = 2}
+<!-- ```{r type-tilde, exercise=TRUE, exercise.lines = 2} -->
 
-```
+<!-- ``` -->
 
-```{r type-tilde-check, echo = FALSE}
-set_success_message("Good. That's all this exercise was about: typing a formula.")
-t1 <- find_call("whatever ~ whatever", message = "do you have a tilde (~)?  Does your formula have two sides?")
-t2 <- find_call("births ~ date", message = "you need to have the y-axis variable on the left and the x-axis variable on the right")
+<!-- ```{r type-tilde-check, echo = FALSE} -->
+<!-- set_success_message("Good. That's all this exercise was about: typing a formula.") -->
+<!-- t1 <- find_call("whatever ~ whatever", message = "do you have a tilde (~)?  Does your formula have two sides?") -->
+<!-- t2 <- find_call("births ~ date", message = "you need to have the y-axis variable on the left and the x-axis variable on the right") -->
 
-USER_CODE %>% t1 %>% t2 
-```
+<!-- USER_CODE %>% t1 %>% t2  -->
+<!-- ``` -->
 
-## Using formulas to describe plots
+
+### Formula shapes
 
 Most `gf_` functions take a formula that describes the positional
 attributes of the plot.  Using one of these functions with no arguments
 will show you the "shape" of the formula it requires.
 
-### Exercise
+#### Exercise
 Run this code to see the formula shape for `gf_point()`.
 
 ```{r, gf-shape, exercise = TRUE}
@@ -280,7 +281,7 @@ so the $y$-variable name goes before the tilde and the $x$-variable name goes
 after.  (Think:  "y depends on x".  Also note that the $y$-axis label appears
 farther left than the $x$-axis label.)
 
-### Exercise
+#### Exercise
 
 Reverse the roles of the variables -- changing `births ~ date` to 
 `date ~ birth` -- to see how the plot changes.
@@ -289,7 +290,7 @@ Reverse the roles of the variables -- changing `births ~ date` to
 gf_point(births ~ date, data = Births1978)
 ```
 
-### Exercise
+#### Exercise
 
 Change `date` to `day_of_year` and see how the plot changes.
 (If you do this on a separate line, you will see both plots at once.)
@@ -404,7 +405,7 @@ Curious to know all the available color names? Run this code.
 colors()
 ```
 
-## Overlaying plots with %>%
+## Multiple layers with %>%
 
 We said that `gf_point()` creates a plot with points. 
 This isn't quite true. Technically, it creates a **layer** with points.

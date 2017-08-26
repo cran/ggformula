@@ -14,40 +14,40 @@ NA
 #' Average Shifted Histograms
 #'
 #' An ASH plot is the average over all histograms of a fixed bin width.
-#' \code{geom_ash()} and \code{gf_ash()} provide ways to create ASH plots
+#' `geom_ash()` and `gf_ash()` provide ways to create ASH plots
 #' using \pkg{ggplot2} or \pkg{ggformula}.
 #'
 #' @param object When chaining, this holds an object produced in the earlier portions
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
 #'
-#' @param gformula A formula with shape \code{~x} or \code{y ~ x}.
-#'   \code{y} may be \code{..density..} or \code{..count..} or \code{..ndensity..} or \code{..ncount..}.
-#'   Faceting can be achieved by including \code{|} in the formula.
+#' @param gformula A formula with shape `~x` or `y ~ x`.
+#'   `y` may be `..density..` or `..count..` or `..ndensity..` or `..ncount..`.
+#'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with \code{attribute = value},
-#'   (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-#'   (c) attributes of the layer as a whole, which are set with \code{attribute = value}.
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #'   Available attributes include
-#'   \code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}
+#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
 #' @param show.legend A logical indicating whether this layer should be included in
-#'   the legends.  \code{NA}, the default, includes layer in the legends if any
+#'   the legends.  `NA`, the default, includes layer in the legends if any
 #'   of the attributes of the layer are mapped.
-#' @param show.help If \code{TRUE}, display some minimal help.
+#' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
 #' @param inherit.aes A logical indicating whether default aesthetics are inherited.
 #' @return a gg object
-#' @seealso \code{\link{geom_histogram}()}, \code{link{gf_histogram}()}.
-#' @param binwidth the width of the histogram bins.  If \code{NULL} (the default) the
-#'   binwidth will be chosen so that approximately 10 bins cover the data.  \code{adjust}
-#'   can be used to to increase or decrease \code{binwidth}.
-#' @param adjust a numeric adjustment to \code{binwidth}.  Primarily useful when \code{binwidth} is
-#'   not specified.  Increasing \code{adjust} makes the plot smoother.
+#' @seealso [geom_histogram()], \code{link{gf_histogram}()}.
+#' @param binwidth the width of the histogram bins.  If `NULL` (the default) the
+#'   binwidth will be chosen so that approximately 10 bins cover the data.  `adjust`
+#'   can be used to to increase or decrease `binwidth`.
+#' @param adjust a numeric adjustment to `binwidth`.  Primarily useful when `binwidth` is
+#'   not specified.  Increasing `adjust` makes the plot smoother.
 #' @export
 #' @rdname ashplot
 #' @examples
@@ -64,14 +64,14 @@ gf_ash <-
 
 #' ggproto classes for ggplot2
 #'
-#' These are typically accessed through their associated \code{geom_*}, \code{stat_*} or
-#' \code{gf_*} functions.
+#' These are typically accessed through their associated `geom_*`, `stat_*` or
+#' `gf_*` functions.
 #'
 #' @rdname ggformula-ggproto
 #' @format NULL
 #' @export
-#' @seealso \code{\link{stat_ash}()}
-#' @seealso \code{\link{gf_ash}()}
+#' @seealso [stat_ash()]
+#' @seealso [gf_ash()]
 
 StatAsh <-
   ggproto("StatAsh", Stat,
@@ -116,8 +116,8 @@ stat_ash <-
 # )
 
 #' @rdname ashplot
-#' @param mapping set of aesthetic mappings created by \code{\link{aes}()}
-#' or \code{\link{aes_}()}.
+#' @param mapping set of aesthetic mappings created by [aes()]
+#' or [aes_()].
 #' @param na.rm	 If FALSE (the default), removes missing values with a warning.
 #' If TRUE silently removes missing values.
 #' @export
@@ -144,8 +144,8 @@ geom_ash <-
 #' @rdname ggformula-ggproto
 #' @format NULL
 #' @export
-#' @seealso \code{\link{stat_spline}()}
-#' @seealso \code{\link{gf_spline}()}
+#' @seealso [stat_spline()]
+#' @seealso [gf_spline()]
 StatSpline <-
   ggproto("StatSpline", Stat,
           compute_group = function(data, scales, weight = NULL, df = NULL, spar = NULL,
@@ -174,8 +174,8 @@ StatSpline <-
 #' Similar to [geom_smooth], this adds spline fits to plots.
 #'
 #' @rdname geom_spline
-#' @param mapping An aesthetic mapping produced with \code{\link{aes}()} or
-#' \code{\link{aes_string}()}.
+#' @param mapping An aesthetic mapping produced with [aes()] or
+#' [aes_string()].
 #' @param data A data frame.
 #' @param geom A geom.
 #' @param stat A stat.
@@ -183,37 +183,37 @@ StatSpline <-
 #' @param na.rm A logical indicating whether a warning should be issued when
 #'   missing values are removed before plotting.
 #' @param show.legend A logical indicating whether legends should be included
-#'   for this layer.  If \code{NA}, legends will be inclued for each aesthetic
+#'   for this layer.  If `NA`, legends will be included for each aesthetic
 #'   that is mapped.
 #' @param inherit.aes A logical indicating whether aesthetics should be
-#'   inherited.  When \code{FALSE}, the supplied \code{mapping} will be
+#'   inherited.  When `FALSE`, the supplied `mapping` will be
 #'   the only aesthetics used.
 #' @param weight An optional vector of weights.
-#'   See \code{\link{smooth.spline}()}.
+#'   See [smooth.spline()].
 #' @param df desired equivalent degrees of freedom.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param spar A smoothing parameter, typically in (0,1].
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param cv A logical.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param all.knots A logical.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param nknots An integer or function giving the number of knots to use
-#'   when \code{all.knots = FALSE}.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   when `all.knots = FALSE`.
+#'   See [smooth.spline()] for details.
 #' @param df.offset A numerical value used to increase the degrees of freedom
 #'   when using GVC.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param penalty the coefficient of the penalty for degrees of freedom in the
 #'   GVC criterion.
-#'   See \code{\link{smooth.spline}()} for details.
+#'   See [smooth.spline()] for details.
 #' @param control.spar An optional list used to control root finding
-#'   when the parameter \code{spar} is computed.
-#'   See \code{\link{smooth.spline}()} for details.
-#' @param tol A tolerance for sameness or uniqueness of the \code{x} values.
+#'   when the parameter `spar` is computed.
+#'   See [smooth.spline()] for details.
+#' @param tol A tolerance for sameness or uniqueness of the `x` values.
 #'   The values are binned into bins of size tol and values which fall into
 #'   the same bin are regarded as the same. Must be strictly positive (and finite).
-#'   When \code{NULL}, \code{IQR(x) * 10e-6} is used.
+#'   When `NULL`, `IQR(x) * 10e-6` is used.
 #' @param ... Additional arguments
 #' @export
 #' @examples
@@ -274,8 +274,8 @@ qq.line <- function(sample, qdist, na.rm = TRUE, tail = 0.25) {
 #' @rdname ggformula-ggproto
 #' @format NULL
 #' @export
-#' @seealso \code{\link{stat_qq}()}
-#' @seealso \code{\link{gf_qq}()}
+#' @seealso [stat_qq()]
+#' @seealso [gf_qq()]
 StatQqline <- ggproto("StatQqline", Stat,
                       required_aes = c('sample'),
                       compute_group = function(data, scales,
@@ -298,23 +298,23 @@ StatQqline <- ggproto("StatQqline", Stat,
 #' This stat computes quantiles of the sample and theoretical distribution for
 #' the purpose of providing reference lines for QQ-plots.
 #'
-#' @param mapping An aesthetic mapping produced with \code{\link{aes}()} or
-#' \code{\link{aes_string}()}.
+#' @param mapping An aesthetic mapping produced with [aes()] or
+#' [aes_string()].
 #' @param data A data frame.
 #' @param geom A geom.
 #' @param position A position object.
 #' @param distribution A quantile function.
-#' @param dparams A list of arguments for \code{distribution}.
+#' @param dparams A list of arguments for `distribution`.
 # @param tail A tail probability.
 #   The constructed line will connect the \code{tail} and \code{1 - tail} quantiles
 #   of the sample and theoretical distributions.
 #' @param na.rm A logical indicating whether a warning should be issued when
 #'   missing values are removed before plotting.
 #' @param show.legend A logical indicating whether legends should be included
-#'   for this layer.  If \code{NA}, legends will be include for each aesthetic
+#'   for this layer.  If `NA`, legends will be include for each aesthetic
 #'   that is mapped.
 #' @param inherit.aes A logical indicating whether aesthetics should be
-#'   inherited.  When \code{FALSE}, the supplied \code{mapping} will be
+#'   inherited.  When `FALSE`, the supplied `mapping` will be
 #'   the only aesthetics used.
 #' @param ... Additional arguments
 #' @rdname stat_qqline
@@ -368,8 +368,8 @@ stat_lm <-
 #' @rdname ggformula-ggproto
 #' @format NULL
 #' @export
-#' @seealso \code{\link{stat_lm}()}
-#' @seealso \code{\link{gf_lm}()}
+#' @seealso [stat_lm()]
+#' @seealso [gf_lm()]
 StatLm <-
   ggproto("StatLm", Stat,
           setup_params = function(data, params) {
@@ -451,25 +451,25 @@ predictdf <-
 
 #' Linear Model Displays
 #'
-#' Adds linear model fits to plots. \code{geom_lm()} and \code{stat_lm()} are essentially
-#' equivalent.  Use \code{geom_lm()} unless you want a non-standard geom.
+#' Adds linear model fits to plots. `geom_lm()` and `stat_lm()` are essentially
+#' equivalent.  Use `geom_lm()` unless you want a non-standard geom.
 #'
 #' Stat calculation is performed by the (currently undocumented)
-#' \code{predictdf}.  Pointwise confidence or prediction bands are
+#' `predictdf`.  Pointwise confidence or prediction bands are
 #' calculated using the [predict()] method.
 #'
 #' @rdname geom_lm
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
 #' @param geom,stat Use to override the default connection between
-#'   \code{geom_lm} and \code{stat_lm}.
-#' @param formula a formula describing the model in terms of \code{y} (response)
-#'   and \code{x} (predictor).
+#'   `geom_lm` and `stat_lm`.
+#' @param formula a formula describing the model in terms of `y` (response)
+#'   and `x` (predictor).
 #' @param lm.args A list of arguments supplied to [lm()] when performing the fit.
 #' @param backtrans a function that transforms the response back to
-#'   the original scale when the \code{formula} includes a transformtion on
-#'   \code{y}.
-#' @param interval One of \code{"none"}, \code{"confidence"} or \code{"prediction"}.
+#'   the original scale when the `formula` includes a transformation on
+#'   `y`.
+#' @param interval One of `"none"`, `"confidence"` or `"prediction"`.
 #' @param level The level used for confidence or prediction intervals
 #'
 #' @seealso [lm()] for details on linear model fitting.
@@ -530,8 +530,8 @@ geom_lm <-
 #' @rdname ggformula-ggproto
 #' @format NULL
 #' @export
-#' @seealso \code{\link{geom_lm}()}
-#' @seealso \code{\link{gf_lm}()}
+#' @seealso [geom_lm()]
+#' @seealso [gf_lm()]
 
 GeomLm <- ggproto("GeomLm", Geom,
                       setup_data = function(data, params) {

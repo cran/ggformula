@@ -44,25 +44,22 @@ Available attributes include
 a gg object
 }
 \description{
-\pkg{ggformula} functions provide a formula interface to \code{ggplot2} layer
+\pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
 functions.
 For plots with just one layer, the formula interface
 is more compact and is consistent with modeling and \pkg{mosaic} notation.
 }
 \details{
 Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-Additional formula terms of the form \code{+ attribute::value} map \code{attribute}
-to \code{value}.
-Additional terms of the form \code{+ attribute:value} will map \code{attribute}
-to \code{value} if \code{value} is the name of a variable in \code{data}, else
-\code{attribute} will be set to the constant \code{value}. Alternatively (and preferably)
-attributes can be set can be set using arguments of the form \code{attribute = value} or
+Setting and mapping of additional attributes can be done through the use of additional arguments.
+Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
+
 In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-\code{\link{facet_wrap}()} or \code{\link{facet_grid}()}.
+\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
 This provides an alternative to
-\code{\link{gf_facet_wrap}()} and
-\code{\link{gf_facet_grid}()} that is terser and may feel more familiar to users
+\code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
+\code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
@@ -80,5 +77,5 @@ if (require(mosaicData)) {
   }
 }
 \seealso{
-\code{\link{geom_line}()}
+\code{\link[=geom_line]{geom_line()}}
 }

@@ -18,8 +18,8 @@ geom_spline(mapping = NULL, data = NULL, stat = "spline",
   df.offset = 0, penalty = 1, control.spar = list(), tol = NULL, ...)
 }
 \arguments{
-\item{mapping}{An aesthetic mapping produced with \code{\link{aes}()} or
-\code{\link{aes_string}()}.}
+\item{mapping}{An aesthetic mapping produced with \code{\link[=aes]{aes()}} or
+\code{\link[=aes_string]{aes_string()}}.}
 
 \item{data}{A data frame.}
 
@@ -31,7 +31,7 @@ geom_spline(mapping = NULL, data = NULL, stat = "spline",
 missing values are removed before plotting.}
 
 \item{show.legend}{A logical indicating whether legends should be included
-for this layer.  If \code{NA}, legends will be inclued for each aesthetic
+for this layer.  If \code{NA}, legends will be included for each aesthetic
 that is mapped.}
 
 \item{inherit.aes}{A logical indicating whether aesthetics should be
@@ -39,35 +39,35 @@ inherited.  When \code{FALSE}, the supplied \code{mapping} will be
 the only aesthetics used.}
 
 \item{weight}{An optional vector of weights.
-See \code{\link{smooth.spline}()}.}
+See \code{\link[=smooth.spline]{smooth.spline()}}.}
 
 \item{df}{desired equivalent degrees of freedom.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{spar}{A smoothing parameter, typically in (0,1].
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{cv}{A logical.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{all.knots}{A logical.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{nknots}{An integer or function giving the number of knots to use
 when \code{all.knots = FALSE}.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{df.offset}{A numerical value used to increase the degrees of freedom
 when using GVC.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{penalty}{the coefficient of the penalty for degrees of freedom in the
 GVC criterion.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{control.spar}{An optional list used to control root finding
 when the parameter \code{spar} is computed.
-See \code{\link{smooth.spline}()} for details.}
+See \code{\link[=smooth.spline]{smooth.spline()}} for details.}
 
 \item{tol}{A tolerance for sameness or uniqueness of the \code{x} values.
 The values are binned into bins of size tol and values which fall into
@@ -79,7 +79,7 @@ When \code{NULL}, \code{IQR(x) * 10e-6} is used.}
 \item{stat}{A stat.}
 }
 \description{
-Similar to [geom_smooth], this adds spline fits to plots.
+Similar to \link{geom_smooth}, this adds spline fits to plots.
 }
 \examples{
 if (require(mosaicData)) {
