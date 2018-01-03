@@ -149,6 +149,13 @@ layer_factory <- function(
   inherit.aes = TRUE,
   data = NULL
 ) {
+  if (!is.logical(inherit.aes)) {
+    inherited.aes <- inherit.aes
+    inherit.aes <- FALSE
+  } else {
+    inherited.aes <- character(0)
+  }
+
   # the formals of this will be modified below
   # the formals included here help avoid CRAN warnings
   res <- function(show.legend , function_name, inherit, ...) {
@@ -196,7 +203,7 @@ layer_factory <- function(
 
 
     if (! any(fmatches)) {
-      if (inherits(object, "gg") && inherit) {
+      if (inherits(object, "gg") && (inherit || length(inherited.aes) > 0)) {
         aes_form = NULL
       } else {
         stop("Invalid formula type for ", function_name, ".", call. = FALSE)
@@ -223,7 +230,15 @@ layer_factory <- function(
       extras <- modifyList(extras, dots) # lapply(qdots, rlang::f_rhs))
     }
 
+
     add <- inherits(object, c("gg", "ggplot"))
+
+    # add in selected additional aesthetics -- partial inheritance
+    if (add) {
+      for (aes.name in inherited.aes) {
+        aesthetics[[aes.name]] <- object$mapping[[aes.name]]
+      }
+    }
 
     ingredients <-
       gf_ingredients(
@@ -244,7 +259,7 @@ layer_factory <- function(
         show.legend = show.legend,
         inherit.aes = inherit
       )
-    # print(layer_args[c("mapping", "setting", "params", "data")])
+    # print(layer_args[c("mapping", "setting", "params", "inherit.aes")])
     new_layer <- do.call(ggplot2::layer, layer_args)
     # message(
     #   do.call(call, c(list("layer"), layer_args))

@@ -7,6 +7,8 @@
 \alias{StatQqline}
 \alias{StatLm}
 \alias{GeomLm}
+\alias{StatAsh}
+\alias{StatFitdistr}
 \title{ggproto classes for ggplot2}
 \usage{
 StatAsh
@@ -18,8 +20,15 @@ StatQqline
 StatLm
 
 GeomLm
+
+StatAsh
+
+StatFitdistr
 }
 \description{
+These are typically accessed through their associated \code{geom_*}, \code{stat_*} or
+\code{gf_*} functions.
+
 These are typically accessed through their associated \code{geom_*}, \code{stat_*} or
 \code{gf_*} functions.
 }
@@ -43,5 +52,9 @@ These are typically accessed through their associated \code{geom_*}, \code{stat_
 \code{\link[=geom_lm]{geom_lm()}}
 
 \code{\link[=gf_lm]{gf_lm()}}
+
+\code{\link[=stat_ash]{stat_ash()}}
+
+\code{\link[=gf_ash]{gf_ash()}}
 }
 \keyword{datasets}

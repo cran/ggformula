@@ -2,7 +2,8 @@
 title: "Plotting with formulas"
 output: 
   learnr::tutorial:
-    progressive: TRUE
+    progressive: true
+    allow_skip: true
 runtime: shiny_prerendered
 ---
 
@@ -328,8 +329,10 @@ many other `gf_` functions that create different types of plots.
 Experiment with some other plot types by changing `gf_point()` to 
 one of the following:
 
+
   * `gf_line()`: connect the dots
   * `gf_smooth()`: smoothed version of `gf_line()`
+  * `gf_lm()`: regression line (same as `gf_smooth()` with `method = "lm"`)
   * `gf_spline()`: another type of smoother (using splines)
 
 ```{r, gf_point-layer, echo = TRUE, exercise = TRUE}
@@ -610,6 +613,72 @@ head(KidsFeet)
 ```{r, explore-more, exercise = TRUE}
 
 ```
+
+## Creating data summaries with df_stats()
+
+`df_stats()` works much like the plotting functions in `ggformula` but it produces
+a data frame of summary information rather than a plot.  These summary data frames
+can be useful for plotting or for obtaining some numerical precision for the patterns
+we see in our plots.
+
+Consider this plot
+```{r, births-by-day}
+gf_boxplot(births ~ wday, data = Births1978)
+```
+
+We can see clear trends, but what if we want to know the mean and standard deviation,
+or the median and IQR for the number of births on each of the seven weekdays?
+
+#### Exercise
+
+Change `gf_boxplot()` to `df_stats()`.
+
+```{r, df_stats01, exercise = TRUE}
+gf_boxplot(births ~ wday, data = Births1978)
+```
+
+The default use of `df_stats()` computes some of the most common summary statistics.
+But we can use `df_stats()` to create other numerical summaries as well.
+
+
+```{r, df_stats02, exercise = TRUE}
+df_stats(births ~ wday, data = Births1978, median, iqr)
+```
+
+#### Exercise
+
+Modify the code above to compute some other summaries of your choosing.
+
+
+
+### Chaining with df_stats()
+
+```{r, df_stats03, exercise = TRUE}
+Births1978 %>% 
+  df_stats(births ~ wday, median, iqr)
+```
+
+### Combining with plots
+
+In addition to the usual plot elements (lines, points, etc.), sometimes it is 
+useful to add text with `gf_text()` or `gf_label()`.
+
+See if you can figure out what this does before your execute it.
+
+```{r, df_stats04, exercise = TRUE, fig.height = 4}
+Births_summary <- 
+  df_stats(births ~ wday, data = Births1978)
+gf_boxplot(births ~ wday, data = Births1978) %>%
+  gf_point(mean ~ wday, color = "red",           data = Births_summary) %>%
+  gf_label(6400 ~ wday, label = ~ round(median), data = Births_summary) %>%
+  gf_text( 6700 ~ wday, label = ~ round(mean),   data = Births_summary, 
+           color = "red")
+```
+
+
+
+
+
 
 ## Where do we go from here?
 

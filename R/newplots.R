@@ -4,7 +4,7 @@
 utils::globalVariables(c("x", "y", "ymin", "ymax"))
 
 #' @importFrom grid gList
-#' @importFrom mosaicCore ash_points
+#' @importFrom mosaicCore ash_points fit_distr_fun
 #' @importFrom stats quantile
 
 NA
@@ -557,3 +557,108 @@ GeomLm <- ggproto("GeomLm", Geom,
                       default_aes = aes(colour = "#3366FF", fill = "grey60", size = 0.7,
                                         linetype = 1, weight = 1, alpha = 0.3)
 )
+
+#' ggproto classes for ggplot2
+#'
+#' These are typically accessed through their associated `geom_*`, `stat_*` or
+#' `gf_*` functions.
+#'
+#' @rdname ggformula-ggproto
+#' @format NULL
+#' @export
+#' @seealso [stat_ash()]
+#' @seealso [gf_ash()]
+
+StatAsh <-
+  ggproto("StatAsh", Stat,
+          compute_group = function(data, scales, binwidth = NULL, adjust = NULL) {
+            ash_points(data$x, binwidth = binwidth, adjust = adjust)
+          },
+          required_aes = c("x")
+  )
+
+# #' @rdname gf_fitdistr
+# #' @export
+# stat_fitdistr <-
+#   function(mapping = NULL, data = NULL, geom = "path",
+#            position = "identity", na.rm = FALSE, show.legend = NA,
+#            inherit.aes = TRUE, start = NULL, ...) {
+#     ggplot2::layer(
+#       stat = StatFitdistr, data = data, mapping = mapping, geom = geom,
+#       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+#       params = list(start = NULL, ...)
+#     )
+#   }
+
+
+#' @rdname ggformula-ggproto
+#' @format NULL
+#' @export
+
+StatFitdistr <-
+  ggproto(
+    "StatFitdistr", Stat,
+    default_aes = aes(y = calc(y)),
+    required_aes = c("x"),
+    compute_group =
+      function(data, scales, dist = "dnorm", start = NULL,
+               xlim = NULL, n = 101, args = list()) {
+        # range <- xlim %||% scales$x$dimension()
+        range <- if(is.null(xlim)) scales$x$dimension() else xlim
+        xseq <- seq(range[1], range[2], length.out = n)
+
+        if (scales$x$is_discrete()) {
+          x_trans <- xseq
+        } else {
+          # For continuous scales, need to back transform from transformed range
+          # to original values
+          x_trans <- scales$x$trans$inverse(xseq)
+        }
+
+        ddist <- do.call(
+          mosaicCore::fit_distr_fun,
+          c(list(~x, data = data, dist = dist, start = start), args)
+        )
+        data.frame(
+          x = xseq,
+          y = do.call(ddist, c(list(quote(x_trans))))
+        )
+      }
+  )
+
+
+#' A stat for fitting distributions
+#'
+#' This stat computes points for plotting a distribution function.  Fitting is done
+#' useing `MASS::fitdistr()` when analytic solutions are not available.
+#'
+#' @param mapping Aesthetics created using `aes()` or `aes_string()`.
+#' @param data A data frame.
+#' @param dist A character string indicating the distribution to fit.  Examlpes include
+#'   `"dnorm"`, `"dgamma"`, etc.
+#' @param start A list of starting values used by `MASS::fitdistr()` when numerically
+#'   approximating the maximimum likelihood estimate.
+#' @param geom A character string naming the geom used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param inherit.aes If `FALSE`, overrides the default aesthetics, rather than combining
+#'   with them.
+#' @param na.rm If TRUE, do not emit a warning about missing data.
+#' @param show.legend A logical. Should this layer be included in the legends? `NA`,
+#'   the default, includes if any aesthetics are mapped. `FALSE` never includes,
+#'   and `TRUE` always includes.
+#' @param ... Additional arguments.
+#' @return A gg object
+#' @export
+
+stat_fitdistr <-
+  function(mapping = NULL, data = NULL, geom = "path",
+           position = "identity", na.rm = FALSE, show.legend = NA,
+           inherit.aes = TRUE, dist = "dnorm", start = NULL, ...) {
+#    mapping[["y"]] <- NULL
+    ggplot2::layer(
+      stat = StatFitdistr, data = data, mapping = mapping, geom = geom,
+      position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+      params = list(dist = dist, start = start, ...)
+    )
+  }

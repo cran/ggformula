@@ -3011,3 +3011,43 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
     )
 }
 
+#' Plot density function based on fit to data
+#'
+#' `MASS::fitdistr()` is used to fit coeffecients of a specified family of
+#' distributions and the resulting density curve is displayed.
+#'
+#' @param object When chaining, this holds an object produced in the earlier portions
+#' of the chain.  Most users can safely ignore this argument. See examples.
+#' @param gformula A formula with shape ` ~ x` used to specify the data
+#'   to be fit to a family of distributions.
+#' @param data A data frame containing the variable to be fitted.
+#' @param ... Additional arguments
+####  to [MASS::fitdistr()].
+#' @param geom A character string naming the geom used to make the layer.
+#' @param stat A character string naming the stat used to make the layer.
+#' @param position Either a character string naming the position function used
+#'   for the layer or a position object returned from a call to a position function.
+#' @param show.legend A logical indicating whether this layer should be included in
+#'   the legends.  `NA`, the default, includes layer in the legends if any
+#'   of the attributes of the layer are mapped.
+#' @param show.help If `TRUE`, display some minimal help.
+#' @param inherit A logical indicating whether default attributes are inherited.
+#' @return a gg object
+#' @seealso [mosaicCore::fit_distr_fun()]
+#' @export
+#' @examples
+#' if (require(mosaicData)) {
+#'   gf_fitdistr( ~ length, data = KidsFeet, inherit = FALSE) %>%
+#'     gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25)
+#'
+#'   gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25) %>%
+#'     gf_fitdistr()
+#' }
+
+gf_fitdistr <-
+  layer_factory(
+    geom = "path", stat = "fitdistr", position = "identity",
+    aes_form = list(~ x), inherit.aes = "x",
+    extras = alist(dist = dnorm, start = NULL, alpha = , color = , fill = , group = , linetype = , size = ),
+    note = "dist should be a density function like dnorm or dgamma"
+  )
