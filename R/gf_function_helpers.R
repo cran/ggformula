@@ -7,14 +7,226 @@ utils::globalVariables("role")
 #' @importFrom utils modifyList
 #' @importFrom rlang is_character exprs f_rhs is_formula is_null enquo
 #' @import ggplot2
+# produces a gf_ function wrapping a particular geom.
+# use gf_roxy to create boilerplate roxygen documentation to match (and then edit by hand as needed).
+
+layer_factory <- function(
+  geom = "point",
+  position = "identity",
+  stat = "identity",
+  aes_form = y ~ x,
+  extras = alist(),
+  note = NULL,
+  aesthetics = aes(),
+  inherit.aes = TRUE,
+  data = NULL,
+  layer_fun = ggplot2::layer
+) {
+  if (!is.logical(inherit.aes)) {
+    inherited.aes <- inherit.aes
+    inherit.aes <- FALSE
+  } else {
+    inherited.aes <- character(0)
+  }
+
+  # the formals of this will be modified below
+  # the formals included here help avoid CRAN warnings
+  res <-
+    function( xlab, ylab, title, subtitle, caption,
+              show.legend , function_name, inherit,
+              environment = parent.frame(), ...) {
+
+#     if (is.null(environment)) {environment <- parent.frame()}
+
+    dots <- list(...)
+    function_name <- as.character(match.call()[1])
+
+    if (is.null(show.help)) {
+      show.help <- is.null(object) && is.null(gformula) && length(dots) == 0L
+    }
+
+    # make sure we have a list of formulas here
+    if (!is.list(aes_form)) aes_form <- list(aes_form)
+
+    if (show.help) {
+      emit_help(function_name = function_name,
+                aes_form, extras, note,
+                geom = geom, stat = stat, position = position)
+      return(invisible(NULL))
+    }
+
+    if (is.character(position)) {
+      position_fun <- paste0("position_", position)
+      pdots <- dots[intersect(names(dots), names(formals(position_fun)))]
+      position <- do.call(position_fun, pdots)
+    }
+
+    if (inherits(object, "formula")) {
+      gformula <- object
+      object <- NULL
+    }
+
+    if (inherits(object, "data.frame")) {
+      data <- object
+      object <- NULL
+    }
+
+    # convert y ~ 1 into ~ y if a 1-sided formula is an option
+    if (any(sapply(aes_form, function(f) length(f) == 2L))) {
+      gformula <- standard_formula(gformula)
+    }
+
+    # find matching formula shape
+    fmatches <- formula_match(gformula, aes_form = aes_form)
+
+
+    if (! any(fmatches)) {
+      if (inherits(object, "gg") && (inherit || length(inherited.aes) > 0)) {
+        aes_form = NULL
+      } else {
+        stop("Invalid formula type for ", function_name, ".", call. = FALSE)
+      }
+    } else {
+      aes_form <- aes_form[[which.max(fmatches)]]
+    }
+
+    if (length(dots) > 0) {
+      # proceed backwards through list so that removing items doesn't mess up indexing
+      for (i in length(dots):1L) {
+        if (is_formula(dots[[i]]) && length(dots[[i]]) == 2L) {
+          aesthetics[[names(dots)[i]]] <- dots[[i]][[2]]
+          dots[[i]] <- NULL
+        }
+      }
+    }
+
+    if (length(extras) > 0) {
+      extras <- extras[sapply(extras, function(x) !is.symbol(x))]
+    }
+
+    if (length(dots) > 0) {
+      extras <- modifyList(extras, dots) # lapply(qdots, rlang::f_rhs))
+    }
+
+
+    add <- inherits(object, c("gg", "ggplot"))
+
+    # add in selected additional aesthetics -- partial inheritance
+    if (add) {
+      for (aes.name in inherited.aes) {
+        aesthetics[[aes.name]] <- object$mapping[[aes.name]]
+      }
+    }
+
+    ingredients <-
+      gf_ingredients(
+        formula = gformula, data = data,
+        gg_object = object,
+        extras = extras,
+        aes_form = aes_form,
+        aesthetics = aesthetics)
+
+    if ("params" %in% names(formals(layer_fun))) {
+      layer_args <-
+        list(
+          geom = geom, stat = stat,
+          data = ingredients[["data"]],
+          mapping = ingredients[["mapping"]],
+          position = position,
+          params = ingredients[["params"]],
+          check.aes = TRUE, check.param = FALSE,
+          show.legend = show.legend,
+          inherit.aes = inherit
+        )
+    } else {
+      layer_args <-
+        c(
+          list(
+            geom = geom, stat = stat,
+            data = ingredients[["data"]],
+            mapping = ingredients[["mapping"]],
+            position = position,
+            check.aes = TRUE, check.param = FALSE,
+            show.legend = show.legend,
+            inherit.aes = inherit
+          ),
+          ingredients[["params"]]
+        )
+      for (i in setdiff(names(layer_args), names(formals(layer_fun)))) {
+        layer_args[[i]] <- NULL
+      }
+    }
+
+    new_layer <- do.call(layer_fun, layer_args)
+
+    if (is.null(ingredients[["facet"]])) {
+      if (add)
+        p <- object + new_layer
+      else
+        p <-
+          ggplot(
+            data = ingredients$data,
+            mapping = ingredients[["mapping"]],
+            environment = environment
+          ) + new_layer
+    } else {
+      if (add)
+        p <- object + new_layer + ingredients[["facet"]]
+      else
+        p <-
+          ggplot(
+            data = ingredients$data,
+            mapping = ingredients[["mapping"]],
+            environment = environment
+            ) +
+            new_layer +
+            ingredients[["facet"]]
+    }
+    if (have_arg("ylab")) {
+      p <- p + ggplot2::ylab(ylab)
+    }
+    if (have_arg("xlab")) {
+      p <- p + ggplot2::xlab(xlab)
+    }
+    if (have_arg("title")) {
+      p <- p + ggplot2::labs(title = title)
+    }
+    if (have_arg("subtitle")) {
+      p <- p + ggplot2::labs(subtitle = subtitle)
+    }
+    if (have_arg("caption")) {
+      p <- p + ggplot2::labs(caption = caption)
+    }
+    p
+  }
+  formals(res) <-
+    c(
+      list(
+        object = NULL, gformula = NULL, data = NULL,
+        geom = geom, stat = stat, position = position,
+        show.legend = NA,
+        show.help = NULL,
+        inherit = inherit.aes,
+        environment = quote(parent.frame())
+      ),
+      if (is.null(extras[["xlab"]])) alist(xlab = ) else list(xlab = extras[["xlab"]]),
+      if (is.null(extras[["ylab"]])) alist(ylab = ) else list(ylab = extras[["ylab"]]),
+      if (is.null(extras[["title"]])) alist(title = ) else list(title = extras[["title"]]),
+      if (is.null(extras[["subtitle"]])) alist(subtitle = ) else list(subtitle = extras[["subtitle"]]),
+      if (is.null(extras[["caption"]])) alist(caption = ) else list(caption = extras[["caption"]]),
+      alist(... = )
+    )
+  assign("inherit.aes", inherit.aes, environment(res))
+  res
+}
 
 # covert y ~ 1 into ~ 7
 # convert y ~ 1 | a into ~ y | a
 # convert y ~ 1 | a ~ b into ~ y | a ~ b
 # convert y ~ 1 | ~ a into ~ y | ~ a
 
-# This is clunky because | doen't have the right precedence for the intended interpretation of
-# the formula.
+# This is clunky because | doen't have the right precedence for the intended
+# interpretation of the formula.
 
 standard_formula <- function(formula) {
   if (length(formula) == 3L && formula[[3]] == 1) {
@@ -106,7 +318,7 @@ emit_help <- function(function_name, aes_form, extras = list(), note = NULL,
   if (is.character(stat) && stat != "identity")
     message_text <- paste(message_text, "\n    * stat: ", stat)
   if (is.character(position) && position != "identity")
-    message_text <- paste(message_text, "\n    * stat: ", position)
+    message_text <- paste(message_text, "\n    * position: ", position)
 
   if(length(extras) > 0) {
     message_text <-
@@ -135,162 +347,6 @@ emit_help <- function(function_name, aes_form, extras = list(), note = NULL,
   return(invisible(NULL))
 }
 
-# produces a gf_ function wrapping a particular geom.
-# use gf_roxy to create boilerplate roxygen documentation to match (and then edit by hand as needed).
-
-layer_factory <- function(
-  geom = "point",
-  position = "identity",
-  stat = "identity",
-  aes_form = y ~ x,
-  extras = alist(),
-  note = NULL,
-  aesthetics = aes(),
-  inherit.aes = TRUE,
-  data = NULL
-) {
-  if (!is.logical(inherit.aes)) {
-    inherited.aes <- inherit.aes
-    inherit.aes <- FALSE
-  } else {
-    inherited.aes <- character(0)
-  }
-
-  # the formals of this will be modified below
-  # the formals included here help avoid CRAN warnings
-  res <- function(show.legend , function_name, inherit, ...) {
-
-    dots <- list(...)
-    function_name <- as.character(match.call()[1])
-
-    if (is.null(show.help)) {
-      show.help <- is.null(object) && is.null(gformula) && length(dots) == 0L
-    }
-
-    # make sure we have a list of formulas here
-    if (!is.list(aes_form)) aes_form <- list(aes_form)
-
-    if (show.help) {
-      emit_help(function_name = function_name,
-                aes_form, extras, note,
-                geom = geom, stat = stat, position = position)
-      return(invisible(NULL))
-    }
-
-    if (is.character(position)) {
-      position_fun <- paste0("position_", position)
-      pdots <- dots[intersect(names(dots), names(formals(position_fun)))]
-      position <- do.call(position_fun, pdots)
-    }
-
-    if (inherits(object, "formula")) {
-      gformula <- object
-      object <- NULL
-    }
-
-    if (inherits(object, "data.frame")) {
-      data <- object
-      object <- NULL
-    }
-
-    # convert y ~ 1 into ~ y if a 1-sided formula is an option
-    if (any(sapply(aes_form, function(f) length(f) == 2L))) {
-      gformula <- standard_formula(gformula)
-    }
-
-    # find matching formula shape
-    fmatches <- formula_match(gformula, aes_form = aes_form)
-
-
-    if (! any(fmatches)) {
-      if (inherits(object, "gg") && (inherit || length(inherited.aes) > 0)) {
-        aes_form = NULL
-      } else {
-        stop("Invalid formula type for ", function_name, ".", call. = FALSE)
-      }
-    } else {
-      aes_form <- aes_form[[which.max(fmatches)]]
-    }
-
-    if (length(dots) > 0) {
-      # proceed backwards through list so that removing items doesn't mess up indexing
-      for (i in length(dots):1L) {
-        if (is_formula(dots[[i]]) && length(dots[[i]]) == 2L) {
-          aesthetics[[names(dots)[i]]] <- dots[[i]][[2]]
-          dots[[i]] <- NULL
-        }
-      }
-    }
-
-    if (length(extras) > 0) {
-      extras <- extras[sapply(extras, function(x) !is.symbol(x))]
-    }
-
-    if (length(dots) > 0) {
-      extras <- modifyList(extras, dots) # lapply(qdots, rlang::f_rhs))
-    }
-
-
-    add <- inherits(object, c("gg", "ggplot"))
-
-    # add in selected additional aesthetics -- partial inheritance
-    if (add) {
-      for (aes.name in inherited.aes) {
-        aesthetics[[aes.name]] <- object$mapping[[aes.name]]
-      }
-    }
-
-    ingredients <-
-      gf_ingredients(
-        formula = gformula, data = data,
-        gg_object = object,
-        extras = extras,
-        aes_form = aes_form,
-        aesthetics = aesthetics)
-
-    layer_args <-
-      list(
-        geom = geom, stat = stat,
-        data = ingredients[["data"]],
-        mapping = ingredients[["mapping"]],
-        position = position,
-        params = ingredients[["params"]],
-        check.aes = TRUE, check.param = FALSE,
-        show.legend = show.legend,
-        inherit.aes = inherit
-      )
-    # print(layer_args[c("mapping", "setting", "params", "inherit.aes")])
-    new_layer <- do.call(ggplot2::layer, layer_args)
-    # message(
-    #   do.call(call, c(list("layer"), layer_args))
-    # )
-    if (is.null(ingredients[["facet"]])) {
-      if (add)
-        return(object + new_layer)
-      else
-        return(ggplot(data = ingredients$data, mapping = ingredients[["mapping"]]) + new_layer)
-    } else {
-      if (add)
-        return(object + new_layer + ingredients[["facet"]])
-      else
-        return(ggplot(data = ingredients$data, mapping = ingredients[["mapping"]]) +
-                 new_layer + ingredients[["facet"]])
-    }
-  }
-  formals(res) <-
-    c(
-      list(
-        object = NULL, gformula = NULL, data = data,
-        geom = geom, stat = stat, position = position,
-        show.legend = NA,
-        show.help = NULL,
-        inherit = inherit.aes
-      ),
-      alist(... = )
-    )
-  # assign("inherit.aes", inherit.aes, environment(res))
-  res
-}
 
 formula_split <- function(formula) {
   # split A | B into formula <- A; condition <- B
@@ -318,6 +374,12 @@ formula_split <- function(formula) {
     facet_type <- "none"
   }
   list(formula = formula, condition = condition, facet_type = facet_type)
+}
+
+have_arg <- function(arg, env = sys.frame(-1)) {
+  L <- as.list(env)
+  arg %in% names(L) &&
+    !(inherits(L[[arg]], "name") && as.character(L[[arg]]) == "")
 }
 
 gf_ingredients <-

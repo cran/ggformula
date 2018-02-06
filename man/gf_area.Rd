@@ -6,7 +6,8 @@
 \usage{
 gf_area(object = NULL, gformula = NULL, data = NULL, geom = "area",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -33,6 +34,21 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
@@ -44,14 +60,12 @@ Available attributes include
 a gg object
 }
 \description{
-\pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
-functions.
-For plots with just one layer, the formula interface
-is more compact and is consistent with modeling and \pkg{mosaic} notation.
+Formula interface to geom_area()
 }
 \details{
-Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-Setting and mapping of additional attributes can be done through the use of additional arguments.
+Positional aesthetics are specified using the formula in \code{gformula}.
+Setting and mapping of additional attributes can be done through the
+use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
 
@@ -68,40 +82,22 @@ be the right thing if formulas created in one environment are used to create plo
 in another.
 }
 \examples{
-if (require(weatherData) && require(dplyr)) {
-  Temps <- NewYork2013 \%>\%
-    mutate(date = lubridate::date(Time),
-         month = lubridate::month(Time)) \%>\%
-    filter(month <= 4) \%>\%
-    group_by(date) \%>\%
-    summarise(
-      hi = max(Temperature, na.rm = TRUE),
-      lo = min(Temperature, na.rm = TRUE)
-    )
-  gf_linerange(lo + hi  ~ date, color = ~hi, data = Temps)
-  gf_ribbon(lo + hi ~ date, data = Temps, color = "navy", alpha = 0.3)
-  gf_area(hi ~ date, data = Temps, color = "navy", alpha = 0.3)
+if (require(dplyr) && require(mosaicData)) {
+  Temps <- Weather \%>\%
+    filter(city == "Chicago", year == 2016, month <= 4)
+  gf_linerange(low_temp + high_temp  ~ date, color = ~ high_temp, data = Temps)
+  gf_ribbon(low_temp + high_temp ~ date, data = Temps, color = "navy", alpha = 0.3)
+  gf_area(high_temp ~ date, data = Temps, color = "navy", alpha = 0.3)
 
-  Temps2 <- NewYork2013 \%>\% mutate(city = "NYC") \%>\%
-    bind_rows(Mumbai2013 \%>\% mutate(city = "Mumbai")) \%>\%
-    bind_rows(London2013 \%>\% mutate(city = "London")) \%>\%
-    mutate(date = lubridate::date(Time),
-           month = lubridate::month(Time)) \%>\%
-    group_by(city, date) \%>\%
-    summarise(
-      hi = max(Temperature, na.rm = TRUE),
-      lo = min(Temperature, na.rm = TRUE),
-      mid = (hi + lo)/2
-    )
-  gf_ribbon(lo + hi ~ date, data = Temps2, alpha = 0.3) \%>\%
+  gf_ribbon(low_temp + high_temp ~ date, data = Weather, alpha = 0.3) \%>\%
     gf_facet_grid(city ~ .)
 
-  gf_linerange(lo + hi ~ date, color = ~ mid, data = Temps2) \%>\%
+  gf_linerange(low_temp + high_temp ~ date, color = ~ high_temp, data = Weather) \%>\%
     gf_facet_grid(city ~ .) \%>\%
     gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
 }
 
 }
 \seealso{
-\code{\link[=geom_area]{geom_area()}}
+\code{\link[ggplot2:geom_area]{ggplot2::geom_area()}}
 }

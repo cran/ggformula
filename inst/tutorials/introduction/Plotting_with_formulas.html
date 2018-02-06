@@ -434,27 +434,27 @@ gf_point(births ~ date, data = Births1988, color = &quot;skyblue&quot;)</code></
 <tr>
 <td>
 
-<div id="htmlwidget-5c505b1bccd8b86141f2" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-b647e83406a4faec8ce1" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-5c505b1bccd8b86141f2">{"x":{"question":"Does it appear that the conjecture about weekends is generally correct?","answers":[{"option":"yes","correct":true,"message":null},{"option":"no","correct":false,"message":null}],"label":"color-mapping-quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Does it appear that the conjecture about weekends is generally correct?","a":[{"option":"yes","correct":true,"message":null},{"option":"no","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-b647e83406a4faec8ce1">{"x":{"question":"Does it appear that the conjecture about weekends is generally correct?","answers":[{"option":"yes","correct":true,"message":null},{"option":"no","correct":false,"message":null}],"label":"color-mapping-quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"Does it appear that the conjecture about weekends is generally correct?","a":[{"option":"yes","correct":true,"message":null},{"option":"no","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 <tr>
 <td>
 
-<div id="htmlwidget-30ab3a3e9a5612feffff" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-9a33611ecd006cd9a4d3" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-30ab3a3e9a5612feffff">{"x":{"question":"What happens if you omit the <code>~<\/code> before <code>~wday<\/code>?","answers":[{"option":"It works just the same.  The tilde isn&#39;t required.","correct":false,"message":null},{"option":"All the dots are the same color.","correct":false,"message":null},{"option":"There is an error message: &#39;wday&#39; not found.","correct":true,"message":null}],"label":"color-mapping-quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"What happens if you omit the <code>~<\/code> before <code>~wday<\/code>?","a":[{"option":"It works just the same.  The tilde isn&#39;t required.","correct":false,"message":null},{"option":"All the dots are the same color.","correct":false,"message":null},{"option":"There is an error message: &#39;wday&#39; not found.","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-9a33611ecd006cd9a4d3">{"x":{"question":"What happens if you omit the <code>~<\/code> before <code>~wday<\/code>?","answers":[{"option":"It works just the same.  The tilde isn&#39;t required.","correct":false,"message":null},{"option":"All the dots are the same color.","correct":false,"message":null},{"option":"There is an error message: &#39;wday&#39; not found.","correct":true,"message":null}],"label":"color-mapping-quiz-2","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"What happens if you omit the <code>~<\/code> before <code>~wday<\/code>?","a":[{"option":"It works just the same.  The tilde isn&#39;t required.","correct":false,"message":null},{"option":"All the dots are the same color.","correct":false,"message":null},{"option":"There is an error message: &#39;wday&#39; not found.","correct":true,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 </table>
@@ -463,7 +463,7 @@ gf_point(births ~ date, data = Births1988, color = &quot;skyblue&quot;)</code></
 </div>
 <div id="section-facets" class="section level2">
 <h2>Facets</h2>
-<p>If we want to look at all 20 years of birth data, overlaying the data is likely to put too much information in too little space and make it hard to tell which data is from which year. (Deciphering 20 colors or 20 shapes can be hard, too.) Instead, lets but each year in separate <strong>facet</strong> or sub-plot. Facets are better than 20 separate plots because the coordinate systems are shared across the facets which saves space and makes comparisons across facets easier.</p>
+<p>If we want to look at all 20 years of birth data, overlaying the data is likely to put too much information in too little space and make it hard to tell which data is from which year. (Deciphering 20 colors or 20 shapes can be hard, too.) Instead, let’s put each year in separate <strong>facet</strong> or sub-plot. Facets are better than 20 separate plots because the coordinate systems are shared across the facets which saves space and makes comparisons across facets easier.</p>
 <p>There are two ways to create facets. The simplest way is to add a vertical bar <code>|</code> to our formula.</p>
 <div class="tutorial-exercise" data-label="births-facets" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>gf_point(births ~ day_of_year | year, data = Births, size = 0.5)</code></pre>
@@ -521,8 +521,8 @@ gf_point(births ~ date, data = Births1988, color = &quot;skyblue&quot;)</code></
 </div>
 </div>
 </div>
-<div id="section-plots-with-one-variable" class="section level2">
-<h2>Plots with one variable</h2>
+<div id="section-plots-with-one-positional-variable" class="section level2">
+<h2>Plots with one positional variable</h2>
 <p>Some <code>gf_</code> functions only require the user to supply one variable. The y-positions for these plots can calculated from the x-variable.</p>
 <p>Here are two examples. Run the code below to see the formula shapes used by these plots.</p>
 <div class="tutorial-exercise" data-label="one-var-plot-help" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">

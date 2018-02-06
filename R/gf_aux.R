@@ -82,13 +82,40 @@ gf_theme <- function(object, theme, ...) {
   }
 }
 
-#' @rdname gf_aux
+#' Add facets to a plot
+#'
+#' These functions provide more control over faceting than is possible using
+#' the formula interface.
+#'
+#' @param object A ggplot object
+#' @param ... Additional arguments passed to [facet_wrap()] or [facet_grid()].
+#'   This typically includes an unnamed formula argument describing the facets.
+#'   `scales` and `space` are additional useful arguments.  See the examples.
+#'
+#'
+#' @seealso [ggplot2::facet_grid()], [ggplot2::facet_wrap()].
+#' @examples
+#' if (require(mosaicData)) {
+#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
+#'     gf_facet_grid(~ substance)
+#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
+#'     gf_facet_grid(~ substance, scales = "free")
+#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
+#'     gf_facet_grid(~ substance, scales = "free", space = "free")
+#'   gf_line(births ~ date, data = Births, color = ~ wday) %>%
+#'     gf_facet_wrap( ~ year, scales = "free_x", nrow = 5) %>%
+#'     gf_theme(axis.title.x = element_blank(),
+#'              axis.text.x=element_blank(), axis.ticks.x=element_blank()) %>%
+#'     gf_labs(color = "Day")
+#' }
+#'
+#' @rdname gf_facet_grid
 #' @export
 gf_facet_wrap <- function(object, ...) {
   object + ggplot2::facet_wrap(...)
 }
 
-#' @rdname gf_aux
+#' @rdname gf_facet_grid
 #' @export
 gf_facet_grid <- function(object, ...) {
   object + ggplot2::facet_grid(...)

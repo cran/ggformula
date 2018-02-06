@@ -3,18 +3,12 @@
 \name{gf_labs}
 \alias{gf_labs}
 \alias{gf_lims}
-\alias{gf_facet_wrap}
-\alias{gf_facet_grid}
 \alias{gf_refine}
 \title{Non-layer functions for gf plots}
 \usage{
 gf_labs(object, ...)
 
 gf_lims(object, ...)
-
-gf_facet_wrap(object, ...)
-
-gf_facet_grid(object, ...)
 
 gf_refine(object, ...)
 }

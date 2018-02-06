@@ -17,6 +17,8 @@ Positional aesthetics are typically specified using a formula (see the \code{gfo
 Setting and mapping of additional attributes can be done through the use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
+A (sometimes partial) list of available attributes can be obtained by executing
+plotting functions with no arguments.
 
 In formulas of the form \code{A | B}, \code{B} will be used to form facets using
 \code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.

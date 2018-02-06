@@ -1,3 +1,20 @@
+
+# ggformula 0.6.2
+
+  * Improved scoping of `gf_` functions makes it easier to work with data in the global environment.
+  * New functions `gf_props()` and `gf_percents()` added to simplify creating bar graphs on a proportion or percent scale.
+  * New arguments `xlab`, `ylab`, `title`, `subtitle`, and `caption` added to `gf_` functions.  In the case of `gf_props()` and `gf_percents()` these are prepopulated with defaults of "proportion" and "percent" to give nicer labeling of the plot.
+  * The use of `weatherData` has been removed since that package is no longer on CRAN
+  * Improvements to `gf_abline()`, `gf_hline()`, and `gf_vline()` expand the usable portion of the API.
+  * Additional examples for some functions.
+
+# ggformula 0.6.1
+
+Minor update primarily to support vignette data sets moving from `StatisticalModeling` to 
+`mosaicModel`.
+
+  * Also added `gf_fitdistr()`.
+
 # ggformula 0.6.0
 
 Mostly minor changes:

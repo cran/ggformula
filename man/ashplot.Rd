@@ -8,7 +8,8 @@
 \usage{
 gf_ash(object = NULL, gformula = NULL, data = NULL, geom = "line",
   stat = "ash", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 
 stat_ash(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = FALSE, show.legend = NA,
@@ -44,6 +45,21 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
@@ -73,6 +89,25 @@ a gg object
 An ASH plot is the average over all histograms of a fixed bin width.
 \code{geom_ash()} and \code{gf_ash()} provide ways to create ASH plots
 using \pkg{ggplot2} or \pkg{ggformula}.
+}
+\details{
+Positional aesthetics are specified using the formula in \code{gformula}.
+Setting and mapping of additional attributes can be done through the
+use of additional arguments.
+Attributes can be set can be set using arguments of the form \code{attribute = value} or
+mapped using arguments of the form \code{attribute = ~ expression}.
+
+In formulas of the form \code{A | B}, \code{B} will be used to form facets using
+\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+This provides an alternative to
+\code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
+\code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
+of \pkg{lattice}.
+
+Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+This will typically do the right thing when formulas are created on the fly, but might not
+be the right thing if formulas created in one environment are used to create plots
+in another.
 }
 \examples{
 gf_ash(~Sepal.Length, color = ~ Species, data = iris)

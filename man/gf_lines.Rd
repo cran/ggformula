@@ -7,17 +7,20 @@
 \alias{gf_coefline}
 \title{Reference lines -- horizontal, vertical, and diagonal.}
 \usage{
-gf_abline(object = NULL, gformula = NULL, data = NA, geom = "abline",
+gf_abline(object = NULL, gformula = NULL, data = NULL, geom = "abline",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, ...)
+  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 
-gf_hline(object = NULL, gformula = NULL, data = NA, geom = "hline",
+gf_hline(object = NULL, gformula = NULL, data = NULL, geom = "hline",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, ...)
+  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 
-gf_vline(object = NULL, gformula = NULL, data = NA, geom = "vline",
+gf_vline(object = NULL, gformula = NULL, data = NULL, geom = "vline",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, ...)
+  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 
 gf_coefline(object = NULL, coef = NULL, model = NULL, ...)
 }
@@ -45,6 +48,21 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
@@ -52,15 +70,9 @@ of the attributes of the layer are mapped.}
 Available attributes include
 \code{slope}, \code{intercept}}
 
-\item{coef}{A numeric vector of length at least 2, treated as intercept and slope.
-Additional components, if any, are ignored (with a warning).}
+\item{coef}{A numeric vector of coefficients.}
 
-\item{model}{An object with a method for \code{coef()} that returns a
-numeric vector, the first two elements of which are intercept and slope.
-This is equivalent to \code{coef = coef(model)}.}
-}
-\value{
-a gg object
+\item{model}{A model from which to extract coefficients.}
 }
 \description{
 These functions create layers that display lines described i various ways.  Unlike most
@@ -79,34 +91,29 @@ gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
 gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
   gf_abline(color = "red", slope = ~slope, intercept = ~intercept,
   data = data.frame(slope = -0.10, intercept = 33:35))
-gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
-  gf_abline(intercept = ~ c(10, 20, 30), slope = ~c(1, 0, -1)/100,
-    color = c("red", "green", "blue"))
 
-# We can set the color of the guidelines while mapping color in other
-# layers
+# We can set the color of the guidelines while mapping color in other layers
 gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
-  gf_hline(color = "navy", yintercept = ~c(20, 25)) \%>\%
-  gf_vline(color = "brown", xintercept = ~c(200, 300))
+  gf_hline(color = "navy", yintercept = c(20, 25), data = NA) \%>\%
+  gf_vline(color = "brown", xintercept = c(200, 300), data = NA)
 
 # If we want to map the color of the guidelines, it must work with the
 # scale of the other colors in the plot.
 gf_point(mpg ~ hp, size = ~wt, data = mtcars, alpha = 0.3) \%>\%
-  gf_hline(color = ~"horizontal", yintercept = ~c(20, 25)) \%>\%
+  gf_hline(color = ~"horizontal", yintercept = ~c(20, 25), data = NA) \%>\%
   gf_vline(color = ~"vertical", xintercept = ~c(100, 200, 300), data = NA)
 gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) \%>\%
   gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
   gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) \%>\%
 # reversing the layers requires using inherit = FALSE
-gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
+gf_hline(color = "orange", yintercept = ~20, data = NA) \%>\%
   gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) \%>\%
   gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3,
     inherit = FALSE)
 
-
 }
 \seealso{
-\code{\link[=geom_abline]{geom_abline()}},
-\code{\link[=geom_vline]{geom_vline()}},
-\code{\link[=geom_hline]{geom_hline()}}
+\code{\link[ggplot2:geom_abline]{ggplot2::geom_abline()}},
+\code{\link[ggplot2:geom_vline]{ggplot2::geom_vline()}},
+\code{\link[ggplot2:geom_hline]{ggplot2::geom_hline()}}
 }

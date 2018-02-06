@@ -6,7 +6,8 @@
 \usage{
 gf_errorbarh(object = NULL, gformula = NULL, data = NULL,
   geom = "errorbarh", stat = "identity", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE, ...)
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -14,9 +15,7 @@ of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
 \item{gformula}{A formula with shape \code{y ~ x + xmin + xmax}.
-Faceting can be achieved by including \code{|} in the formula.
-Note: The odd shape for this is due to a quirk in \pkg{ggplot2} which has
-been changed on github, but not yet on CRAN.}
+Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
@@ -35,6 +34,21 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
@@ -46,14 +60,12 @@ Available attributes include
 a gg object
 }
 \description{
-\pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
-functions.
-For plots with just one layer, the formula interface
-is more compact and is consistent with modeling and \pkg{mosaic} notation.
+Formula interface to geom_errorbarh()
 }
 \details{
-Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-Setting and mapping of additional attributes can be done through the use of additional arguments.
+Positional aesthetics are specified using the formula in \code{gformula}.
+Setting and mapping of additional attributes can be done through the
+use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
 
@@ -69,6 +81,13 @@ This will typically do the right thing when formulas are created on the fly, but
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+\section{Note}{
+
+There is discrepancy between the information required for \code{gf_errorbar()}
+and \code{gf_errobarh()}.  It expected that this will change in a future release
+of \code{ggplot2}.
+}
+
 \examples{
 if (require(mosaicData) && require(dplyr)) {
 HELP2 <- HELPrct \%>\%
@@ -94,5 +113,5 @@ HELP2 <- HELPrct \%>\%
 }
 }
 \seealso{
-\code{\link[=geom_errorbarh]{geom_errorbarh()}}
+\code{\link[ggplot2:geom_errorbarh]{ggplot2::geom_errorbarh()}}
 }

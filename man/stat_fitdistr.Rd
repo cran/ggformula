@@ -27,11 +27,11 @@ and \code{TRUE} always includes.}
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics, rather than combining
 with them.}
 
-\item{dist}{A character string indicating the distribution to fit.  Examlpes include
+\item{dist}{A character string indicating the distribution to fit.  Examples include
 \code{"dnorm"}, \code{"dgamma"}, etc.}
 
 \item{start}{A list of starting values used by \code{MASS::fitdistr()} when numerically
-approximating the maximimum likelihood estimate.}
+approximating the maximum likelihood estimate.}
 
 \item{...}{Additional arguments.}
 }
@@ -40,5 +40,5 @@ A gg object
 }
 \description{
 This stat computes points for plotting a distribution function.  Fitting is done
-useing \code{MASS::fitdistr()} when analytic solutions are not available.
+using \code{MASS::fitdistr()} when analytic solutions are not available.
 }

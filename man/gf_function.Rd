@@ -21,7 +21,7 @@ the first layer in a plot.  Ignored when creating a subsequent layer.}
 
 \item{...}{Other arguments such as \code{position="dodge"}.}
 
-\item{inherit}{A logical indicating whether attributes should be inherited.}
+\item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{formula}{A formula describing a function.  See examples and \code{\link[mosaicCore:makeFun]{mosaicCore::makeFun()}}.}
 }

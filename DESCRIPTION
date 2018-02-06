@@ -2,8 +2,8 @@ Package: ggformula
 Title: Formula Interface to the Grammar of Graphics
 Description: Provides a formula interface to 'ggplot2' graphics.
 Type: Package
-Version: 0.6.1
-Date: 2018-01-02
+Version: 0.6.2
+Date: 2018-02-04
 Authors@R: c(
     person("Daniel", "Kaplan", email = "kaplan@macalester.edu", role = c("aut")),
     person("Randall", "Pruim", email = "rpruim@calvin.edu", role = c("aut","cre"))
@@ -14,13 +14,13 @@ LazyLoad: TRUE
 Depends: R (>= 3.1), ggplot2
 Imports: mosaicCore, rlang, magrittr, tibble, stringr, grid
 Suggests: lattice, mosaic, dplyr, testthat, mosaicData, knitr,
-        mosaicModel, rmarkdown, weatherData, lubridate
+        mosaicModel, rmarkdown, lubridate, survival, broom, scales
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
 NeedsCompilation: no
-Packaged: 2018-01-03 19:14:39 UTC; rpruim
+Packaged: 2018-02-06 05:17:34 UTC; rpruim
 Author: Daniel Kaplan [aut],
   Randall Pruim [aut, cre]
 Maintainer: Randall Pruim <rpruim@calvin.edu>
 Repository: CRAN
-Date/Publication: 2018-01-03 22:18:59 UTC
+Date/Publication: 2018-02-06 10:56:25 UTC

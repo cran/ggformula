@@ -61,7 +61,7 @@ Here is an interesting plot showing the number of live births in the United
 States each day of 1978.  We are going to use it to learn how to create
 plots using the `ggformula` package.
 
-```{r, echo = FALSE}
+```{r, first-look, echo = FALSE}
 gf_point(births ~ date, data = Births1978)
 ```
 
@@ -134,7 +134,7 @@ eventually.)
 Sometimes we will add or subtract a bit from our formula.
 Here are some other forms we will eventually see.
 
-```{r eval=FALSE, echo = TRUE}
+```{r templates, eval=FALSE, echo = TRUE}
 # simpler version
 goal( ~ x, data = mydata )          
 # fancier version
@@ -225,7 +225,7 @@ Note: R is case sensitive, so watch your capitalization.
   
 For the record, here are the first few rows of `Births1978`.
   
-```{r}
+```{r, top-of-data}
 Births1978 %>% head(3) %>% select(births, date, day_of_year)
 ```
 
@@ -236,13 +236,13 @@ describe the positional information of a plot.
 Formulas in R always involve the tilde character, which is easy to overlook.
 It looks like this:  
 
-```{r echo = FALSE, fig.align = "center"}
+```{r tilde, echo = FALSE, fig.align = "center"}
 knitr::include_graphics("images/tilde.png")
 ```
 
 The position of ![](images/tilde-small.png) on the keyboard varies from brand to brand. On Apple keyboards, it's here.
 
-```{r echo = FALSE, fig.align = "center", out.width = "40%"}
+```{r tilde02, echo = FALSE, fig.align = "center", out.width = "40%"}
 knitr::include_graphics("images/keyboard-tilde.png")
 ```
 
@@ -480,7 +480,7 @@ quiz(
 If we want to look at all 20 years of birth data, overlaying the data
 is likely to put too much information in too little space and make it hard to tell which
 data is from which year.  (Deciphering 20 colors or 20 shapes can be hard, too.)
-Instead, lets but each year in separate **facet** or sub-plot.  Facets are better
+Instead, let's put each year in separate **facet** or sub-plot.  Facets are better
 than 20 separate plots because the coordinate systems are shared across the facets
 which saves space and makes comparisons across facets easier.
 
@@ -548,7 +548,7 @@ and accepts a formula with one of three shapes
 ```
 
 
-## Plots with one variable
+## Plots with one positional variable
 
 Some `gf_` functions only require the user to supply one variable. The y-positions
 for these plots can calculated from the x-variable.

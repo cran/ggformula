@@ -6,7 +6,8 @@
 \usage{
 gf_fitdistr(object = NULL, gformula = NULL, data = NULL, geom = "path",
   stat = "fitdistr", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, ...)
+  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
+  ylab, title, subtitle, caption, ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -32,14 +33,48 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments}
 }
 \value{
 a gg object
 }
 \description{
-\code{MASS::fitdistr()} is used to fit coeffecients of a specified family of
+\code{MASS::fitdistr()} is used to fit coefficients of a specified family of
 distributions and the resulting density curve is displayed.
+}
+\details{
+Positional aesthetics are specified using the formula in \code{gformula}.
+Setting and mapping of additional attributes can be done through the
+use of additional arguments.
+Attributes can be set can be set using arguments of the form \code{attribute = value} or
+mapped using arguments of the form \code{attribute = ~ expression}.
+
+In formulas of the form \code{A | B}, \code{B} will be used to form facets using
+\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+This provides an alternative to
+\code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
+\code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
+of \pkg{lattice}.
+
+Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
+This will typically do the right thing when formulas are created on the fly, but might not
+be the right thing if formulas created in one environment are used to create plots
+in another.
 }
 \examples{
 if (require(mosaicData)) {

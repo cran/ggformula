@@ -6,15 +6,15 @@
 \usage{
 gf_segment(object = NULL, gformula = NULL, data = NULL,
   geom = "segment", stat = "identity", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE, ...)
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
 of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
-\item{gformula}{A formula with shape \code{y + yend ~ x + xend}.
-Faceting can be achieved by including \code{|} in the formula.}
+\item{gformula}{A formula with shape \code{y + yend ~ x + xend}.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
@@ -33,6 +33,21 @@ of the attributes of the layer are mapped.}
 
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
@@ -44,14 +59,12 @@ Available attributes include
 a gg object
 }
 \description{
-\pkg{ggformula} functions provide a formula interface to \pkg{ggplot2} layer
-functions.
-For plots with just one layer, the formula interface
-is more compact and is consistent with modeling and \pkg{mosaic} notation.
+Formula interface to geom_segment()
 }
 \details{
-Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
-Setting and mapping of additional attributes can be done through the use of additional arguments.
+Positional aesthetics are specified using the formula in \code{gformula}.
+Setting and mapping of additional attributes can be done through the
+use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
 
@@ -74,5 +87,5 @@ gf_point(mpg ~ wt, data = mtcars) \%>\%
   gf_segment(y1 + y2 ~ x1 + x2, data = D, color = "red")
 }
 \seealso{
-\code{\link[=geom_segment]{geom_segment()}}
+\code{\link[ggplot2:geom_segment]{ggplot2::geom_segment()}}
 }

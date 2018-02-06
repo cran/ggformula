@@ -17,6 +17,7 @@ NA
 #' `geom_ash()` and `gf_ash()` provide ways to create ASH plots
 #' using \pkg{ggplot2} or \pkg{ggformula}.
 #'
+#' @inherit gf_freqpoly
 #' @param object When chaining, this holds an object produced in the earlier portions
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
@@ -25,6 +26,7 @@ NA
 #'   `y` may be `..density..` or `..count..` or `..ndensity..` or `..ncount..`.
 #'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
+#' @param environment An environment in which to look for variables not found in `data`.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
@@ -630,14 +632,14 @@ StatFitdistr <-
 #' A stat for fitting distributions
 #'
 #' This stat computes points for plotting a distribution function.  Fitting is done
-#' useing `MASS::fitdistr()` when analytic solutions are not available.
+#' using `MASS::fitdistr()` when analytic solutions are not available.
 #'
 #' @param mapping Aesthetics created using `aes()` or `aes_string()`.
 #' @param data A data frame.
-#' @param dist A character string indicating the distribution to fit.  Examlpes include
+#' @param dist A character string indicating the distribution to fit.  Examples include
 #'   `"dnorm"`, `"dgamma"`, etc.
 #' @param start A list of starting values used by `MASS::fitdistr()` when numerically
-#'   approximating the maximimum likelihood estimate.
+#'   approximating the maximum likelihood estimate.
 #' @param geom A character string naming the geom used to make the layer.
 #' @param position Either a character string naming the position function used
 #'   for the layer or a position object returned from a call to a position function.
