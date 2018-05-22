@@ -8,6 +8,7 @@ have_packages <-
 
 knitr::opts_chunk$set(
   fig.show = "hold",
+  fig.align = "center",
   out.width = "45%",
   eval = have_packages
 )
@@ -174,6 +175,41 @@ gf_linerange(low_temp + high_temp ~ date, color = ~ avg_temp, data = Weather) %>
   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) %>%
   gf_facet_grid(city ~ year, scales = "free_x")
 
+## ---- fig.width = 6, fig.height = 3, out.width = "75%"-------------------
+if (require(maps) && require(mosaic) && require(dplyr)) {
+  US <- map_data("state") %>%
+    dplyr::mutate(name_length = nchar(region))
+  States <- US %>%
+    dplyr::group_by(region) %>%
+    dplyr::summarise(lat = mean(range(lat)), long = mean(range(long))) %>%
+    dplyr::mutate(name = abbreviate(region, 3))
+
+  gf_polygon(lat ~ long, data = US, group = ~ group,
+             fill = ~ name_length, color = "white") %>%
+  gf_text(lat ~ long, label = ~ name, data = States,
+    color = "gray70", inherit = FALSE) %>%
+  gf_refine(mosaic::theme_map())
+}
+
+## ------------------------------------------------------------------------
+gf_ash( ~ age, data = HELPrct, binwidth = 2) %>%
+  gf_dhistogram( ~ age, data = HELPrct, binwidth = 2, alpha = 0.3) 
+gf_ash( ~ age, data = HELPrct, binwidth = 10) %>% 
+  gf_dhistogram( ~ age, data = HELPrct, binwidth = 2, alpha = 0.3) 
+
+## ------------------------------------------------------------------------
+gf_dist("pois", lambda = 5)
+gf_dist("pois", lambda = 5, kind = "cdf")
+gf_dist("gamma", shape = 3, rate = 4)
+gf_dist("gamma", shape = 3, rate = 4, kind = "cdf")
+
+## ------------------------------------------------------------------------
+x <- rgamma(1000, shape = 2, rate = 5)
+gf_dhistogram( ~ x, alpha = 0.3) %>%
+  gf_fitdistr() %>%         # normal fit by default
+  gf_fitdistr(dist = "dgamma", color = "blue") %>%
+  gf_fitdistr(dist = "dweibull", color = "red")
+
 ## ---- themes-------------------------------------------------------------
 gf_histogram( ~ age, data = Runners, alpha = 0.2, fill = "navy",
               binwidth = 5) %>%
@@ -188,4 +224,10 @@ gf_histogram( ~ age, data = Runners, alpha = 0.5, fill = "white",
   gf_labs(x = "age (years)", title = "Age of runners") %>%
   gf_lims(x = c(20, 80)) %>%
   gf_theme(theme = theme_dark())
+
+## ------------------------------------------------------------------------
+gf_histogram( ~ age, data = Runners, alpha = 0.5, fill = "skyblue", color = "navy",
+              binwidth = 5, 
+              xlab = "age (years)", title = "Age of runners"
+              ) 
 

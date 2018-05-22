@@ -4,10 +4,12 @@
 \alias{gf_quantile}
 \title{Formula interface to geom_quantile()}
 \usage{
-gf_quantile(object = NULL, gformula = NULL, data = NULL,
-  geom = "quantile", stat = "quantile", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
+gf_quantile(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, weight, lineend = "butt", linejoin = "round",
+  linemitre = 1, quantiles, formula, method, method.args, xlab, ylab, title,
+  subtitle, caption, geom = "quantile", stat = "quantile",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -17,24 +19,49 @@ See details and examples.}
 \item{gformula}{A formula with shape \code{y ~ x}.
 Faceting can be achieved by including \code{|} in the formula.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+   options:
 
-\item{geom}{A character string naming the geom used to make the layer.}
+   If \code{NULL}, the default, the data is inherited from the plot
+   data as specified in the call to \code{\link{ggplot}}.
 
-\item{stat}{A character string naming the stat used to make the layer.}
+   A \code{data.frame}, or other object, will override the plot
+   data. All objects will be fortified to produce a data frame. See
+   \code{\link{fortify}} for which variables will be created.
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+   A \code{function} will be called with a single argument,
+   the plot data. The return value must be a \code{data.frame.}, and
+   will be used as the layer data.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
-\item{show.help}{If \code{TRUE}, display some minimal help.}
+\item{color}{A color or a formula used for mapping color.}
 
-\item{inherit}{A logical indicating whether default attributes are inherited.}
+\item{group}{Used for grouping.}
 
-\item{environment}{An environment in which to look for variables not found in \code{data}.}
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{weight}{Useful for summarized data, \code{weight} provides a count
+of the number of values with the given combination of \code{x} and \code{y} values.}
+
+\item{lineend}{Line end style (round, butt, square)}
+
+\item{linejoin}{Line join style (round, mitre, bevel)}
+
+\item{linemitre}{Line mitre limit (number greater than 1)}
+
+\item{quantiles}{conditional quantiles of y to calculate and display}
+
+\item{formula}{formula relating y variables to x variables}
+
+\item{method}{Quantile regression method to use.  Currently only supports
+\code{\link[quantreg]{rq}}.}
+
+\item{method.args}{List of additional arguments passed on to the modelling
+function defined by \code{method}.}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -49,18 +76,36 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
+\item{geom}{Use to override the default connection between
+\code{geom_quantile} and \code{stat_quantile}.}
+
+\item{stat}{Use to override the default connection between
+\code{geom_quantile} and \code{stat_quantile}.}
+
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
+
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.}
+
+\item{show.help}{If \code{TRUE}, display some minimal help.}
+
+\item{inherit}{A logical indicating whether default attributes are inherited.}
+
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{weight}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{quantiles}, \code{formula}, \code{method}, \code{method.args}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Quantile-Quantile plots in \code{ggformula}.
+This fits a quantile regression to the data and draws the fitted quantiles
+with lines. This is as a continuous analogue to \code{\link{geom_boxplot}}.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.

@@ -5,15 +5,17 @@
 \alias{gf_path}
 \title{Formula interface to geom_line() and geom_path()}
 \usage{
-gf_line(object = NULL, gformula = NULL, data = NULL, geom = "line",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_line(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
+  group, linetype, size, lineend, linejoin, linemitre, arrow, xlab, ylab, title,
+  subtitle, caption, geom = "line", stat = "identity",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 
-gf_path(object = NULL, gformula = NULL, data = NULL, geom = "path",
+gf_path(object = NULL, gformula = NULL, data = NULL, alpha, color, group,
+  linetype, size, lineend = "butt", linejoin = "round", linemitre = 1,
+  arrow = NULL, xlab, ylab, title, subtitle, caption, geom = "path",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -24,6 +26,40 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{fill}{A color for filling, or a formula used for mapping fill.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{lineend}{Line end style (round, butt, square)}
+
+\item{linejoin}{Line join style (round, mitre, bevel)}
+
+\item{linemitre}{Line mitre limit (number greater than 1)}
+
+\item{arrow}{Arrow specification, as created by \code{\link[grid]{arrow}}}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -42,25 +78,10 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{lineend}, \code{linejoin}, \code{linemitre}, \code{arrow}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object

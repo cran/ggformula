@@ -4,9 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{makeFun}
-\alias{reexports}
 \alias{df_stats}
-\alias{reexports}
 \alias{na.warn}
 \title{Objects exported from other packages}
 \keyword{internal}

@@ -4,10 +4,13 @@
 \alias{gf_dotplot}
 \title{Formula interface to geom_dotplot()}
 \usage{
-gf_dotplot(object = NULL, gformula = NULL, data = NULL,
-  geom = "dotplot", stat = "bindot", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
+gf_dotplot(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, binwidth = NULL, binaxis = "x", method = "dotdensity",
+  binpositions = "bygroup", stackdir = "up", stackratio = 1,
+  dotsize = 1, stackgroups = FALSE, origin = NULL, right = TRUE,
+  width = 0.9, drop = FALSE, xlab, ylab, title, subtitle, caption,
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,22 +22,49 @@ Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
-\item{geom}{A character string naming the geom used to make the layer.}
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
-\item{stat}{A character string naming the stat used to make the layer.}
+\item{color}{A color or a formula used for mapping color.}
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+\item{fill}{A color for filling, or a formula used for mapping fill.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{group}{Used for grouping.}
 
-\item{show.help}{If \code{TRUE}, display some minimal help.}
+\item{binwidth}{When \code{method} is "dotdensity", this specifies maximum bin
+width. When \code{method} is "histodot", this specifies bin width.
+Defaults to 1/30 of the range of the data}
 
-\item{inherit}{A logical indicating whether default attributes are inherited.}
+\item{binaxis}{The axis to bin along, "x" (default) or "y"}
 
-\item{environment}{An environment in which to look for variables not found in \code{data}.}
+\item{method}{"dotdensity" (default) for dot-density binning, or
+"histodot" for fixed bin widths (like stat_bin)}
+
+\item{binpositions}{When \code{method} is "dotdensity", "bygroup" (default)
+determines positions of the bins for each group separately. "all" determines
+positions of the bins with all the data taken together; this is used for
+aligning dot stacks across multiple groups.}
+
+\item{stackdir}{which direction to stack the dots. "up" (default),
+"down", "center", "centerwhole" (centered, but with dots aligned)}
+
+\item{stackratio}{how close to stack the dots. Default is 1, where dots just
+just touch. Use smaller values for closer, overlapping dots.}
+
+\item{dotsize}{The diameter of the dots relative to \code{binwidth}, default 1.}
+
+\item{stackgroups}{should dots be stacked across groups? This has the effect
+that \code{position = "stack"} should have, but can't (because this geom has
+some odd properties).}
+
+\item{origin}{When \code{method} is "histodot", origin of first bin}
+
+\item{right}{When \code{method} is "histodot", should intervals be closed
+on the right (a, b], or not [a, b)}
+
+\item{width}{When \code{binaxis} is "y", the spacing of the dot stacks
+for dodging.}
+
+\item{drop}{If TRUE, remove all bins with zero counts}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -49,18 +79,29 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
+\item{position}{Either a character string naming the position function used
+for the layer or a position object returned from a call to a position function.}
+
+\item{show.legend}{A logical indicating whether this layer should be included in
+the legends.  \code{NA}, the default, includes layer in the legends if any
+of the attributes of the layer are mapped.}
+
+\item{show.help}{If \code{TRUE}, display some minimal help.}
+
+\item{inherit}{A logical indicating whether default attributes are inherited.}
+
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{fill}, \code{group}, \code{binwidth}, \code{binaxis}, \code{method}, \code{binpositions}, \code{stackdir}, \code{stackratio}, \code{dotsize}, \code{stackgroups}, \code{origin}, \code{right}, \code{width}, \code{drop}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Formula interface to geom_dotplot()
+Scatterplots in \code{ggformula}.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.

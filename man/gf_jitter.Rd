@@ -4,10 +4,11 @@
 \alias{gf_jitter}
 \title{Formula interface to geom_jitter()}
 \usage{
-gf_jitter(object = NULL, gformula = NULL, data = NULL, geom = "point",
-  stat = "identity", position = "jitter", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_jitter(object = NULL, gformula = NULL, data = NULL, alpha, color, size,
+  shape, fill, width, height, group, stroke, xlab, ylab, title, subtitle,
+  caption, geom = "point", stat = "identity", position = "jitter",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -18,6 +19,37 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{shape}{An integer or letter shape or a formula used for mapping shape.}
+
+\item{fill}{A color for filling, or a formula used for mapping fill.}
+
+\item{width}{Amount of horizontal jitter.}
+
+\item{height}{Amount of vertical jitter.}
+
+\item{group}{Used for grouping.}
+
+\item{stroke}{A numeric size of the border or a formula used to map stroke.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -36,26 +68,10 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{size}, \code{shape}, \code{fill}, \code{group},
-\code{stroke}, \code{width}, \code{height}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object

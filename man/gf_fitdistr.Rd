@@ -4,10 +4,11 @@
 \alias{gf_fitdistr}
 \title{Plot density function based on fit to data}
 \usage{
-gf_fitdistr(object = NULL, gformula = NULL, data = NULL, geom = "path",
-  stat = "fitdistr", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_fitdistr(object = NULL, gformula = NULL, data = NULL, dist = dnorm,
+  start = NULL, alpha, color, fill, group, linetype, size, xlab, ylab, title,
+  subtitle, caption, geom = "path", stat = "fitdistr",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = FALSE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -17,6 +18,36 @@ of the chain.  Most users can safely ignore this argument. See examples.}
 to be fit to a family of distributions.}
 
 \item{data}{A data frame containing the variable to be fitted.}
+
+\item{dist}{A distribution.}
+
+\item{start}{Starting value(s) for the search for MLE.  (See \link[MASS:fitdistr]{MASS::fitdistr}.)}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{fill}{A color for filling, or a formula used for mapping fill.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -34,19 +65,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{...}{Additional arguments}
 }
@@ -83,6 +101,24 @@ if (require(mosaicData)) {
 
   gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25) \%>\%
     gf_fitdistr()
+
+  set.seed(12345)
+  Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
+  gf_dhistogram(~g, data = Dat) \%>\%
+    gf_fitdistr(dist = dgamma)
+
+  gf_dhistogram(~f, data = Dat) \%>\%
+    gf_fitdistr(dist = df)
+
+  gf_dhistogram(~g, data = Dat) \%>\%
+    gf_fun(mosaicCore::fit_distr_fun(~g, data = Dat, dist = dgamma))
+
+  # fitted parameters are default argument values
+  args(
+    mosaicCore::fit_distr_fun(~f, data = Dat, dist = df,
+      start = list(df1 = 10, df2 = 10)))
+  args(mosaicCore::fit_distr_fun(~g, data = Dat, dist = dgamma))
+
 }
 }
 \seealso{

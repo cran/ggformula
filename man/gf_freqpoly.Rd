@@ -4,20 +4,68 @@
 \alias{gf_freqpoly}
 \title{Formula interface to geom_freqpoly()}
 \usage{
-gf_freqpoly(object = NULL, gformula = NULL, data = NULL, geom = "path",
-  stat = "bin", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_freqpoly(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, binwidth, bins, center, boundary, xlab, ylab, title,
+  subtitle, caption, geom = "path", stat = "bin", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
 of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
-\item{gformula}{A formula with shape \code{~ x}.
+\item{gformula}{A formula with shape \code{~ x} or \code{y ~ x}.
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{binwidth}{The width of the bins. The default is to use \code{bins}
+  bins that cover the range of the data. You should always override
+  this value, exploring multiple widths to find the best to illustrate the
+  stories in your data.
+
+  The bin width of a date variable is the number of days in each time; the
+  bin width of a time variable is the number of seconds.}
+
+\item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30}
+
+\item{center}{The center of one of the bins.  Note that if center is above or
+below the range of the data, things will be shifted by an appropriate
+number of \code{width}s. To center on integers, for example, use
+\code{width = 1} and \code{center = 0}, even if \code{0} is outside the range
+of the data.  At most one of \code{center} and \code{boundary} may be
+specified.}
+
+\item{boundary}{A boundary between two bins. As with \code{center}, things
+are shifted when \code{boundary} is outside the range of the data. For
+example, to center on integers, use \code{width = 1} and \code{boundary =
+0.5}, even if \code{0.5} is outside the range of the data.  At most one of
+\code{center} and \code{boundary} may be specified.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -36,31 +84,17 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{binwidth}, \code{bins}, \code{center}, \code{boundary}, \code{}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Formula interface to geom_freqpoly()
+Line plots in \code{ggformula}.  \code{gf_path()} differs from \code{gf_line()} in that points
+are connected in the order in which they appear in \code{data}.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.

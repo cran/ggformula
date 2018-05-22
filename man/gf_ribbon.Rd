@@ -4,10 +4,10 @@
 \alias{gf_ribbon}
 \title{Formula interface to geom_ribbon()}
 \usage{
-gf_ribbon(object = NULL, gformula = NULL, data = NULL, geom = "ribbon",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_ribbon(object = NULL, gformula = NULL, data = NULL, alpha = 0.3,
+  xlab, ylab, title, subtitle, caption, geom = "ribbon", stat = "identity",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -17,24 +17,21 @@ See details and examples.}
 \item{gformula}{A formula with shape \code{ymin + ymax ~ x}.
 Faceting can be achieved by including \code{|} in the formula.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+   options:
 
-\item{geom}{A character string naming the geom used to make the layer.}
+   If \code{NULL}, the default, the data is inherited from the plot
+   data as specified in the call to \code{\link{ggplot}}.
 
-\item{stat}{A character string naming the stat used to make the layer.}
+   A \code{data.frame}, or other object, will override the plot
+   data. All objects will be fortified to produce a data frame. See
+   \code{\link{fortify}} for which variables will be created.
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+   A \code{function} will be called with a single argument,
+   the plot data. The return value must be a \code{data.frame.}, and
+   will be used as the layer data.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
-
-\item{show.help}{If \code{TRUE}, display some minimal help.}
-
-\item{inherit}{A logical indicating whether default attributes are inherited.}
-
-\item{environment}{An environment in which to look for variables not found in \code{data}.}
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -49,37 +46,33 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
+\item{geom}{A character string naming the geom used to make the layer.}
+
+\item{stat}{The statistical transformation to use on the data for this
+layer, as a string.}
+
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
+
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.}
+
+\item{show.help}{If \code{TRUE}, display some minimal help.}
+
+\item{inherit}{A logical indicating whether default attributes are inherited.}
+
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}}
-}
-\value{
-a gg object
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \description{
-Formula interface to geom_ribbon()
-}
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
-Setting and mapping of additional attributes can be done through the
-use of additional arguments.
-Attributes can be set can be set using arguments of the form \code{attribute = value} or
-mapped using arguments of the form \code{attribute = ~ expression}.
-
-In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
-This provides an alternative to
-\code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
-\code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
-of \pkg{lattice}.
-
-Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
-This will typically do the right thing when formulas are created on the fly, but might not
-be the right thing if formulas created in one environment are used to create plots
-in another.
+For each x value, \code{geom_ribbon} displays a y interval defined
+by \code{ymin} and \code{ymax}. \code{geom_area} is a special case of
+\code{geom_ribbon}, where the \code{ymin} is fixed to 0.
 }
 \examples{
 gf_ribbon()

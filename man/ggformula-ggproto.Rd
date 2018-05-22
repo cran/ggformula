@@ -7,7 +7,6 @@
 \alias{StatQqline}
 \alias{StatLm}
 \alias{GeomLm}
-\alias{StatAsh}
 \alias{StatFitdistr}
 \title{ggproto classes for ggplot2}
 \usage{

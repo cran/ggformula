@@ -5,15 +5,19 @@
 \alias{gf_density2d}
 \title{Formula interface to geom_density_2d()}
 \usage{
-gf_density_2d(object = NULL, gformula = NULL, data = NULL,
-  geom = "density_2d", stat = "density_2d", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
+gf_density_2d(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, contour = TRUE, n = 100, h = NULL,
+  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab, title,
+  subtitle, caption, geom = "density_2d", stat = "density_2d",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 
-gf_density2d(object = NULL, gformula = NULL, data = NULL,
-  geom = "density2d", stat = "density2d", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), xlab, ylab, title, subtitle, caption, ...)
+gf_density2d(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, contour = TRUE, n = 100, h = NULL,
+  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab, title,
+  subtitle, caption, geom = "density2d", stat = "density2d",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -24,6 +28,44 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{contour}{If \code{TRUE}, contour the results of the 2d density
+estimation}
+
+\item{n}{number of grid points in each direction}
+
+\item{h}{Bandwidth (vector of length two). If \code{NULL}, estimated
+using \code{\link[MASS]{bandwidth.nrd}}.}
+
+\item{lineend}{Line end style (round, butt, square)}
+
+\item{linejoin}{Line join style (round, mitre, bevel)}
+
+\item{linemitre}{Line mitre limit (number greater than 1)}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -42,31 +84,17 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}, \code{contour}, \code{n}, \code{h}, \code{lineend}, \code{linejoin}, \code{linemitre}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Formula interface to geom_density_2d()
+Line plots in \code{ggformula}.  \code{gf_path()} differs from \code{gf_line()} in that points
+are connected in the order in which they appear in \code{data}.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.

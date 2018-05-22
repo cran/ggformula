@@ -18,6 +18,7 @@ NA
 #' using \pkg{ggplot2} or \pkg{ggformula}.
 #'
 #' @inherit gf_freqpoly
+#' @inheritParams geom_ash
 #' @param object When chaining, this holds an object produced in the earlier portions
 #' of the chain.  Most users can safely ignore this argument.
 #' See details and examples.
@@ -31,8 +32,6 @@ NA
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#'   Available attributes include
-#'   `alpha`, `color`, `fill`, `group`, `linetype`, `size`
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
 #' @param position Either a character string naming the position function used
@@ -51,7 +50,7 @@ NA
 #' @param adjust a numeric adjustment to `binwidth`.  Primarily useful when `binwidth` is
 #'   not specified.  Increasing `adjust` makes the plot smoother.
 #' @export
-#' @rdname ashplot
+#' @rdname gf_ash
 #' @examples
 #' gf_ash(~Sepal.Length, color = ~ Species, data = iris)
 #' gf_ash(~Sepal.Length, color = ~ Species, data = iris, binwidth = 0.3)
@@ -83,7 +82,7 @@ StatAsh <-
           required_aes = c("x")
   )
 
-#' @rdname ashplot
+#' @rdname gf_ash
 #' @export
 stat_ash <-
   function(mapping = NULL, data = NULL, geom = "line",
@@ -117,7 +116,7 @@ stat_ash <-
 #           default_aes = aes(colour = "black", size = 0.5, linetype = 1, alpha = NA)
 # )
 
-#' @rdname ashplot
+#' @rdname gf_ash
 #' @param mapping set of aesthetic mappings created by [aes()]
 #' or [aes_()].
 #' @param na.rm	 If FALSE (the default), removes missing values with a warning.

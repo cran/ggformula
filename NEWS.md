@@ -1,4 +1,16 @@
 
+# ggformula 0.7.0
+
+ * Formulas of the shape `y ~ .` can be used for plots that require a `y` aesthetic 
+   but no `x` aesthetic.
+ * Added `gf_rugx()` and `gf_rugy()`.  Also additional examples using rugs are given in
+   the documentation.
+ * Added `gf_polygon()` for simple maps.  (Improved mapping capabilities should be coming
+   when `ggplot2` hits version 2.3.)
+ * Some internals have been reworked to improve the processing of arguments and deciding
+   when to display the quick help for plotting functions.
+ * Modifications to the environments in which some functions are evaluated.
+
 # ggformula 0.6.2
 
   * Improved scoping of `gf_` functions makes it easier to work with data in the global environment.

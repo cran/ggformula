@@ -2,22 +2,65 @@
 % Please edit documentation in R/gf_functions.R
 \name{gf_rug}
 \alias{gf_rug}
+\alias{gf_rugx}
+\alias{gf_rugy}
 \title{Formula interface to geom_rug()}
 \usage{
-gf_rug(object = NULL, gformula = NULL, data = NULL, geom = "rug",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_rug(object = NULL, gformula = NULL, data = NULL, sides = "bl", alpha,
+  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "rug", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
+
+gf_rugx(object = NULL, gformula = NULL, data = NULL, sides = "b", alpha,
+  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "rug", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
+
+gf_rugy(object = NULL, gformula = NULL, data = NULL, sides = "l", alpha,
+  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "rug", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
 of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
-\item{gformula}{A formula with shape \code{y ~ x}.
-Faceting can be achieved by including \code{|} in the formula.}
+\item{gformula}{A formula with shape \code{y ~ x} (\code{gf_rug()}) or \code{~ x} (\code{gf_rugx()}) or
+\code{~ y} (\code{gf_rugy()}).}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{sides}{A string that controls which sides of the plot the rugs appear on.
+It can be set to a string containing any of \code{"trbl"}, for top, right,
+bottom, and left.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -36,31 +79,18 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{sides}, \code{alpha}, \code{color}, \code{group}, \code{linetype}, \code{size}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Formula interface to geom_rug()
+\code{gf_rugx()} and \code{gf_rugy()} are versions that only add a rug to x- or y- axis.
+By default, these functions do not inherit from the formula in the original layer
+(because doing so would often result in rugs on both axes), so the formula is required.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.
@@ -100,14 +130,50 @@ in another.
 }
 
 \examples{
-gf_histogram(~eruptions, data = faithful) \%>\%
-gf_rug(~eruptions, data = faithful, color = "red", sides = "bl") \%>\%
-gf_rug(~eruptions, data = faithful, color = "navy", sides = "tr")
 gf_point(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
 gf_rug(Sepal.Length ~ Sepal.Width)
+
+# There are several ways to control x- and y-rugs separately
 gf_point(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
-gf_rug( x = ~ Sepal.Width, data = iris, color = "navy") \%>\%
-gf_rug( y = ~ Sepal.Length, data = iris, color = "red")
+gf_rugx( ~ Sepal.Width,  data = iris, color = "red") \%>\%
+gf_rugy(Sepal.Length ~ ., data = iris, color = "green")
+
+gf_point(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
+gf_rug(. ~ Sepal.Width,  data = iris, color = "red", inherit = FALSE) \%>\%
+gf_rug(Sepal.Length ~ ., data = iris, color = "green", inherit = FALSE)
+
+gf_point(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
+gf_rug(. ~ Sepal.Width,  data = iris, color = "red", sides = "b") \%>\%
+gf_rug(Sepal.Length ~ ., data = iris, color = "green", sides = "l")
+
+# jitter requires both an x and a y, but we can turn off one or the other with sides
+gf_jitter(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
+gf_rug(color = "green", sides = "b", position = "jitter")
+
+# rugs work with some 1-varialbe plots as well.
+gf_histogram( ~ eruptions, data = faithful) \%>\%
+gf_rug( ~ eruptions, data = faithful, color = "red")\%>\%
+gf_rug( ~ eruptions, data = faithful, color = "navy", sides = "t")
+
+# we can take advantage of inheritance to shorten the code
+gf_histogram( ~ eruptions, data = faithful) \%>\%
+gf_rug(color = "red") \%>\%
+gf_rug(color = "navy", sides = "t")
+
+# Need to turn off inheritance when using gf_dhistogram:
+gf_dhistogram( ~ eruptions, data = faithful) \%>\%
+gf_rug( ~ eruptions, data = faithful, color = "red", inherit = FALSE)
+
+# using jitter with gf_histogram() requires manually setting the y value.
+gf_dhistogram(~ Sepal.Width, data = iris) \%>\%
+gf_rug(0 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
+
+# the choice of y value can affect how the plot
+gf_dhistogram(~ Sepal.Width, data = iris) \%>\%
+gf_rug(0.5 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
+gf_jitter(Sepal.Length ~ Sepal.Width, data = iris) \%>\%
+gf_rug( Sepal.Length ~ . , data = iris, color = "green") \%>\%
+gf_rug( . ~ Sepal.Width, data = iris, color = "red")
 }
 \seealso{
 \code{\link[ggplot2:geom_rug]{ggplot2::geom_rug()}}

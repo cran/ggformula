@@ -9,7 +9,7 @@ functions and a system for working with pipes to create multi-layer
 plots and to refine plots.
 For plots with just one layer, the formula interface
 is more compact than native \pkg{ggplot2} code and is consistent with modeling
-functions like \code{\link[=lm]{lm()}} that use a formula interface and with the
+functions like \code{\link[stats:lm]{stats::lm()}} that use a formula interface and with the
 numerical summary functions in the \pkg{mosaic} package.
 }
 \details{

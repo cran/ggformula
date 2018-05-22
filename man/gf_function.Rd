@@ -32,8 +32,8 @@ interfaces for creating a layer that contains the graph of a function.
 \examples{
 gf_function(fun = sqrt, xlim = c(0, 10))
 if (require(mosaicData)) {
-  gf_histogram(..density.. ~ age, data = HELPrct, binwidth = 3, alpha = 0.6) \%>\%
-    gf_function(fun = dnorm,
+  gf_dhistogram(~ age, data = HELPrct, binwidth = 3, alpha = 0.6) \%>\%
+    gf_function(fun = stats::dnorm,
       args = list(mean = mean(HELPrct$age), sd = sd(HELPrct$age)),
       color = "red")
 }

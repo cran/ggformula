@@ -4,10 +4,12 @@
 \alias{gf_violin}
 \title{Formula interface to geom_violin()}
 \usage{
-gf_violin(object = NULL, gformula = NULL, data = NULL, geom = "violin",
-  stat = "ydensity", position = "dodge", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_violin(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
+  group, linetype, size, weight, draw_quantiles = NULL, trim = TRUE,
+  scale = "area", bw, adjust = 1, kernel = "gaussian", xlab, ylab, title,
+  subtitle, caption, geom = "violin", stat = "ydensity",
+  position = "dodge", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -18,6 +20,56 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
+
+\item{color}{A color or a formula used for mapping color.}
+
+\item{fill}{A color for filling, or a formula used for mapping fill.}
+
+\item{group}{Used for grouping.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{weight}{Useful for summarized data, \code{weight} provides a count
+of the number of values with the given combination of \code{x} and \code{y} values.}
+
+\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
+at the given quantiles of the density estimate.}
+
+\item{trim}{If \code{TRUE} (default), trim the tails of the violins
+to the range of the data. If \code{FALSE}, don't trim the tails.}
+
+\item{scale}{if "area" (default), all violins have the same area (before trimming
+the tails). If "count", areas are scaled proportionally to the number of
+observations. If "width", all violins have the same maximum width.}
+
+\item{bw}{The smoothing bandwidth to be used.
+If numeric, the standard deviation of the smoothing kernel.
+If character, a rule to choose the bandwidth, as listed in
+\code{\link[stats]{bw.nrd}}.}
+
+\item{adjust}{A multiplicate bandwidth adjustment. This makes it possible
+to adjust the bandwidth while still using the a bandwidth estimator.
+For exampe, \code{adjust = 1/2} means use half of the default bandwidth.}
+
+\item{kernel}{Kernel. See list of available kernels in \code{\link{density}}.}
+
+\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{title}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{subtitle}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
+
+\item{caption}{Title, sub-title, and caption for the plot.
+See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
@@ -36,31 +88,16 @@ of the attributes of the layer are mapped.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{alpha}, \code{color}, \code{fill}, \code{group}, \code{linetype}, \code{size}, \code{}, \code{draw_quatiles}, \code{trim}, \code{scale}, \code{bw}, \code{adjust}, \code{kernel}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Formula interface to geom_violin()
+Scatterplots in \code{ggformula}.
 }
 \details{
 Positional aesthetics are specified using the formula in \code{gformula}.

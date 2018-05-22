@@ -15,7 +15,8 @@ distribution for which the functions with names formed by prepending
 "d", "p", or "q" to \code{dist} exist can be used.}
 
 \item{...}{additional arguments passed both to the distribution functions and
-to the layer.  Note: avoid possible ambiguities using \code{params}.}
+to the layer.  Note: Possible ambiguities using \code{params} or by preceding plot
+arguemnt with \code{plot_}.}
 
 \item{xlim}{A numeric vector of length 2 providing lower and upper bounds for the
 portion of the distribution that will be displayed.  The default is to attempt
@@ -42,9 +43,10 @@ gf_dist("norm", color = "red")
 gf_dist("norm", color = "red", kind = "cdf")
 gf_dist("norm", fill = "red", kind = "histogram")
 gf_dist("norm", color = "red", kind = "qqstep", resolution = 25) \%>\%
-gf_dist("norm", color = "black", kind = "qq", resolution = 25)
-# This doesn't work well because size has two meanings
+gf_dist("norm", color = "black", kind = "qq", resolution = 25, size = 2, alpha = 0.5)
+# size is used as parameter for binomial distribution
 gf_dist("binom", size = 20, prob = 0.25)
-# This is better
-gf_dist("binom", params = list(size = 20, prob = 0.25))
+# If we want to adjust size argument for plots, we have two choices:
+gf_dist("binom", size = 20, prob = 0.25, plot_size = 2)
+gf_dist("binom", params = list(size = 20, prob = 0.25), size = 2)
 }

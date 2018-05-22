@@ -7,20 +7,20 @@
 \alias{gf_coefline}
 \title{Reference lines -- horizontal, vertical, and diagonal.}
 \usage{
-gf_abline(object = NULL, gformula = NULL, data = NULL, geom = "abline",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_abline(object = NULL, gformula = NULL, data = NULL, slope, intercept,
+  color, size, linetype, alpha, xlab, ylab, title, subtitle, caption,
+  show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
 
-gf_hline(object = NULL, gformula = NULL, data = NULL, geom = "hline",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_hline(object = NULL, gformula = NULL, data = NULL, yintercept, color,
+  size, linetype, alpha, xlab, ylab, title, subtitle, caption,
+  show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
 
-gf_vline(object = NULL, gformula = NULL, data = NULL, geom = "vline",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, environment = parent.frame(), xlab,
-  ylab, title, subtitle, caption, ...)
+gf_vline(object = NULL, gformula = NULL, data = NULL, xintercept, color,
+  size, linetype, alpha, xlab, ylab, title, subtitle, caption,
+  show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
 
 gf_coefline(object = NULL, coef = NULL, model = NULL, ...)
 }
@@ -31,24 +31,36 @@ See details and examples.}
 
 \item{gformula}{Must be \code{NULL}.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+   options:
 
-\item{geom}{A character string naming the geom used to make the layer.}
+   If \code{NULL}, the default, the data is inherited from the plot
+   data as specified in the call to \code{\link{ggplot}}.
 
-\item{stat}{A character string naming the stat used to make the layer.}
+   A \code{data.frame}, or other object, will override the plot
+   data. All objects will be fortified to produce a data frame. See
+   \code{\link{fortify}} for which variables will be created.
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+   A \code{function} will be called with a single argument,
+   the plot data. The return value must be a \code{data.frame.}, and
+   will be used as the layer data.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{slope}{Parameters that control the
+position of the line. If these are set, \code{data}, \code{mapping} and
+\code{show.legend} are overridden}
 
-\item{show.help}{If \code{TRUE}, display some minimal help.}
+\item{intercept}{Parameters that control the
+position of the line. If these are set, \code{data}, \code{mapping} and
+\code{show.legend} are overridden}
 
-\item{inherit}{A logical indicating whether default attributes are inherited.}
+\item{color}{A color or a formula used for mapping color.}
 
-\item{environment}{An environment in which to look for variables not found in \code{data}.}
+\item{size}{A numeric size or a formula used for mapping size.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
+\item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -63,12 +75,28 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.}
+
+\item{show.help}{If \code{TRUE}, display some minimal help.}
+
+\item{inherit}{A logical indicating whether default attributes are inherited.}
+
+\item{environment}{An environment in which to look for variables not found in \code{data}.}
+
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.
-Available attributes include
-\code{slope}, \code{intercept}}
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
+
+\item{yintercept}{Parameters that control the
+position of the line. If these are set, \code{data}, \code{mapping} and
+\code{show.legend} are overridden}
+
+\item{xintercept}{Parameters that control the
+position of the line. If these are set, \code{data}, \code{mapping} and
+\code{show.legend} are overridden}
 
 \item{coef}{A numeric vector of coefficients.}
 
@@ -82,12 +110,17 @@ as input for describing positional attributes of the plot.
 \examples{
 mtcars2 <- df_stats( wt ~ cyl, data = mtcars)
 gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) \%>\%
-  gf_abline(slope = 0, intercept = ~median, color = ~cyl, data = mtcars2)
+  gf_abline(slope = ~0, intercept = ~median, color = ~cyl, data = mtcars2)
+
 gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) \%>\%
-  gf_hline(slope = 0, yintercept = ~median, color = ~cyl, data = mtcars2)
+  gf_abline(slope = 0, intercept = 3, color = "green", data = mtcars2)
+
+gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) \%>\%
+  gf_hline(yintercept = ~median, color = ~cyl, data = mtcars2)
 
 gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
   gf_abline(color="red", slope = -0.10, intercept = 35)
+
 gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
   gf_abline(color = "red", slope = ~slope, intercept = ~intercept,
   data = data.frame(slope = -0.10, intercept = 33:35))
@@ -102,12 +135,18 @@ gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) \%>\%
 gf_point(mpg ~ hp, size = ~wt, data = mtcars, alpha = 0.3) \%>\%
   gf_hline(color = ~"horizontal", yintercept = ~c(20, 25), data = NA) \%>\%
   gf_vline(color = ~"vertical", xintercept = ~c(100, 200, 300), data = NA)
+
 gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) \%>\%
   gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
-  gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) \%>\%
+  gf_vline(color = ~c("4", "6", "8"), xintercept = ~c(80, 120, 250), data = NA)
+
+gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) \%>\%
+  gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
+  gf_vline(color = c("green", "red", "blue"), xintercept = c(80, 120, 250), data = NA)
+
 # reversing the layers requires using inherit = FALSE
-gf_hline(color = "orange", yintercept = ~20, data = NA) \%>\%
-  gf_vline(color = ~c("4", "6", "8"), xintercept = c(80, 120, 250), data = NA) \%>\%
+gf_hline(color = "orange", yintercept = 20, data = NA) \%>\%
+  gf_vline(color = ~c("4", "6", "8"), xintercept = ~c(80, 120, 250), data = NA) \%>\%
   gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3,
     inherit = FALSE)
 
