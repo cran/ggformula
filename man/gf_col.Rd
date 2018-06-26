@@ -64,18 +64,25 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Line plots in \code{ggformula}.  \code{gf_path()} differs from \code{gf_line()} in that points
-are connected in the order in which they appear in \code{data}.
+There are two types of bar charts: \code{geom_bar} makes the height of the
+bar proportional to the number of cases in each group (or if the
+\code{weight} aesthetic is supplied, the sum of the weights). If you want the
+heights of the bars to represent values in the data, use
+\link{geom_col} instead. \code{geom_bar} uses \code{stat_count} by
+default: it counts the number of cases at each x position. \code{geom_col}
+uses \code{stat_identity}: it leaves the data as is.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -87,12 +94,17 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 D <- data.frame(
   group = LETTERS[1:3],
@@ -107,7 +119,7 @@ if(require(dplyr) && require(mosaicData)) {
     group_by(substance) \%>\%
     summarise(count = n()) \%>\%
     ungroup() \%>\%
-    arrange(-count) \%>\%
+    dplyr::arrange(-count) \%>\%
     mutate(
       cumcount = cumsum(count),
       substance = reorder(substance, - count)
@@ -116,7 +128,7 @@ if(require(dplyr) && require(mosaicData)) {
     gf_point(cumcount ~ substance) \%>\%
     gf_line(cumcount ~ substance, group = 1) \%>\%
     gf_refine(
-      scale_y_continuous(sec.axis = sec_axis(~ . /nrow(HELPrct)))
+      scale_y_continuous(sec.axis = sec_axis( ~ . /nrow(HELPrct)))
     )
   }
 }

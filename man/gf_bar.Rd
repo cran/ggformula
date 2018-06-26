@@ -39,7 +39,19 @@ but typically using one of \code{\link[=gf_col]{gf_col()}}, \code{\link[=gf_prop
 to using this formula shape.)
 Faceting can be achieved by including \code{|} in the formula.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+options:
+
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
+
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[=fortify]{fortify()}} for which variables will be created.
+
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame.}, and
+will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -69,16 +81,20 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{geom}{A character string naming the geom used to make the layer.}
+\item{geom}{Override the default connection between \code{geom_bar} and
+\code{stat_count}.}
 
-\item{stat}{A character string naming the stat used to make the layer.}
+\item{stat}{Override the default connection between \code{geom_bar} and
+\code{stat_count}.}
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{show.help}{If \code{TRUE}, display some minimal help.}
 
@@ -88,21 +104,29 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{binwidth}{\code{geom_bar} no longer has a binwidth argument - if
 you use it you'll get an warning telling to you use
-\code{\link{geom_histogram}} instead.}
+\code{\link[=geom_histogram]{geom_histogram()}} instead.}
 }
 \value{
 a gg object
 }
 \description{
-Scatterplots in \code{ggformula}.
+There are two types of bar charts: \code{geom_bar} makes the height of the
+bar proportional to the number of cases in each group (or if the
+\code{weight} aesthetic is supplied, the sum of the weights). If you want the
+heights of the bars to represent values in the data, use
+\link{geom_col} instead. \code{geom_bar} uses \code{stat_count} by
+default: it counts the number of cases at each x position. \code{geom_col}
+uses \code{stat_identity}: it leaves the data as is.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -114,24 +138,29 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 if (require(mosaicData)) {
   gf_bar( ~ substance, data = HELPrct)
-  gf_bar( ~ substance, data = HELPrct, fill = ~sex)
-  gf_bar( ~ substance, data = HELPrct, fill = ~sex, position = position_dodge())
+  gf_bar( ~ substance, data = HELPrct, fill = ~ sex)
+  gf_bar( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
   # gf_counts() is another name for gf_bar()
-  gf_counts( ~ substance, data = HELPrct, fill = ~sex, position = position_dodge())
+  gf_counts( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
   # gf_props() and gf_percents() use proportions or percentages instead of counts
-  gf_props( ~ substance, data = HELPrct, fill = ~sex, position = position_dodge())
-  gf_percents( ~ substance, data = HELPrct, fill = ~sex, position = position_dodge())
+  gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
+  gf_percents( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
   if (require(scales)) {
-    gf_props( ~ substance, data = HELPrct, fill = ~sex, position = position_dodge()) \%>\%
+    gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge()) \%>\%
       gf_refine(scale_y_continuous(labels = scales::percent))
   }
 }

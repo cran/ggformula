@@ -24,12 +24,11 @@ NA
 #' @param params a list of parameters for the distribution.
 #' @export
 #' @examples
-#' gf_histogram( ..density.. ~ rnorm(100), bins = 20) %>%
+#' gf_dhistogram( ~ rnorm(100), bins = 20) %>%
 #'   gf_dist("norm", color = "red")
 #'
-#' gf_dist(dist = "norm", color = "red")
-#'
-#' gf_dist("norm", color = "red")
+#' # shading tails -- but see pdist() for this
+#' gf_dist("norm", fill = ~(abs(x) <= 2), geom = "area")
 #' gf_dist("norm", color = "red", kind = "cdf")
 #' gf_dist("norm", fill = "red", kind = "histogram")
 #' gf_dist("norm", color = "red", kind = "qqstep", resolution = 25) %>%
@@ -41,7 +40,7 @@ NA
 #' gf_dist("binom", params = list(size = 20, prob = 0.25), size = 2)
 
 gf_dist <- function(
-  object = geom_blank(),
+  object = ggplot(),
   dist, ...,
   xlim = NULL,
 #  xmin = NULL, xmax = NULL,

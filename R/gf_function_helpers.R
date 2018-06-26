@@ -6,10 +6,38 @@ utils::globalVariables("role")
 #' @importFrom stats as.formula
 #' @importFrom utils modifyList
 #' @importFrom rlang is_character exprs f_rhs is_formula is_null enquo
-# #' @importFrom mosaicCore reop_formula
+#' @importFrom rlang get_expr
 #' @import ggplot2
-# produces a gf_ function wrapping a particular geom.
-# use gf_roxy to create boilerplate roxygen documentation to match (and then edit by hand as needed).
+NA
+
+
+#' Create a ggformula layer function
+#'
+#' Primarily intended for package developers, this function factory
+#' is used to create the layer functions in the ggformula package.
+#'
+#' @param geom The geom to use for the layer
+#'   (may be specified as a string).
+#' @param position The position function to use for the layer
+#'   (may be specified as a string).
+#' @param stat The stat function to use for the layer
+#'   (may be specified as a string).
+#' @param pre code to run as a "pre-process".
+#' @param aes_form A single formula or a list of formulas specifying
+#'   how attributes are inferred from the formula.  Use `NULL` if the
+#'   funciton may be used without a formula.
+#' @param extras An alist of additional arguments (potentially with defaults)
+#' @param note A note to add to the quick help.
+#' @param aesthetics Additional aesthetics (typically created using
+#'   [`ggplot2::aes()`]) set rather than inferred from formula.
+#'   `gf_dhistogram()` uses this to set the y aesthetic to `stat(density)`,
+#'   for example.
+#' @param inherit.aes A logical indicating whether aesthetics should be
+#'   inherited from prior layers.
+#' @param data A data frame or `NULL` or `NA`.
+#' @param layer_fun The function used to create the layer.
+#' @return A function.
+#' @export
 
 layer_factory <- function(
   geom = "point",
@@ -24,10 +52,13 @@ layer_factory <- function(
   data = NULL,
   layer_fun = ggplot2::layer
 ) {
+
+
   # do any preprosessing required
   pre <- substitute(pre)
 
   extra_names <- names(extras)
+
 
   if (!is.logical(inherit.aes)) {
     inherited.aes <- inherit.aes
@@ -41,21 +72,22 @@ layer_factory <- function(
   res <-
     function( xlab, ylab, title, subtitle, caption,
               show.legend , function_name, inherit,
-              environment = parent.frame(), ...) {
+              environment = parent.frame(),
+              ...) {
 
       eval(pre)
-
       # merge extras and dots into single list
       dots <- list(...)
 
       function_name <- as.character(match.call()[1])
+
 
       # make sure we have a list of formulas here
       if (!is.list(aes_form)) aes_form <- list(aes_form)
 
       # show help if requested or if there are no arguments to the function
       if (is.null(show.help)) {
-        show.help <- length(match.call()) < 2 # && is.null(object)
+        show.help <- length(match.call()) < 2
       }
 
       if (show.help) {
@@ -75,6 +107,14 @@ layer_factory <- function(
         data <- object
         object <- NULL
       }
+
+      # not sure whether we should use the environment recorded in object or not,
+      # but this is how/where to do it.
+
+      # if (inherits(object, "gg") && packageVersion("ggplot2") > "2.2.1") {
+      #   environment <- object$plot_env
+      # }
+
 
       # # allow some operations in formulas without requiring I()
       # gformula <- mosaicCore::reop_formula(gformula)
@@ -100,19 +140,48 @@ layer_factory <- function(
       ############# create extras_and_dots ############
       # collect arguments
       #  * remove those that are "missing"
-      #  * remove function args not for layers
+      #  * remove function args not for layer, stat, or geom
+
+      # grab formals for geom and stat
+
+      if (is.character(stat) && ! grepl("^stat_", stat)) {
+        stat_formals <- formals(paste0("stat_", stat))
+      } else if (is.function(stat)) {
+        stat_formals <- formals(stat)
+      } else {
+        stat_formals <- list()
+      }
+
+      if (is.character(geom) && ! grepl("^geom_", geom)) {
+        geom_formals <- formals(paste0("geom_", geom))
+      } else if (is.function(geom)) {
+        geom_formals <- formals(geom)
+      } else {
+        geom_formals <- list()
+      }
+
       extras_and_dots <- modifyList(formals(), as.list(match.call())[-1])
-      extras_and_dots <- extras_and_dots[! sapply(extras_and_dots, is.symbol)]
-      for (n in setdiff(names(formals()), names(extras))) {
+      # remove missing -- is there a better way to determine missing?
+      extras_and_dots <-
+        extras_and_dots[! sapply(extras_and_dots,
+                                 function(x) is.symbol(x) && identical(as.character(x), ""))]
+      # remove args not used by stat or geom and not in extras
+      for (n in setdiff(names(formals()),
+                        union(
+                          union(
+                            stat_formals,
+                            geom_formals),
+                          names(extras)))
+           ) {
         extras_and_dots[[n]] <- NULL
       }
-      # evaluate any items that are still calls
-      # for (n in seq_along(extras_and_dots)) {
-      #   if (is.call(extras_and_dots[[n]]))
-      #     extras_and_dots[[n]] <- eval(extras_and_dots[[n]], environment)
-      # }
+
+      # evaluate any items that are names or still calls
       extras_and_dots <-
-        lapply(extras_and_dots, function(x) eval(x, environment))
+        lapply(extras_and_dots, function(x) {
+          if(is.symbol(x) || is.call(x)) eval(x, environment) else x
+        }
+        )
       #
       ########### end create extras_and_dots ##########
 
@@ -129,13 +198,21 @@ layer_factory <- function(
       # look for arguments of the form argument = ~ something and turn them
       # into aesthetics
       if (length(extras_and_dots) > 0) {
-        # proceed backwards through list so that removing items doesn't mess up indexing
-        for (i in length(extras_and_dots):1L) {
-          if (is_formula(extras_and_dots[[i]]) && length(extras_and_dots[[i]]) == 2L) {
-            aesthetics[[names(extras_and_dots)[i]]] <- extras_and_dots[[i]][[2]]
-            extras_and_dots[[i]] <- NULL
-          }
-        }
+        w <- which(
+          sapply(extras_and_dots, function(x) {is_formula(x) && length(x) == 2L})
+        )
+        aesthetics <- add_aes(aesthetics, extras_and_dots[w])
+        extras_and_dots[w] <- NULL
+
+        # # proceed backwards through list so that removing items doesn't mess up indexing
+        # for (i in length(extras_and_dots):1L) {
+        #   if (is_formula(extras_and_dots[[i]]) && length(extras_and_dots[[i]]) == 2L) {
+        #     aesthetics <-
+        #       add_aes(aesthetics, names(extras_and_dots)[i], extras_and_dots[[i]][[2]])
+        #     # aesthetics[[names(extras_and_dots)[i]]] <- extras_and_dots[[i]][[2]]
+        #     extras_and_dots[[i]] <- NULL
+        #   }
+        # }
       }
 
       # remove symbols from extras_and_dots (why?)
@@ -149,6 +226,7 @@ layer_factory <- function(
       # add in selected additional aesthetics -- partial inheritance
       if (add) {
         for (aes.name in inherited.aes) {
+          # aesthetics <- add_aes(aesthetics, aes.name, object$mapping[[aes.name]])
           aesthetics[[aes.name]] <- object$mapping[[aes.name]]
         }
       }
@@ -191,6 +269,12 @@ layer_factory <- function(
             ingredients[["params"]]
           )
       }
+# =======
+#     }
+#     # bring back the dots into the arguments handed to the layer function
+#     if ("..." %in% names(formals(layer_fun)))
+#         layer_args <- c(layer_args, dots[ !names(dots) %in% names(formals(layer_fun))])
+# >>>>>>> Issue070
 
       # If no ..., be sure to remove things not in the formals list
       if (! "..." %in% names(formals(layer_fun))) {
@@ -217,22 +301,25 @@ layer_factory <- function(
           p <- object + new_layer
         } else {
           p <-
-            ggplot(
-              data = ingredients$data,
-              mapping = ingredients[["mapping"]],
-              environment = environment
-            ) + new_layer
+            do.call(
+              ggplot,
+              list( data = ingredients$data,
+                    mapping = ingredients[["mapping"]]
+              ), envir = environment
+            ) +
+            new_layer
         }
       } else {
         if (add) {
           p <- object + new_layer + ingredients[["facet"]]
         } else {
-          p <-
-            ggplot(
+          p <- do.call(
+            ggplot,
+            list(
               data = ingredients$data,
-              mapping = ingredients[["mapping"]],
-              environment = environment
-            ) +
+              mapping = ingredients[["mapping"]]
+            ), envir= environment
+          ) +
             new_layer +
             ingredients[["facet"]]
         }
@@ -290,6 +377,20 @@ layer_factory <- function(
   assign("inherit.aes", inherit.aes, environment(res))
   assign("pre", pre, environment(res))
   assign("extras", extras, environment(res))
+  res
+}
+
+add_aes <- function(mapping, new) {
+  # convert ~ x into just x (as a name)
+  if (length(new) > 0L) {
+    for (i in 1L:length(new)) {
+      if (is_formula(new[[i]]) && length(new[[i]] == 2L)) {
+        new[[i]] <- new[[i]][[2]]
+      }
+    }
+  }
+  new <- do.call(aes, new)
+  res <- modifyList(mapping, new)
   res
 }
 
@@ -457,6 +558,8 @@ have_arg <- function(arg, env = sys.frame(-1)) {
     !(inherits(L[[arg]], "name") && as.character(L[[arg]]) == "")
 }
 
+#' @importFrom utils packageVersion
+
 gf_ingredients <-
   function(formula = NULL, data = NULL,
            extras = list(),
@@ -478,32 +581,50 @@ gf_ingredients <-
       names(data)
     }
 
-  aes_df <-
-    rbind(
-      formula_to_df(fs[["formula"]], var_names, aes_form = aes_form),
-      data.frame(
-        role = names(aesthetics),
-        expr = sapply(aesthetics, deparse),
-        map  = rep(TRUE, length(aesthetics)),
-        stringsAsFactors = FALSE
+  # create mapping -- using method appropriate for version
+  # of ggplot2 that is installed
+
+  if (packageVersion("ggplot2") <= "2.2.1") {
+    aes_df <-
+      rbind(
+        formula_to_df(fs[["formula"]], var_names, aes_form = aes_form),
+        data.frame(
+          role = names(aesthetics),
+          expr = sapply(aesthetics, deparse),
+          map  = rep(TRUE, length(aesthetics)),
+          stringsAsFactors = FALSE
+        )
       )
-    )
 
+    mapped_list <- as.list(aes_df[["expr"]][aes_df$map])
+    names(mapped_list) <- aes_df[["role"]][aes_df$map]
 
-  mapped_list <- as.list(aes_df[["expr"]][aes_df$map])
-  names(mapped_list) <- aes_df[["role"]][aes_df$map]
+    set_list <- as.list(aes_df[["expr"]][!aes_df$map])
+    names(set_list) <- aes_df[["role"]][!aes_df$map]
+    set_list <- modifyList(extras, set_list)
 
-  set_list <- as.list(aes_df[["expr"]][!aes_df$map])
-  names(set_list) <- aes_df[["role"]][!aes_df$map]
-  set_list <- modifyList(extras, set_list)
+    # mapping <- modifyList(do.call(aes, aesthetics), do.call(aes_string, mapped_list))
+    mapping <- modifyList(aesthetics, do.call(aes_string, mapped_list))
+  } else { # new version of ggplot2
+    aes_df <-
+      formula_to_df(fs[["formula"]], var_names, aes_form = aes_form)
 
-  mapping <- modifyList(do.call(aes, aesthetics), do.call(aes_string, mapped_list))
-  # remove item -> . mappings
-  for (item in names(mapping)) {
-    if (mapping[[item]] == as.name(".")) {
-      mapping[[item]] <- NULL
-    }
+    mapped_list <- as.list(aes_df[["expr"]][aes_df$map])
+    names(mapped_list) <- aes_df[["role"]][aes_df$map]
+    more_mapped_list <-
+      lapply(aesthetics, function(x) deparse(rlang::get_expr(x))) %>%
+      stats::setNames(names(aesthetics))
+    mapped_list <-  c(mapped_list, more_mapped_list)
+
+    set_list <- as.list(aes_df[["expr"]][!aes_df$map])
+    names(set_list) <- aes_df[["role"]][!aes_df$map]
+    set_list <- modifyList(extras, set_list)
+
+    mapping <- modifyList(aesthetics, do.call(aes_string, mapped_list))
   }
+
+  mapping <- remove_dot_from_mapping(mapping)
+
 
   res <-
     list(
@@ -519,10 +640,18 @@ gf_ingredients <-
       params = modifyList(set_list, extras)
     )
   if (identical(data, NA)) {
-    res$data <-
-      do.call(
-        data.frame,
-        c(res[["mapping"]], res[["setting"]], list(stringsAsFactors = FALSE)))
+    if (packageVersion("ggplot2") <= "2.2.1") {
+      res$data <-
+        do.call(
+          data.frame,
+          c(res[["mapping"]], res[["setting"]], list(stringsAsFactors = FALSE)))
+    } else {
+      res$data <-
+        do.call(
+          data.frame,
+          c(lapply(res[["mapping"]], rlang::get_expr), res[["setting"]],
+            list(stringsAsFactors = FALSE)))
+    }
     res$params[names(res$mapping)] <- NULL  # remove mapped attributes
     aes_list <- as.list(intersect(names(res$data), names(res$mapping)))
     names(aes_list) <- aes_list
@@ -533,6 +662,24 @@ gf_ingredients <-
   res
 }
 
+
+# remove item -> . mappings
+remove_dot_from_mapping <- function(mapping) {
+  if (packageVersion("ggplot2") <= "2.2.1") {
+    for (item in names(mapping)) {
+      if (mapping[[item]] == as.name(".")) {
+        mapping[[item]] <- NULL
+      }
+    }
+  } else {
+    for (item in rev(seq_along(mapping))) {
+      if (identical(rlang::get_expr(mapping[[item]]), quote(.))) {
+        mapping[[item]] <- NULL
+      }
+    }
+  }
+  mapping
+}
 
 formula_shape <- function(x) {
   if (length(x) < 2) return(0)

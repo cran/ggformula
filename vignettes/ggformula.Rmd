@@ -15,7 +15,11 @@ have_packages <-
   require(dplyr) &&
   require(ggplot2) &&
   require(mosaicData) &&
-  require(mosaicModel)
+  require(maps) &&
+  require(mosaic) &&
+  require(dplyr) %%
+  requireNamespace("mosaicModel")
+  
 
 knitr::opts_chunk$set(
   fig.show = "hold",
@@ -26,13 +30,14 @@ knitr::opts_chunk$set(
 theme_set(theme_light())
 ```
 
-```{r, eval = !have_packages, echo = FALSE, results = 'asis'}
+```{r, eval = ! have_packages, echo = FALSE, results = 'asis'}
 cat(
 "
 ## Warning: Missing packages
 
 Because one or more of 
-`ggformula`, `ggplot2`, `dplyr`, `mosaicModel` and `mosaicData` 
+`ggformula`, `ggplot2`, `dplyr`, `mosaicData`, `mosaicModel`,
+`maps`, `mosaic`, and `dplyr`
 appears to be missing, this vignette is compiling
 without executing any code. 
 
@@ -285,7 +290,8 @@ gf_boxplot(net ~ year, group = ~ year, data = Runners)
 
 But often, is is better to convert a discrete quantitative variable used for grouping into
 a categorical variable (a factor or character vector). This can be done in several ways:
-```{r, factors, fig.keep = 1, fig.width = 5}
+
+```{r, factors, fig.keep = 1, fig.width = 5, echo = TRUE}
 # add a new variable to the data
 Runners$the_year <- as.character(Runners$year)               # in base R
 Runners <- Runners %>% mutate(the_year = as.character(year)) # in dplyr
@@ -408,7 +414,34 @@ gf_bar( ~ age, data = HELPrct, stat = "bin")
   * `gf_violin()`, `gf_density()`, and `gf_density2d()` use stats to compute a 
   sequence of points along an estimated density.  It is these points, and the not
   the raw data that are used to create the plot.
+
+There are also a number of stats that can be used to show a 
+functional relationship between two variables.
+
+* `gf_smooth()` plots a model fit using `lm()`, `glm()`, `gam()`, 
+ `loess()`, `MASS::rlm()`.
  
+* `gf_lm()` is `gf_smooth()` with the method set to `lm()` so it 
+ plots a least squares regression line.
+ 
+* `gf_spline()` plots a spline fit to the data.
+ 
+```{r}
+gf_point(length ~ width, data = KidsFeet, color = ~ sex) %>%
+  gf_lm()
+gf_point(births ~ date, color = ~wday,
+         data = mosaicData::Births, alpha = 0.25) %>%
+  gf_smooth()
+```
+
+Confidence or prediction bands can be added to these as well.
+
+```{r}
+gf_point(length ~ width | sex, data = KidsFeet, color = ~ sex) %>%
+  gf_lm(interval = "prediction", fill = "red") %>%
+  gf_lm(interval = "confidence", fill = "navy")
+```
+
 Mostly, the stats selected by default are just the ones you need. But sometimes
 it is useful to select a different stat.  The `stat_summary()` and 
 `stat_summary_bin()` stats are particularly useful in this respect.
@@ -427,13 +460,13 @@ gf_jitter(length ~ sex, color = ~ domhand, data = KidsFeet,
           group = ~ domhand, stat="summary")
 ```
 
-The other two values computed by `mean_se()` are available as
-`..ymin..` and `..ymax..`.
+The other two values computed by `mean_se()` are available (starting with 
+`ggplot2` version 2.3) as `stat(ymin)` and `stat(ymax)`.
 
-```{r, stats03}
+```{r, stats03, eval = utils::packageVersion("ggplot2") > "2.2.1"}
 gf_jitter(length ~ sex, color = ~ domhand, data = KidsFeet,
           width = 0.1, height = 0, alpha = 0.3) %>%
-  gf_pointrange(length + ..ymin.. + ..ymax.. ~ sex, 
+  gf_pointrange(length + stat(ymin) + stat(ymax) ~ sex, 
                 color = ~ domhand, data = KidsFeet, 
                 group = ~ domhand, stat="summary")
 ```
@@ -443,16 +476,35 @@ or a single function `fun.data` that returns a data frame with variables
 named `y`, `ymin`, and `ymax`.
 
 
-```{r, stats04}
+```{r, stats04, eval = utils::packageVersion("ggplot2") > "2.2.1"}
 gf_point(length ~ sex, color = ~ domhand, data = KidsFeet,
           width = 0.1, height = 0, alpha = 0.5,
           position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.3)) %>%
-  gf_pointrange(length + ..ymin.. + ..ymax.. ~ sex, 
+  gf_pointrange(length + stat(ymin) + stat(ymax) ~ sex, 
                 color = ~ domhand, data = KidsFeet, 
                 group = ~ domhand, stat="summary",
                 fun.y = median, fun.ymin = min, fun.ymax = max,
                 position = position_dodge(width = 0.6))
 ```
+
+
+### Plotting functions
+
+`ggformula` provides two way to plot functions: `gf_function()` and `gf_fun()`.  They differ primarily in how one specifies the function to be plotted.  
+
+ * `gf_function()` requires a (vectorized) function of one variable.
+ * `gf_fun()` requires a formula describing how the y-values are computed from the x-values.
+ 
+If these are used as a first layer, the limits for the x-axis must be specified.
+ 
+```{r, functions}
+gf_function(fun = sqrt, xlim = c(0, 10)) %>%
+  gf_fun(2 + 3 * cos(10 * x) ~ x, color = "red", n = 800)
+f <- makeFun(lm(totalbill ~ poly(month, 2), data = mosaicData::Utilities))
+gf_point(totalbill ~ month, data = mosaicData::Utilities, alpha = 0.6) %>%
+  gf_fun(f(m) ~ m, color = "red")
+```
+
 
 ## Chaining to create complex plots
 
@@ -521,8 +573,9 @@ gf_linerange(low_temp + high_temp ~ date, color = ~ avg_temp, data = Weather) %>
 
 ### Maps
 
-Improved map functionality is coming in `ggplot2` version 2.3.  For now,
-basic maps can be created using `gf_polygon()`.
+
+Prior to `ggplot2` version 2.3,
+basic maps could be created using `gf_polygon()`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "75%"}
 if (require(maps) && require(mosaic) && require(dplyr)) {
@@ -540,6 +593,33 @@ if (require(maps) && require(mosaic) && require(dplyr)) {
   gf_refine(mosaic::theme_map())
 }
 ```
+
+Starting with `ggplot2` version 2.3, there is direct support for shape files.
+This allows each row of a data frame to contain all the geometry information
+for a region in a single column.  There is also better support for overlaying
+information from multiple shape files.
+
+
+```{r, fig.width = 6, fig.height = 3, out.width = "75%"}
+if (require(maps) && require(mosaic) && require(dplyr) && require(sf) && require(purrr)) {
+  USshape <- 
+    sf::st_as_sf(maps::map('state', plot = FALSE, fill = TRUE)) %>%
+    dplyr::mutate(
+      name_length = nchar(ID),
+      centroid = purrr::map(geometry, st_centroid),
+      coords_x = purrr::map_dbl(centroid, 1),
+      coords_y = purrr::map_dbl(centroid, 2)
+    ) 
+    
+  gf_sf(fill = ~ factor(name_length), color = "white", data = USshape, alpha = 0.5) %>%
+    gf_sf(data = sf::st_centroid(USshape), color = "white", alpha = 0.5, size = 3) %>%
+    gf_text(coords_y ~ coords_x, label = ~ ID, color = "gray20", size = 2) %>%
+    gf_labs(x = "", y = "") %>%
+    gf_refine(mosaic::theme_map(), theme_bw()) %>%
+    gf_labs(fill = "name length")
+}
+```
+
 
 ### New types of plots
 
@@ -563,22 +643,35 @@ gf_ash( ~ age, data = HELPrct, binwidth = 10) %>%
 
 `gf_dist()` can be used to create plots of discrete and continuous distributions.
 
+
 ```{r}
 gf_dist("pois", lambda = 5)
 gf_dist("pois", lambda = 5, kind = "cdf")
-gf_dist("gamma", shape = 3, rate = 4)
+gf_dist("gamma", shape = 3, rate = 4, geom = "area")
+gf_dist("gamma", shape = 3, rate = 4, geom = "area", fill = ~ (x <= 1))
 gf_dist("gamma", shape = 3, rate = 4, kind = "cdf")
 ```
 
+When distribution parameters and plot attributes have the same name, 
+there are two ways to avoid the name colision:
+
+```{r}
+# size is used by the binomial distribution functions and when plotting
+gf_dist("binom", size = 20, prob = 0.25, plot_size = 3)
+gf_dist("binom", params = list(size = 20, prob = 0.25), size = 3)
+```
+
+
+
 `ggformula` also provides an interface to `MASS::fitdistr()` for fitting distributions
-to day and displaying the resulting pdf.
+to data and displaying the resulting pdf.
 
 ```{r}
 x <- rgamma(1000, shape = 2, rate = 5)
 gf_dhistogram( ~ x, alpha = 0.3) %>%
-  gf_fitdistr() %>%         # normal fit by default
-  gf_fitdistr(dist = "dgamma", color = "blue") %>%
-  gf_fitdistr(dist = "dweibull", color = "red")
+  gf_fitdistr(dist = "dnorm", color = ~ "Normal") %>% 
+  gf_fitdistr(dist = "dgamma", color = ~ "Gamma") %>%
+  gf_fitdistr(dist = "dweibull", color = ~ "Weibull")
 ```
 
 ### Global plot adjustments

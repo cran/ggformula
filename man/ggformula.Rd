@@ -4,6 +4,11 @@
 \alias{ggformula}
 \title{Formula interface to ggplot2}
 \description{
+Formula interface to ggplot2
+}
+\section{The ggformula system}{
+
+
 The functions in \pkg{ggformula} provide a formula interface to \pkg{ggplot2} layer
 functions and a system for working with pipes to create multi-layer
 plots and to refine plots.
@@ -12,8 +17,12 @@ is more compact than native \pkg{ggplot2} code and is consistent with modeling
 functions like \code{\link[stats:lm]{stats::lm()}} that use a formula interface and with the
 numerical summary functions in the \pkg{mosaic} package.
 }
-\details{
-Positional aesthetics are typically specified using a formula (see the \code{gformula} argument).
+
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a aesthetics) are typically specified using a formula
+(see the \code{gformula} argument).
 Setting and mapping of additional attributes can be done through the use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
 mapped using arguments of the form \code{attribute = ~ expression}.
@@ -25,12 +34,16 @@ In formulas of the form \code{A | B}, \code{B} will be used to form facets using
 This provides an alternative to \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 apropos("gf_")
 gf_point()

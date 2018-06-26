@@ -26,18 +26,18 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{The data to be displayed in this layer. There are three
-   options:
+options:
 
-   If \code{NULL}, the default, the data is inherited from the plot
-   data as specified in the call to \code{\link{ggplot}}.
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
 
-   A \code{data.frame}, or other object, will override the plot
-   data. All objects will be fortified to produce a data frame. See
-   \code{\link{fortify}} for which variables will be created.
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[=fortify]{fortify()}} for which variables will be created.
 
-   A \code{function} will be called with a single argument,
-   the plot data. The return value must be a \code{data.frame.}, and
-   will be used as the layer data.}
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame.}, and
+will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -73,7 +73,9 @@ a call to a position adjustment function.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
-\code{FALSE} never includes, and \code{TRUE} always includes.}
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{show.help}{If \code{TRUE}, display some minimal help.}
 
@@ -83,7 +85,7 @@ a call to a position adjustment function.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{fatten}{A multiplicative factor used to increase the size of the
@@ -91,9 +93,8 @@ middle bar in \code{geom_crossbar()} and the middle point in
 \code{geom_pointrange()}.}
 }
 \description{
-For each x value, \code{geom_ribbon} displays a y interval defined
-by \code{ymin} and \code{ymax}. \code{geom_area} is a special case of
-\code{geom_ribbon}, where the \code{ymin} is fixed to 0.
+Various ways of representing a vertical interval defined by \code{x},
+\code{ymin} and \code{ymax}. Each case draws a single graphical object.
 }
 \examples{
 gf_linerange()

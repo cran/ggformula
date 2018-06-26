@@ -4,7 +4,7 @@
 \alias{gf_dist}
 \title{Plot distributions}
 \usage{
-gf_dist(object = geom_blank(), dist, ..., xlim = NULL, kind = c("density",
+gf_dist(object = ggplot(), dist, ..., xlim = NULL, kind = c("density",
   "cdf", "qq", "qqstep", "histogram"), resolution = 5000L, params = NULL)
 }
 \arguments{
@@ -34,12 +34,11 @@ the plot.}
 Create a layer displaying a probability distribution.
 }
 \examples{
-gf_histogram( ..density.. ~ rnorm(100), bins = 20) \%>\%
+gf_dhistogram( ~ rnorm(100), bins = 20) \%>\%
   gf_dist("norm", color = "red")
 
-gf_dist(dist = "norm", color = "red")
-
-gf_dist("norm", color = "red")
+# shading tails -- but see pdist() for this
+gf_dist("norm", fill = ~(abs(x) <= 2), geom = "area")
 gf_dist("norm", color = "red", kind = "cdf")
 gf_dist("norm", fill = "red", kind = "histogram")
 gf_dist("norm", color = "red", kind = "qqstep", resolution = 25) \%>\%

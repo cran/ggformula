@@ -4,7 +4,7 @@
 \alias{gf_fitdistr}
 \title{Plot density function based on fit to data}
 \usage{
-gf_fitdistr(object = NULL, gformula = NULL, data = NULL, dist = dnorm,
+gf_fitdistr(object = NULL, gformula = NULL, data = NULL, dist = "dnorm",
   start = NULL, alpha, color, fill, group, linetype, size, xlab, ylab, title,
   subtitle, caption, geom = "path", stat = "fitdistr",
   position = "identity", show.legend = NA, show.help = NULL,
@@ -19,7 +19,8 @@ to be fit to a family of distributions.}
 
 \item{data}{A data frame containing the variable to be fitted.}
 
-\item{dist}{A distribution.}
+\item{dist}{A quoted name of a distribution function.
+See \code{\link[mosaicCore:fit_distr_fun]{mosaicCore::fit_distr_fun()}} for more details about allowable distributions.}
 
 \item{start}{Starting value(s) for the search for MLE.  (See \link[MASS:fitdistr]{MASS::fitdistr}.)}
 
@@ -75,8 +76,10 @@ a gg object
 \code{MASS::fitdistr()} is used to fit coefficients of a specified family of
 distributions and the resulting density curve is displayed.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -88,12 +91,17 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 if (require(mosaicData)) {
   gf_fitdistr( ~ length, data = KidsFeet, inherit = FALSE) \%>\%
@@ -104,20 +112,20 @@ if (require(mosaicData)) {
 
   set.seed(12345)
   Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
-  gf_dhistogram(~g, data = Dat) \%>\%
-    gf_fitdistr(dist = dgamma)
+  gf_dhistogram( ~ g, data = Dat) \%>\%
+    gf_fitdistr(dist = "dgamma")
 
-  gf_dhistogram(~f, data = Dat) \%>\%
-    gf_fitdistr(dist = df)
+  gf_dhistogram( ~ g, data = Dat) \%>\%
+    gf_fun(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
 
-  gf_dhistogram(~g, data = Dat) \%>\%
-    gf_fun(mosaicCore::fit_distr_fun(~g, data = Dat, dist = dgamma))
+  gf_dhistogram( ~ f, data = Dat) \%>\%
+    gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
 
   # fitted parameters are default argument values
   args(
-    mosaicCore::fit_distr_fun(~f, data = Dat, dist = df,
-      start = list(df1 = 10, df2 = 10)))
-  args(mosaicCore::fit_distr_fun(~g, data = Dat, dist = dgamma))
+    mosaicCore::fit_distr_fun( ~ f, data = Dat, dist = "df",
+      start = list(df1 = 2, df2 = 50)))
+  args(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
 
 }
 }

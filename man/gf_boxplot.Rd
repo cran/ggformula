@@ -21,7 +21,19 @@ See details and examples.}
 \item{gformula}{A formula with shape \code{y ~ x}.
 Faceting can be achieved by including \code{|} in the formula.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+options:
+
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
+
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[=fortify]{fortify()}} for which variables will be created.
+
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame.}, and
+will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -36,53 +48,89 @@ for mapping linetype.}
 
 \item{size}{A numeric size or a formula used for mapping size.}
 
-\item{coef}{length of the whiskers as multiple of IQR.  Defaults to 1.5}
+\item{coef}{Length of the whiskers as multiple of IQR. Defaults to 1.5.}
 
 \item{outlier.color}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
+
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
 
 \item{outlier.fill}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
+
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
 
 \item{outlier.shape}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
+
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
 
 \item{outlier.size}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
+
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
 
 \item{outlier.stroke}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
+
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
 
 \item{outlier.alpha}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-  aesthetics used for the box.
+aesthetics used for the box.
 
-  In the unlikely event you specify both US and UK spellings of colour, the
-  US spelling will take precedence.}
+In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.
 
-\item{notch}{if \code{FALSE} (default) make a standard box plot. If
+Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.}
+
+\item{notch}{If \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, make a notched box plot. Notches are used to compare groups;
 if the notches of two boxes do not overlap, this suggests that the medians
 are significantly different.}
 
-\item{notchwidth}{for a notched box plot, width of the notch relative to
+\item{notchwidth}{For a notched box plot, width of the notch relative to
 the body (default 0.5)}
 
-\item{varwidth}{if \code{FALSE} (default) make a standard box plot. If
+\item{varwidth}{If \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, boxes are drawn with widths proportional to the
 square-roots of the number of observations in the groups (possibly
 weighted, using the \code{weight} aesthetic).}
@@ -100,16 +148,20 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{geom}{A character string naming the geom used to make the layer.}
+\item{geom}{Use to override the default connection between
+\code{geom_boxplot} and \code{stat_boxplot}.}
 
-\item{stat}{A character string naming the stat used to make the layer.}
+\item{stat}{Use to override the default connection between
+\code{geom_boxplot} and \code{stat_boxplot}.}
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{show.help}{If \code{TRUE}, display some minimal help.}
 
@@ -119,18 +171,21 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
 }
 \description{
-Line plots in \code{ggformula}.  \code{gf_path()} differs from \code{gf_line()} in that points
-are connected in the order in which they appear in \code{data}.
+The boxplot compactly displays the distribution of a continuous variable.
+It visualises five summary statistics (the median, two hinges
+and two whiskers), and all "outlying" points individually.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -142,30 +197,35 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 if (require(mosaicData)) {
   gf_boxplot(age ~ substance, data = HELPrct)
   gf_boxplot(age ~ substance, data = HELPrct, varwidth = TRUE)
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~sex)
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~sex, outlier.color = "gray50")
+  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex)
+  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, outlier.color = "gray50")
   # longer whiskers
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~sex, coef = 2)
+  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, coef = 2)
   # Note: width for boxplots is full width of box.  For jittering, it is the
   # half-width.
   gf_boxplot(age ~ substance | sex, data = HELPrct, coef = 5, width = 0.4) \%>\%
     gf_jitter(width = 0.2, alpha = 0.3)
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~sex, position = position_dodge(width = 0.9))
+  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, position = position_dodge(width = 0.9))
 }
 }
 \references{
 McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of
-    box plots. The American Statistician 32, 12-16.
+box plots. The American Statistician 32, 12-16.
 }
 \seealso{
 \code{\link[ggplot2:geom_boxplot]{ggplot2::geom_boxplot()}}, \code{\link[=fivenum]{fivenum()}}, \code{\link[=df_stats]{df_stats()}}

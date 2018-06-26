@@ -28,7 +28,19 @@ See details and examples.}
 \item{gformula}{A formula with shape \code{y ~ x}.
 Faceting can be achieved by including \code{|} in the formula.}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+options:
+
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
+
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[=fortify]{fortify()}} for which variables will be created.
+
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame.}, and
+will be used as the layer data.}
 
 \item{label}{The text to be displayed.}
 
@@ -51,7 +63,7 @@ text relative the the specified location.}
 
 \item{size}{A numeric size or a formula used for mapping size.}
 
-\item{parse}{If TRUE, the labels will be parsed into expressions and
+\item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
 displayed as described in ?plotmath}
 
 \item{nudge_x}{Horizontal and vertical adjustment to nudge labels by.
@@ -78,14 +90,17 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
-\item{stat}{A character string naming the stat used to make the layer.}
+\item{stat}{The statistical transformation to use on the data for this
+layer, as a string.}
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{show.help}{If \code{TRUE}, display some minimal help.}
 
@@ -95,7 +110,7 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
@@ -108,10 +123,13 @@ of the attributes of the layer are mapped.}
 a gg object
 }
 \description{
-Scatterplots in \code{ggformula}.
+\code{geom_text} adds text directly to the plot. \code{geom_label} draws
+a rectangle behind the text, making it easier to read.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -123,18 +141,23 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-  label = ~Species, color = ~Species, size = 2, angle = 30)
-gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) \%>\%
+  label = ~ Species, color = ~ Species, size = 2, angle = 30)
+gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) \%>\%
 gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-  label = ~Species, color = ~Species,
+  label = ~ Species, color = ~ Species,
   size = 2, angle = 0, hjust = 0, nudge_x  = 0.1, nudge_y = 0.1)
 
 if (require(dplyr)) {
@@ -144,7 +167,7 @@ if (require(dplyr)) {
     summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) \%>\%
   gf_label(Sepal.Length ~ Sepal.Width, data = iris_means,
-    label = ~Species, color = ~Species, size = 2, alpha = 0.7)
+    label = ~ Species, color = ~ Species, size = 2, alpha = 0.7)
 }
 }
 \seealso{

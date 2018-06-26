@@ -60,7 +60,7 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression},
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
 (d) arguments for the geom, stat, or position function.}
 }
@@ -70,8 +70,10 @@ a gg object
 \description{
 Scatterplots in \code{ggformula}.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -83,20 +85,25 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 gf_point()
 gf_point( (10 * ((1:25) \%/\% 10)) ~ ((1:25) \%\% 10), shape = 1:25,
   fill = "skyblue", color = "navy", size = 4, stroke = 1, data = NA)
-gf_point(mpg ~ hp, color = ~ cyl, size = ~wt, data = mtcars)
+gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars)
 # faceting -- two ways
 gf_point(mpg ~ hp, data = mtcars) \%>\%
-  gf_facet_wrap(~ am)
+  gf_facet_wrap( ~ am)
 gf_point(mpg ~ hp | am, group = ~ cyl, data = mtcars)
 gf_point(mpg ~ hp | ~ am, group = ~ cyl, data = mtcars)
 gf_point(mpg ~ hp | am ~ ., group = ~ cyl,  data = mtcars)

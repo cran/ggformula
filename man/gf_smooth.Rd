@@ -6,7 +6,7 @@
 \title{Formula interface to geom_smooth()}
 \usage{
 gf_smooth(object = NULL, gformula = NULL, data = NULL, method = "auto",
-  formula = y ~ x, se = TRUE, method.args, n = 80, span = 0.75,
+  formula = y ~ x, se = FALSE, method.args, n = 80, span = 0.75,
   fullrange = FALSE, level = 0.95, xlab, ylab, title, subtitle, caption,
   geom = "smooth", stat = "smooth", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
@@ -28,35 +28,39 @@ Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
-\item{method}{smoothing method (function) to use, eg. "lm", "glm",
-  "gam", "loess", "rlm".
+\item{method}{Smoothing method (function) to use, eg. \code{lm}, \code{glm},
+\code{gam}, \code{loess}, \code{MASS::rlm}.
 
-  For \code{method = "auto"} the smoothing method is chosen based on the
-  size of the largest group (across all panels). \code{\link{loess}} is
-  used for than 1,000 observations; otherwise \code{\link[mgcv]{gam}} is
-  used with \code{formula = y ~ s(x, bs = "cs")}. Somewhat anecdotally,
-  \code{loess} gives a better appearance, but is O(n^2) in memory, so does
-  not work for larger datasets.}
+For \code{method = "auto"} the smoothing method is chosen based on the
+size of the largest group (across all panels). \code{\link[=loess]{loess()}} is
+used for less than 1,000 observations; otherwise \code{\link[mgcv:gam]{mgcv::gam()}} is
+used with \code{formula = y ~ s(x, bs = "cs")}. Somewhat anecdotally,
+\code{loess} gives a better appearance, but is O(n^2) in memory, so does
+not work for larger datasets.
 
-\item{formula}{formula to use in smoothing function, eg. \code{y ~ x},
+If you have fewer than 1,000 observations but want to use the same \code{gam}
+model that \code{method = "auto"} would use then set
+\code{method = "gam", formula = y ~ s(x, bs = "cs")}.}
+
+\item{formula}{Formula to use in smoothing function, eg. \code{y ~ x},
 \code{y ~ poly(x, 2)}, \code{y ~ log(x)}}
 
-\item{se}{display confidence interval around smooth? (TRUE by default, see
-level to control}
+\item{se}{Display confidence interval around smooth? (TRUE by default, see
+level to control.)}
 
 \item{method.args}{List of additional arguments passed on to the modelling
 function defined by \code{method}.}
 
-\item{n}{number of points to evaluate smoother at}
+\item{n}{Number of points at which to evaluate smoother.}
 
 \item{span}{Controls the amount of smoothing for the default loess smoother.
 Smaller numbers produce wigglier lines, larger numbers produce smoother
 lines.}
 
-\item{fullrange}{should the fit span the full range of the plot, or just
-the data}
+\item{fullrange}{Should the fit span the full range of the plot, or just
+the data?}
 
-\item{level}{level of confidence interval to use (0.95 by default)}
+\item{level}{Level of confidence interval to use (0.95 by default).}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -90,7 +94,7 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -105,8 +109,10 @@ a gg object
 \description{
 LOESS and linear model smoothers in \code{ggformula}.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -118,22 +124,27 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 gf_smooth()
 gf_lm()
 if (require(mosaicData)) {
-  gf_smooth(births ~ date, color = ~wday, data = Births78)
-  gf_smooth(births ~ date, color = ~wday, data = Births78, fullrange = TRUE)
-  gf_smooth(births ~ date, color = ~wday, data = Births78, show.legend = FALSE, se = FALSE)
-  gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, alpha = 0.2) \%>\%
+  gf_smooth(births ~ date, color = ~ wday, data = Births78)
+  gf_smooth(births ~ date, color = ~ wday, data = Births78, fullrange = TRUE)
+  gf_smooth(births ~ date, color = ~ wday, data = Births78, show.legend = FALSE, se = FALSE)
+  gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, alpha = 0.2) \%>\%
     gf_point()
-  gf_lm(length ~ width, data = KidsFeet, color = ~biggerfoot, fullrange = FALSE, alpha = 0.2)
+  gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
     gf_point()
   gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
         formula = y ~ poly(x,2), linetype = "dashed") \%>\%

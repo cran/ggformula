@@ -7,19 +7,21 @@ output:
 runtime: shiny_prerendered
 ---
 
+## How do we make this plot?
+
+```{r check-packages, include=FALSE}
+```
+
 ```{r setup, include=FALSE}
 library(learnr)
-# library(checkr)
-# library(statPREP)
 library(tibble)
 library(ggformula)
 library(mosaic)
-library(NHANES)
 theme_set(theme_bw())
-# data(Births78, package = "mosaicData")
-# Births78 <- Births78 %>% mutate(date = as.Date(date))
 data(Births, package = "mosaicData")
-data(NHANES, package = "NHANES")
+if (require(NHANES)) {
+  data(NHANES, package = "NHANES")
+} 
 for (y in unique(Births$year)) {
   assign(paste0("Births",y),  Births %>% filter(year == y))
 }
@@ -54,7 +56,6 @@ th, td { padding: 5px; }
 </style>
 
 
-## How do we make this plot?
 
 ### US Births in 1978
 Here is an interesting plot showing the number of live births in the United
@@ -358,7 +359,8 @@ The general form for these is `option = value`.
 For example, 
 
   * `spar = 0.5` (or any number between 0 and 1) controls the amount of smoothing in `gf_spline()`.
-  * `se = FALSE` (note capitalization) turns off the "error band" in `gf_smooth()`.
+  * `se = TRUE` (note capitalization) turns on the "error band" in `gf_smooth()`
+  and `gf_lm()`.
   * `color = "red"` or `fill = "navy"` (note quotes) can be used to change the colors of things.  (`fill` is typically used for regions that are "filled in" and `color` for dots and lines.)
   * `alpha = 0.5` (or any number between 0 and 1) will set the opacity (0 is completely
   transparnt and 1 is completely opaque).
@@ -378,7 +380,7 @@ gf_spline(births ~ date, data = Births1978,
 
 ```{r, gf-options-2, exercise = TRUE}
 gf_smooth(births ~ date, data = Births1978, 
-          se = FALSE, 
+          se = TRUE, 
           color = "red")
 ```
 
@@ -582,9 +584,11 @@ Time to explore on your own.  Here are three data sets you can use.
   * `HELPrct` has data from a study of people addicted to alcohol, cocaine, or heroine
   * `KidsFeet` has information about some kids' feet.
   * `NHANES` has lots of physiologic and other measurements from 10,000
-  subjects in the National Health and Nutrition Evaluation Survey.
+     subjects in the National Health and Nutrition Evaluation Survey.  (This data
+     set will only be available if the NHANES package is installed where
+     this tutorial is running.)
   
-To find out more about the data sets use `?HELPrct`, `?KidsFeet`, or  `?NHANES`.
+To find out more about the data sets use `?HELPrct`, `?KidsFeet`, or `?NHANES`.
 To see the first few rows of the data, you can use `head()`.
 
 To get a list of functions available in `ggformula`, run this code chunk.

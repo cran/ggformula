@@ -25,17 +25,31 @@ See details and examples.}
 \item{gformula}{A formula with shape \code{~ x} (or \code{y ~ x}, but this shape is not
 generally needed).}
 
-\item{data}{A data frame with the variables to be plotted.}
+\item{data}{The data to be displayed in this layer. There are three
+options:
 
-\item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30}
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
 
-\item{binwidth}{The width of the bins. The default is to use \code{bins}
-  bins that cover the range of the data. You should always override
-  this value, exploring multiple widths to find the best to illustrate the
-  stories in your data.
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[=fortify]{fortify()}} for which variables will be created.
 
-  The bin width of a date variable is the number of days in each time; the
-  bin width of a time variable is the number of seconds.}
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame.}, and
+will be used as the layer data.}
+
+\item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30.}
+
+\item{binwidth}{The width of the bins. Can be specified as a numeric value,
+or a function that calculates width from x.
+The default is to use \code{bins}
+bins that cover the range of the data. You should always override
+this value, exploring multiple widths to find the best to illustrate the
+stories in your data.
+
+The bin width of a date variable is the number of days in each time; the
+bin width of a time variable is the number of seconds.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -63,16 +77,20 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{geom}{A character string naming the geom used to make the layer.}
+\item{geom}{Use to override the default connection between
+\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
 
-\item{stat}{A character string naming the stat used to make the layer.}
+\item{stat}{Use to override the default connection between
+\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
 
-\item{position}{Either a character string naming the position function used
-for the layer or a position object returned from a call to a position function.}
+\item{position}{Position adjustment, either as a string, or the result of
+a call to a position adjustment function.}
 
-\item{show.legend}{A logical indicating whether this layer should be included in
-the legends.  \code{NA}, the default, includes layer in the legends if any
-of the attributes of the layer are mapped.}
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{show.help}{If \code{TRUE}, display some minimal help.}
 
@@ -82,7 +100,7 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
@@ -91,8 +109,10 @@ a gg object
 \description{
 Count and density histograms in \code{ggformula}.
 }
-\details{
-Positional aesthetics are specified using the formula in \code{gformula}.
+\section{Specifying plot attributes}{
+
+
+Positional attributes (a.k.a, aesthetics) are specified using the formula in \code{gformula}.
 Setting and mapping of additional attributes can be done through the
 use of additional arguments.
 Attributes can be set can be set using arguments of the form \code{attribute = value} or
@@ -104,22 +124,36 @@ This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
 of \pkg{lattice}.
+}
+
+\section{Evaluation}{
+
 
 Evaluation of the \pkg{ggplot2} code occurs in the environment of \code{gformula}.
 This will typically do the right thing when formulas are created on the fly, but might not
 be the right thing if formulas created in one environment are used to create plots
 in another.
 }
+
 \examples{
 x <- rnorm(1000)
 gf_histogram(  ~ x, bins = 30)
-gf_histogram( ..density.. ~ x, bins = 30)
-gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+gf_dhistogram( ~ x, bins = 30)
+gf_dhistogram( ~ x, binwidth = 0.5, center = 0, color = "black")
+gf_dhistogram( ~ x, binwidth = 0.5, boundary = 0, color = "black")
+gf_dhistogram( ~ x, bins = 30) \%>\%
+ gf_fitdistr(dist = "dnorm")  # see help for gf_fitdistr() for more info.
+
+gf_histogram( ~ x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
+
+gf_histogram( ~ Sepal.Length | Species, data = iris, binwidth = 0.25)
 if (require(mosaicData)) {
-  gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black")
+  gf_histogram( ~ age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black")
   # bins can be adjusted left/right using center or boundary
-  gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
-  gf_histogram(~age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
+  gf_histogram( ~ age, data = HELPrct,
+               binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
+  gf_histogram( ~ age, data = HELPrct,
+                binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
 }
 }
 \seealso{

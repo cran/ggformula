@@ -657,6 +657,9 @@ stat_fitdistr <-
            position = "identity", na.rm = FALSE, show.legend = NA,
            inherit.aes = TRUE, dist = "dnorm", start = NULL, ...) {
 #    mapping[["y"]] <- NULL
+    dist_name <- deparse(substitute(dist))
+    if (! is.character(dist)) dist <- dist_name
+
     ggplot2::layer(
       stat = StatFitdistr, data = data, mapping = mapping, geom = geom,
       position = position, show.legend = show.legend, inherit.aes = inherit.aes,
