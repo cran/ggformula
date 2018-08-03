@@ -4,10 +4,11 @@
 \alias{gf_sf}
 \title{Mapping with shape files}
 \usage{
-gf_sf(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
-  group, linetype, size, geometry, xlab, ylab, title, subtitle, caption,
-  stat = "sf", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_sf(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, linetype, size, geometry, xlab, ylab, title, subtitle,
+  caption, stat = "sf", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -32,7 +33,7 @@ for mapping linetype.}
 
 \item{size}{A numeric size or a formula used for mapping size.}
 
-\item{geometry}{A column of class sfc containg simple features data. (Another option
+\item{geometry}{A column of class sfc containing simple features data. (Another option
 is that \code{data} may contain a column named \code{geometry}.)  \code{geometry} is never
 inherited.}
 

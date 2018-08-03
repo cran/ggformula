@@ -4,8 +4,8 @@
 \alias{gf_hex}
 \title{Formula interface to geom_hex()}
 \usage{
-gf_hex(object = NULL, gformula = NULL, data = NULL, bins, binwidth, alpha,
-  color, fill, group, size, xlab, ylab, title, subtitle, caption,
+gf_hex(object = NULL, gformula = NULL, data = NULL, bins, binwidth,
+  alpha, color, fill, group, size, xlab, ylab, title, subtitle, caption,
   geom = "hex", stat = "binhex", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
   environment = parent.frame(), ...)
@@ -122,8 +122,8 @@ in another.
 
 \examples{
 if (require(mosaicData)) {
-  gf_hex(i1 ~ age, data = HELPrct, bins = 15) \%>\%
-  gf_density2d(i1 ~ age, data = HELPrct, color = "red", alpha = 0.5)
+  gf_hex(avg_drinks ~ age, data = HELPrct, bins = 15) \%>\%
+  gf_density2d(avg_drinks ~ age, data = HELPrct, color = "red", alpha = 0.5)
 }
 }
 \seealso{

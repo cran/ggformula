@@ -6,10 +6,11 @@
 \alias{geom_ash}
 \title{Average Shifted Histograms}
 \usage{
-gf_ash(object = NULL, gformula = NULL, data = NULL, alpha, color, group,
-  linetype, size, xlab, ylab, title, subtitle, caption, geom = "line",
-  stat = "ash", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_ash(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "line", stat = "ash", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 
 stat_ash(mapping = NULL, data = NULL, geom = "line",
   position = "identity", na.rm = FALSE, show.legend = NA,
@@ -25,7 +26,7 @@ of the chain.  Most users can safely ignore this argument.
 See details and examples.}
 
 \item{gformula}{A formula with shape \code{~x} or \code{y ~ x}.
-\code{y} may be \code{..density..} or \code{..count..} or \code{..ndensity..} or \code{..ncount..}.
+\code{y} may be \code{stat(density)} or \code{stat(count)} or \code{stat(ndensity)} or \code{stat(ncount)}.
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
@@ -73,7 +74,7 @@ of the attributes of the layer are mapped.}
 
 \item{...}{Additional arguments.  Typically these are
 (a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~expression}, or
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{mapping}{set of aesthetic mappings created by \code{\link[=aes]{aes()}}
@@ -130,7 +131,7 @@ gf_ash(~Sepal.Length, color = ~ Species, data = iris)
 gf_ash(~Sepal.Length, color = ~ Species, data = iris, binwidth = 0.3)
 gf_ash(~Sepal.Length, color = ~ Species, data = iris, adjust = 2)
 ggplot(faithful, aes(x = eruptions)) +
-  geom_histogram(aes(y = ..density..),
+  geom_histogram(aes(y = stat(density)),
     fill = "lightskyblue", colour = "gray50", alpha = 0.2) +
   geom_ash(colour = "red") +
   geom_ash(colour = "forestgreen", adjust = 2) +

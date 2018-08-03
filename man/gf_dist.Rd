@@ -4,8 +4,9 @@
 \alias{gf_dist}
 \title{Plot distributions}
 \usage{
-gf_dist(object = ggplot(), dist, ..., xlim = NULL, kind = c("density",
-  "cdf", "qq", "qqstep", "histogram"), resolution = 5000L, params = NULL)
+gf_dist(object = ggplot(), dist, ..., xlim = NULL,
+  kind = c("density", "cdf", "qq", "qqstep", "histogram"),
+  resolution = 5000L, params = NULL)
 }
 \arguments{
 \item{object}{a gg object.}
@@ -16,7 +17,7 @@ distribution for which the functions with names formed by prepending
 
 \item{...}{additional arguments passed both to the distribution functions and
 to the layer.  Note: Possible ambiguities using \code{params} or by preceding plot
-arguemnt with \code{plot_}.}
+arguement with \code{plot_}.}
 
 \item{xlim}{A numeric vector of length 2 providing lower and upper bounds for the
 portion of the distribution that will be displayed.  The default is to attempt

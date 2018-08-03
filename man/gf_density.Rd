@@ -5,17 +5,19 @@
 \alias{gf_dens}
 \title{Formula interface to stat_density()}
 \usage{
-gf_density(object = NULL, gformula = NULL, data = NULL, alpha = 0.5,
-  color, fill, group, linetype, size, kernel = "gaussian", n = 512,
-  trim = FALSE, xlab, ylab, title, subtitle, caption, geom = "area",
-  stat = "density", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_density(object = NULL, gformula = NULL, data = NULL,
+  alpha = 0.5, color, fill, group, linetype, size, kernel = "gaussian",
+  n = 512, trim = FALSE, xlab, ylab, title, subtitle, caption,
+  geom = "area", stat = "density", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 
-gf_dens(object = NULL, gformula = NULL, data = NULL, alpha = 0.5, color,
-  group, linetype, size, kernel = "gaussian", n = 512, trim = FALSE, xlab,
-  ylab, title, subtitle, caption, geom = "line", stat = "density",
-  position = "identity", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+gf_dens(object = NULL, gformula = NULL, data = NULL, alpha = 0.5,
+  color, group, linetype, size, kernel = "gaussian", n = 512,
+  trim = FALSE, xlab, ylab, title, subtitle, caption, geom = "line",
+  stat = "density", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -108,9 +110,12 @@ display.}
 a gg object
 }
 \description{
-Computes and draws kernel density estimate, which is a smoothed version of
-the histogram. This is a useful alternative to the histogram for continuous
-data that comes from an underlying smooth distribution.
+Computes and draws a kernel density estimate, which is a smoothed version of the
+histogram and is a useful alternative when the data come from an underlying smooth
+distribution.
+The only difference between \code{gf_dens()} and \code{gf_density()} is the default geom
+used to show the density curve: \code{gf_density()} uses an area geom (which can be filled).
+\code{gf_dens()} using a line geom (which cannot be filled).
 }
 \section{Specifying plot attributes}{
 
@@ -147,5 +152,5 @@ gf_freqpoly( ~ Sepal.Length, color = ~ Species, data = iris, bins = 15)
 iris \%>\% gf_dens( ~ Sepal.Length, color = ~ Species)
 }
 \seealso{
-\code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}
+\code{\link[=gf_ash]{gf_ash()}}, \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}
 }

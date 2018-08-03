@@ -3,6 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{\%>\%}
 \alias{makeFun}
 \alias{df_stats}
 \alias{na.warn}
@@ -13,6 +14,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
+
   \item{mosaicCore}{\code{\link[mosaicCore]{makeFun}}, \code{\link[mosaicCore]{df_stats}}, \code{\link[mosaicCore]{na.warn}}}
 }}
 

@@ -6,21 +6,21 @@
 \alias{gf_rugy}
 \title{Formula interface to geom_rug()}
 \usage{
-gf_rug(object = NULL, gformula = NULL, data = NULL, sides = "bl", alpha,
-  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
-  geom = "rug", stat = "identity", position = "identity",
+gf_rug(object = NULL, gformula = NULL, data = NULL, sides = "bl",
+  alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
+  caption, geom = "rug", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
   environment = parent.frame(), ...)
 
-gf_rugx(object = NULL, gformula = NULL, data = NULL, sides = "b", alpha,
-  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
-  geom = "rug", stat = "identity", position = "identity",
+gf_rugx(object = NULL, gformula = NULL, data = NULL, sides = "b",
+  alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
+  caption, geom = "rug", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = FALSE,
   environment = parent.frame(), ...)
 
-gf_rugy(object = NULL, gformula = NULL, data = NULL, sides = "l", alpha,
-  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
-  geom = "rug", stat = "identity", position = "identity",
+gf_rugy(object = NULL, gformula = NULL, data = NULL, sides = "l",
+  alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
+  caption, geom = "rug", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = FALSE,
   environment = parent.frame(), ...)
 }

@@ -4,9 +4,9 @@
 \alias{gf_step}
 \title{Formula interface to geom_step()}
 \usage{
-gf_step(object = NULL, gformula = NULL, data = NULL, alpha, color, group,
-  linetype, size, direction = "hv", xlab, ylab, title, subtitle, caption,
-  geom = "step", stat = "identity", position = "identity",
+gf_step(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, direction = "hv", xlab, ylab, title, subtitle,
+  caption, geom = "step", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
   environment = parent.frame(), ...)
 }

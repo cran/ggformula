@@ -4,10 +4,11 @@
 \alias{gf_col}
 \title{Formula interface to geom_col()}
 \usage{
-gf_col(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
-  group, linetype, size, xlab, ylab, title, subtitle, caption, geom = "col",
-  stat = "identity", position = "stack", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_col(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "col", stat = "identity", position = "stack",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -106,11 +107,11 @@ in another.
 }
 
 \examples{
-D <- data.frame(
+SomeData <- data.frame(
   group = LETTERS[1:3],
   count = c(20, 25, 18)
 )
-gf_col(count ~ group, data = D)
+gf_col(count ~ group, data = SomeData)
 
 # A Pareto chart
 

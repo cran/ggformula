@@ -411,8 +411,8 @@ gf_quantile <-
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
-#'   gf_jitter(i1 ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
-#'   gf_density_2d(i1 ~ age, data = HELPrct)
+#'   gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
+#'   gf_density_2d(avg_drinks ~ age, data = HELPrct)
 #' }
 
 gf_density_2d <-
@@ -428,8 +428,8 @@ gf_density_2d <-
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
-#'   gf_jitter(i1 ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
-#'   gf_density2d(i1 ~ age, data = HELPrct)
+#'   gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
+#'   gf_density2d(avg_drinks ~ age, data = HELPrct)
 #' }
 
 gf_density2d <-
@@ -454,8 +454,8 @@ gf_density2d <-
 #' @export
 #' @examples
 #' if (require(mosaicData)) {
-#'   gf_hex(i1 ~ age, data = HELPrct, bins = 15) %>%
-#'   gf_density2d(i1 ~ age, data = HELPrct, color = "red", alpha = 0.5)
+#'   gf_hex(avg_drinks ~ age, data = HELPrct, bins = 15) %>%
+#'   gf_density2d(avg_drinks ~ age, data = HELPrct, color = "red", alpha = 0.5)
 #' }
 gf_hex <-
   layer_factory(
@@ -489,6 +489,7 @@ gf_hex <-
 #'   # half-width.
 #'   gf_boxplot(age ~ substance | sex, data = HELPrct, coef = 5, width = 0.4) %>%
 #'     gf_jitter(width = 0.2, alpha = 0.3)
+#'   # move boxplots away a bit by adjusting dodge
 #'   gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, position = position_dodge(width = 0.9))
 #' }
 
@@ -668,14 +669,14 @@ gf_violin <-
 #' @seealso [ggplot2::geom_spoke()]
 #' @export
 #' @examples
-#' D <- expand.grid(x = 1:10, y=1:10)
-#' D$angle <- runif(100, 0, 2*pi)
-#' D$speed <- runif(100, 0, sqrt(0.1 * D$x))
+#' SomeData <- expand.grid(x = 1:10, y=1:10)
+#' SomeData$angle <- runif(100, 0, 2*pi)
+#' SomeData$speed <- runif(100, 0, sqrt(0.1 * SomeData$x))
 #'
-#' gf_point(y ~ x, data = D) %>%
+#' gf_point(y ~ x, data = SomeData) %>%
 #'   gf_spoke(y ~ x, angle = ~ angle, radius = 0.5)
 #'
-#' gf_point(y ~ x, data = D) %>%
+#' gf_point(y ~ x, data = SomeData) %>%
 #'   gf_spoke(y ~ x, angle = ~ angle, radius = ~ speed)
 
 gf_spoke <-
@@ -751,6 +752,32 @@ gf_tile <-
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
   )
 
+#' Formula interface to geom_bin2d()
+#'
+#' `geom_bin2d()` uses [`ggplot2::stat_bin2d()`] to bin the data before using
+#' [`gf_tile()`] to display the results.
+#'
+#' @inherit ggplot2::geom_tile references
+#' @inherit gf_tile
+#'
+#' @param ... Additional arguments.  Typically these are
+#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
+#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
+#' @seealso [`ggplot2::geom_bin2d()`], [`gf_tile()`]
+#' @export
+#' @examples
+#' gf_bin2d(eruptions ~ waiting, data = faithful, bins = 15) %>%
+#'   gf_refine(scale_fill_viridis_c(begin = 0.1, end = 0.9))
+
+gf_bin2d <-
+  layer_factory(
+    geom = "tile",
+    stat = "bin2d",
+    aes_form = list(y ~ x),
+    extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
+  )
+
 #' Formula interface to geom_count()
 #'
 #' @inherit ggplot2::geom_count description references
@@ -791,11 +818,11 @@ gf_count <-
 #' @seealso [ggplot2::geom_col()]
 #' @export
 #' @examples
-#' D <- data.frame(
+#' SomeData <- data.frame(
 #'   group = LETTERS[1:3],
 #'   count = c(20, 25, 18)
 #' )
-#' gf_col(count ~ group, data = D)
+#' gf_col(count ~ group, data = SomeData)
 #'
 #' # A Pareto chart
 #'
@@ -842,15 +869,18 @@ gf_col <-
 #' gf_point((c(0,1)) ~ (c(0,5)))
 #' gf_frame((c(0,1)) ~ (c(0,5)))
 #' gf_blank((c(0,1)) ~ (c(0,5)))
+#' # gf_blank() can be used to expand the view
+#' gf_point((c(0,1)) ~ (c(0,5))) %>%
+#'   gf_blank((c(0,3)) ~ (c(-2,7)))
 
 gf_blank <-
-  layer_factory(geom = "blank")
+  layer_factory(geom = "blank", check.aes = FALSE)
 
 #' @rdname gf_blank
 #' @export
 #'
 gf_frame <-
-  layer_factory(geom = "blank")
+  layer_factory(geom = "blank", check.aes = FALSE)
 
 
 #' Formula interface to geom_histogram()
@@ -926,6 +956,13 @@ gf_dhistogram <-
 
 #' Formula interface to stat_density()
 #'
+#' Computes and draws a kernel density estimate, which is a smoothed version of the
+#' histogram and is a useful alternative when the data come from an underlying smooth
+#' distribution.
+#' The only difference between `gf_dens()` and `gf_density()` is the default geom
+#' used to show the density curve: `gf_density()` uses an area geom (which can be filled).
+#' `gf_dens()` using a line geom (which cannot be filled).
+#'
 #' @inherit ggplot2::geom_density description references
 #' @inherit gf_line
 #' @inheritParams ggplot2::geom_density
@@ -936,7 +973,7 @@ gf_dhistogram <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#' @seealso [ggplot2::geom_density()]
+#' @seealso [`gf_ash()`], [`ggplot2::geom_density()`]
 #' @export
 #' @examples
 #' gf_dens()
@@ -1502,19 +1539,25 @@ gf_pointrange <-
 #'     )
 #'
 #'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
+#'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
 #'     gf_pointrange( mean.age + lo + hi ~ substance,  data = HELP2) %>%
 #'     gf_facet_grid( ~ sex)
 #'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
+#'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
 #'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
 #'     gf_facet_grid( ~ sex)
 #'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_boxplot( age ~ substance,  data = HELPrct, color = "red") %>%
-#'     gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2) %>%
+#'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
+#'     gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2, fill = "transparent") %>%
+#'     gf_facet_grid( ~ sex)
+#'   gf_jitter(substance ~ age, data = HELPrct,
+#'       alpha = 0.7, height = 0.2, width = 0, color = "skyblue") %>%
+#'     gf_crossbarh( substance ~ mean.age + lo + hi,  data = HELP2, fill = "transparent") %>%
 #'     gf_facet_grid( ~ sex)
 #' }
+#'
+#     gf_boxplot( age ~ substance,  data = HELPrct, color = "red", fill = "transparent") %>%
+#     gf_boxploth( substance ~ age,  data = HELPrct, color = "red", fill = "transparent") %>%
 
 gf_crossbar <-
   layer_factory(
@@ -1569,6 +1612,7 @@ gf_crossbar <-
 #'     gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2) %>%
 #'     gf_facet_grid( ~ sex)
 #' }
+
 gf_errorbar <-
   layer_factory(
     geom = "errorbar",
@@ -1579,56 +1623,7 @@ gf_errorbar <-
       )
     )
 
-#' Formula interface to geom_errorbarh()
-#'
-#' @inherit ggplot2::geom_errorbarh description references
-#' @inherit gf_line
-#' @inheritParams ggplot2::geom_errorbarh
-#' @param gformula A formula with shape `y ~ x + xmin + xmax`.
-#'   Faceting can be achieved by including `|` in the formula.
-#'
-#' @param ... Additional arguments.  Typically these are
-#'   (a) ggplot2 aesthetics to be set with `attribute = value`,
-#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
-#'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#' @section Note:
-#'   There is discrepancy between the information required for `gf_errorbar()`
-#'   and `gf_errobarh()`.  It expected that this will change in a future release
-#'   of `ggplot2`.
-#'
-#' @seealso [ggplot2::geom_errorbarh()]
-#' @export
-#' @examples
-#' if (require(mosaicData) && require(dplyr)) {
-#' HELP2 <- HELPrct %>%
-#'   group_by(substance, sex) %>%
-#'   summarise(
-#'     mean.age = mean(age),
-#'     median.age = median(age),
-#'     max.age = max(age),
-#'     min.age = min(age),
-#'     sd.age = sd(age),
-#'     lo = mean.age - sd.age,
-#'     hi = mean.age + sd.age
-#'     )
-#'
-#'   gf_jitter(substance ~ age, data = HELPrct,
-#'       alpha = 0.5, height = 0.2, width = 0, color = "skyblue") %>%
-#'     gf_errorbarh( substance ~ mean.age + lo + hi,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
-#'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
-#' }
-gf_errorbarh <-
-  layer_factory(
-    geom = "errorbarh",
-    aes_form = y ~ x + xmin + xmax,
-    extras = alist(
-      alpha = , color = , group = , linetype = , size =
-      )
-    )
+
 
 #' Formula interface to geom_rect()
 #'
@@ -1647,7 +1642,14 @@ gf_errorbarh <-
 #' @export
 #' @examples
 #' gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
-#'
+#' # use data = data.frame() so we get 1 rectangle and not 1 per row of faithful
+#' # use inherit = FALSE because we are not reusing eruptions and waiting
+#' gf_point(eruptions ~ waiting, data = faithful) %>%
+#'   gf_rect(1.5 + 3 ~ 45 + 68, fill = "red", alpha = 0.2,
+#'           data = data.frame(), inherit = FALSE) %>%
+#'   gf_rect(3 + 5.5 ~ 68 + 100, fill = "green", alpha = 0.2,
+#'           data = data.frame(), inherit = FALSE)
+
 gf_rect <-
   layer_factory(
     geom = "rect",
@@ -1763,7 +1765,7 @@ gf_coefline <- function(object = NULL, coef = NULL, model = NULL, ...) {
   if (is.null(coef)) coef <- coef(model)
   if (length(coef) > 2) warning("Ignoring all but first two values of coef.")
   if (length(coef) < 2) stop("coef must be of length at least 2.")
-  gf_abline(object = object, intercept = coef[1], slope = coef[2], ..., inherit.aes = FALSE)
+  gf_abline(object = object, intercept = coef[1], slope = coef[2], ..., inherit = FALSE)
 }
 
 utils::globalVariables(c("x"))
@@ -1921,7 +1923,7 @@ gf_fitdistr <-
 #' @inheritParams gf_point
 # #' @inherit ggplot2::geom_sf
 #' @inherit gf_line
-#' @param geometry A column of class sfc containg simple features data. (Another option
+#' @param geometry A column of class sfc containing simple features data. (Another option
 #'   is that `data` may contain a column named `geometry`.)  `geometry` is never
 #'   inherited.
 # #' @seealso [`ggplot2::geom_sf()`]

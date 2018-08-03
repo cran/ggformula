@@ -5,9 +5,10 @@
 \title{Formula interface to geom_ribbon()}
 \usage{
 gf_ribbon(object = NULL, gformula = NULL, data = NULL, alpha = 0.3,
-  xlab, ylab, title, subtitle, caption, geom = "ribbon", stat = "identity",
-  position = "identity", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  xlab, ylab, title, subtitle, caption, geom = "ribbon",
+  stat = "identity", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

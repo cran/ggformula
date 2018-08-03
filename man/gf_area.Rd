@@ -4,10 +4,11 @@
 \alias{gf_area}
 \title{Formula interface to geom_area()}
 \usage{
-gf_area(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
-  group, linetype, size, xlab, ylab, title, subtitle, caption, geom = "area",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_area(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "area", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

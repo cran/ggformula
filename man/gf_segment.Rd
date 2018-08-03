@@ -5,8 +5,8 @@
 \title{Formula interface to geom_segment()}
 \usage{
 gf_segment(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, arrow = NULL, lineend = "butt", xlab, ylab, title,
-  subtitle, caption, geom = "segment", stat = "identity",
+  group, linetype, size, arrow = NULL, lineend = "butt", xlab, ylab,
+  title, subtitle, caption, geom = "segment", stat = "identity",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 }

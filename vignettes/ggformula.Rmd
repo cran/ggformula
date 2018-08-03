@@ -16,9 +16,8 @@ have_packages <-
   require(ggplot2) &&
   require(mosaicData) &&
   require(maps) &&
-  require(mosaic) &&
-  require(dplyr) %%
-  requireNamespace("mosaicModel")
+  requireNamespace("mosaicModel") &&
+  requireNamespace("mosaic") 
   
 
 knitr::opts_chunk$set(
@@ -36,9 +35,8 @@ cat(
 ## Warning: Missing packages
 
 Because one or more of 
-`ggformula`, `ggplot2`, `dplyr`, `mosaicData`, `mosaicModel`,
-`maps`, `mosaic`, and `dplyr`
-appears to be missing, this vignette is compiling
+`ggformula`, `ggplot2`, `dplyr`, `mosaic`, `mosaicData`, `mosaicModel`,
+and `maps`, appears to be missing, this vignette is compiling
 without executing any code. 
 
 "
@@ -240,6 +238,47 @@ polygons.  It's also rarely good to overlay
 histograms on top of one another -- better to use a density plot or a frequency 
 polygon for that application.
 
+## Faceting
+
+The `ggplot2` system allows you to make subplots --- called "facets" --- based on
+the values of one or two categorical variables. This is done by chaining
+with  `gf_facet_grid()` or `gf_facet_wrap()`. These functions use formulas 
+to specify which variable(s) are to be used for faceting.
+
+```{r facets, fig.show = "hold", warning=FALSE}
+gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid( ~ sex)
+# the dot here is a bit strange, but required to make a valid formula
+gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid( sex ~ .)
+gf_density_2d(net ~ age, data = Runners) %>% gf_facet_wrap( ~ year)
+gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid(start_position ~ sex)
+```
+
+An alternative syntax uses `|` to separate the faceting information from the main
+part of the formula.  
+Here is another example using our weather data.
+The redundant use of the `y` and `color` attributes for 
+temperature makes it easier to compare across facets.
+
+```{r, facets02, out.width = "95%", fig.width = 6, fig.height = 3.5}
+
+gf_ribbon(low_temp + high_temp ~ date | city ~ year, data = Weather, alpha = 0.3) 
+
+gf_linerange(low_temp + high_temp ~ date | city ~ year, color = ~ avg_temp, data = Weather) %>%
+  gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
+```
+
+In this case, we should either not facet by year, or allows the x-scale to be freely adjusted in each column so that we don't have so much unnecessary white space.  We can do the latter
+using the `scales` argument to `gf_facet_grid()`.
+
+```{r, facets03, out.width = "95%", fig.width = 6, fig.height = 3.5}
+
+gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather, alpha = 0.3) 
+
+gf_linerange(low_temp + high_temp ~ date, color = ~ avg_temp, data = Weather) %>%
+  gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) %>%
+  gf_facet_grid(city ~ year, scales = "free_x")
+```
+
 ## More 2-variable plots
 
 ### Using jitter and transparency to handle overlapping cases
@@ -312,22 +351,17 @@ gf_hex(net ~ age, data = Runners)
 
 ### Paths and lines
 
-The `ggplot2` system offers two ways to connect points. `gf_line()` ignores the order of the points in the data, and draws the line going from left to right. `gf_path()` goes from point to point according to the order in the data. Both forms can use a `color` or `group` aesthetic as a flag to draw groupwise lines.
+The `ggplot2` system offers two ways to connect points. `gf_line()` ignores the order of the points in the data, and draws the line going from left to right. `gf_path()` goes from point to point according to the order in the data. Both forms can use a `color` or `group` aesthetic to indicate which 
+groups of points are connected.
 
-```{r paths, fig.show = "hold", out.width = "30%"}
-# create a categorical variable
-mtcars <- mtcars %>% mutate(n_cylinders = as.character(cyl)) 
-gf_line(mpg ~ hp, data = mtcars)
-gf_path(mpg ~ hp, data = mtcars)
-gf_line(mpg ~ hp, color = ~ n_cylinders, data = mtcars)
-```
 
-The above are examples of *bad plots*. The viewer is unnecessarily distracted by
-the zigs and zags in the connecting lines. It would be better to use
-`gf_point()` here, but then you wouldn't see how `gf_line()` and `gf_path()`
-work!
+<!-- The above are examples of *bad plots*. The viewer is unnecessarily distracted by -->
+<!-- the zigs and zags in the connecting lines. It would be better to use -->
+<!-- `gf_point()` here, but then you wouldn't see how `gf_line()` and `gf_path()` -->
+<!-- work! -->
 
-Here's a more useful example.  We begin with a scatter plot showing the number of 
+Here's an example where `gf_line()` is useful. 
+We begin with a scatter plot showing the number of 
 live births in the US for each day of 1978.
 
 ```{r, births01}
@@ -335,20 +369,32 @@ library(mosaicData)
 gf_point(births ~ date, data = Births78)
 ```
 
-Can this interesting pattern be explained by a weekday/weekend effect?  We could use 
-color to show the days of the week.
-
-```{r, births02}
-gf_point(births ~ date, color = ~ wday, data = Births78)
-```
-
-Converting to a line plot highlights the pattern and makes it easier to spot the unusual days.
+Can this interesting pattern be explained by a weekday/weekend effect?  
+Converting to a line plot and coloring by day of week 
+highlights the pattern and makes it easy to spot the unusual days.
 
 ```{r, births03}
 gf_line(births ~ date, color = ~ wday, data = Births78)
 ```
 
+The example above would look the same if we used `gf_path()` because the
+data set is already sorted by date.  But in general, `gf_path()` and 
+`gf_line()` produce different results.
+In the plots below, the first connects days chronologically (because
+the data are sorted by date) and the 
+second in order of their low temperature.
 
+
+```{r paths, fig.show = "hold", out.width = "30%"}
+Weather %>%
+  filter(month == 5, year == 2017, city == "Chicago") %>%
+  gf_path(high_temp ~ low_temp | city ~ year, color = ~ day) %>%
+  gf_refine(scale_color_viridis_c(option = "C", begin = 0.2, end = 0.8))
+Weather %>%
+  filter(month == 5, year == 2017, city == "Chicago") %>%
+  gf_line(high_temp ~ low_temp | city ~ year, color = ~ day) %>%
+  gf_refine(scale_color_viridis_c(option = "C", begin = 0.2, end = 0.8))
+```
 
 ## Plots with more than 2 positional attributes
 
@@ -530,46 +576,6 @@ gf_density_2d(net ~ age, data = Runners) %>%
 ```
 
 
-### Faceting
-
-The `ggplot2` system allows you to make subplots --- called "facets" --- based on
-the values of one or two categorical variables. This is done by chaining
-with  `gf_facet_grid()` or `gf_facet_wrap()`. These functions use formulas 
-to specify which variable(s) are to be used for faceting.
-
-```{r facets, fig.show = "hold", warning=FALSE}
-gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid( ~ sex)
-# the dot here is a bit strange, but required to make a valid formula
-gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid( sex ~ .)
-gf_density_2d(net ~ age, data = Runners) %>% gf_facet_wrap( ~ the_year)
-gf_density_2d(net ~ age, data = Runners) %>% gf_facet_grid(start_position ~ sex)
-```
-
-An alternative syntax uses `|` to separate the faceting information from the main
-part of the formula.  
-Here is another example using our weather data.
-The redundant use of the `y` and `color` attributes for 
-temperature makes it easier to compare across facets.
-
-```{r, facets02, out.width = "95%", fig.width = 6, fig.height = 3.5}
-
-gf_ribbon(low_temp + high_temp ~ date | city ~ year, data = Weather, alpha = 0.3) 
-
-gf_linerange(low_temp + high_temp ~ date | city ~ year, color = ~ avg_temp, data = Weather) %>%
-  gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
-```
-
-In this case, we should either not facet by year, or allows the x-scale to be freely adjusted in each column so that we don't have so much unnecessary white space.  We can do the latter
-using the `scales` argument to `gf_facet_grid()`.
-
-```{r, facets03, out.width = "95%", fig.width = 6, fig.height = 3.5}
-
-gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather, alpha = 0.3) 
-
-gf_linerange(low_temp + high_temp ~ date, color = ~ avg_temp, data = Weather) %>%
-  gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) %>%
-  gf_facet_grid(city ~ year, scales = "free_x")
-```
 
 ### Maps
 
@@ -578,7 +584,7 @@ Prior to `ggplot2` version 2.3,
 basic maps could be created using `gf_polygon()`.
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "75%"}
-if (require(maps) && require(mosaic) && require(dplyr)) {
+if (require(maps) && require(dplyr)) {
   US <- map_data("state") %>%
     dplyr::mutate(name_length = nchar(region))
   States <- US %>%
@@ -601,7 +607,7 @@ information from multiple shape files.
 
 
 ```{r, fig.width = 6, fig.height = 3, out.width = "75%"}
-if (require(maps) && require(mosaic) && require(dplyr) && require(sf) && require(purrr)) {
+if (require(maps) && require(dplyr) && require(sf) && require(purrr)) {
   USshape <- 
     sf::st_as_sf(maps::map('state', plot = FALSE, fill = TRUE)) %>%
     dplyr::mutate(

@@ -4,11 +4,12 @@
 \alias{gf_curve}
 \title{Formula interface to geom_curve()}
 \usage{
-gf_curve(object = NULL, gformula = NULL, data = NULL, alpha, color, group,
-  linetype, size, curvature = 0.5, angle = 90, ncp = 5, arrow = NULL,
-  lineend = "butt", xlab, ylab, title, subtitle, caption, geom = "curve",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_curve(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  group, linetype, size, curvature = 0.5, angle = 90, ncp = 5,
+  arrow = NULL, lineend = "butt", xlab, ylab, title, subtitle, caption,
+  geom = "curve", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

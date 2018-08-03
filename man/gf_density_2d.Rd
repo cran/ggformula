@@ -5,17 +5,17 @@
 \alias{gf_density2d}
 \title{Formula interface to geom_density_2d()}
 \usage{
-gf_density_2d(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, contour = TRUE, n = 100, h = NULL,
-  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab, title,
-  subtitle, caption, geom = "density_2d", stat = "density_2d",
+gf_density_2d(object = NULL, gformula = NULL, data = NULL, alpha,
+  color, group, linetype, size, contour = TRUE, n = 100, h = NULL,
+  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab,
+  title, subtitle, caption, geom = "density_2d", stat = "density_2d",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 
-gf_density2d(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, contour = TRUE, n = 100, h = NULL,
-  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab, title,
-  subtitle, caption, geom = "density2d", stat = "density2d",
+gf_density2d(object = NULL, gformula = NULL, data = NULL, alpha,
+  color, group, linetype, size, contour = TRUE, n = 100, h = NULL,
+  lineend = "butt", linejoin = "round", linemitre = 1, xlab, ylab,
+  title, subtitle, caption, geom = "density2d", stat = "density2d",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 }
@@ -141,12 +141,12 @@ in another.
 
 \examples{
 if (require(mosaicData)) {
-  gf_jitter(i1 ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
-  gf_density_2d(i1 ~ age, data = HELPrct)
+  gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
+  gf_density_2d(avg_drinks ~ age, data = HELPrct)
 }
 if (require(mosaicData)) {
-  gf_jitter(i1 ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
-  gf_density2d(i1 ~ age, data = HELPrct)
+  gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
+  gf_density2d(avg_drinks ~ age, data = HELPrct)
 }
 }
 \seealso{

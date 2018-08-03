@@ -4,10 +4,10 @@
 \alias{layer_factory}
 \title{Create a ggformula layer function}
 \usage{
-layer_factory(geom = "point", position = "identity", stat = "identity",
-  pre = { }, aes_form = y ~ x, extras = alist(), note = NULL,
-  aesthetics = aes(), inherit.aes = TRUE, data = NULL,
-  layer_fun = ggplot2::layer)
+layer_factory(geom = "point", position = "identity",
+  stat = "identity", pre = { }, aes_form = y ~ x, extras = alist(),
+  note = NULL, aesthetics = aes(), inherit.aes = TRUE,
+  check.aes = TRUE, data = NULL, layer_fun = ggplot2::layer)
 }
 \arguments{
 \item{geom}{The geom to use for the layer
@@ -23,7 +23,7 @@ layer_factory(geom = "point", position = "identity", stat = "identity",
 
 \item{aes_form}{A single formula or a list of formulas specifying
 how attributes are inferred from the formula.  Use \code{NULL} if the
-funciton may be used without a formula.}
+function may be used without a formula.}
 
 \item{extras}{An alist of additional arguments (potentially with defaults)}
 
@@ -36,6 +36,9 @@ for example.}
 
 \item{inherit.aes}{A logical indicating whether aesthetics should be
 inherited from prior layers.}
+
+\item{check.aes}{A logical indicating whether a warning should be emited
+when aesthetics provided don't match what is expected.}
 
 \item{data}{A data frame or \code{NULL} or \code{NA}.}
 

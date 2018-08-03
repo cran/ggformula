@@ -25,7 +25,7 @@ NA
 #' @param pre code to run as a "pre-process".
 #' @param aes_form A single formula or a list of formulas specifying
 #'   how attributes are inferred from the formula.  Use `NULL` if the
-#'   funciton may be used without a formula.
+#'   function may be used without a formula.
 #' @param extras An alist of additional arguments (potentially with defaults)
 #' @param note A note to add to the quick help.
 #' @param aesthetics Additional aesthetics (typically created using
@@ -34,6 +34,8 @@ NA
 #'   for example.
 #' @param inherit.aes A logical indicating whether aesthetics should be
 #'   inherited from prior layers.
+#' @param check.aes A logical indicating whether a warning should be emited
+#'   when aesthetics provided don't match what is expected.
 #' @param data A data frame or `NULL` or `NA`.
 #' @param layer_fun The function used to create the layer.
 #' @return A function.
@@ -49,6 +51,7 @@ layer_factory <- function(
   note = NULL,
   aesthetics = aes(),
   inherit.aes = TRUE,
+  check.aes = TRUE,
   data = NULL,
   layer_fun = ggplot2::layer
 ) {
@@ -119,8 +122,11 @@ layer_factory <- function(
       # # allow some operations in formulas without requiring I()
       # gformula <- mosaicCore::reop_formula(gformula)
 
-      # convert y ~ 1 into ~ y if a 1-sided formula is an option
-      if (any(sapply(aes_form, function(f) length(f) == 2L))) {
+      # convert y ~ 1 into ~ y if a 1-sided formula is an option and 2-sided is not
+      if (
+        any(sapply(aes_form, function(f) length(f) == 2L)) &&
+        ! any(sapply(aes_form, function(f) length(f) == 3L))
+      ) {
         gformula <- response2explanatory(gformula)
       }
 
@@ -249,7 +255,7 @@ layer_factory <- function(
             mapping = ingredients[["mapping"]],
             position = position,
             params = ingredients[["params"]],
-            check.aes = TRUE, check.param = FALSE,
+            check.aes = check.aes, check.param = FALSE,
             show.legend = show.legend,
             inherit.aes = inherit
           )
@@ -313,13 +319,14 @@ layer_factory <- function(
         if (add) {
           p <- object + new_layer + ingredients[["facet"]]
         } else {
-          p <- do.call(
-            ggplot,
-            list(
-              data = ingredients$data,
-              mapping = ingredients[["mapping"]]
-            ), envir= environment
-          ) +
+          p <-
+            do.call(
+              ggplot,
+              list(
+                data = ingredients$data,
+                mapping = ingredients[["mapping"]]
+              ), envir= environment
+            ) +
             new_layer +
             ingredients[["facet"]]
         }
@@ -375,6 +382,7 @@ layer_factory <- function(
 
   formals(res) <- formals_for_res
   assign("inherit.aes", inherit.aes, environment(res))
+  assign("check.aes", check.aes, environment(res))
   assign("pre", pre, environment(res))
   assign("extras", extras, environment(res))
   res
@@ -611,10 +619,12 @@ gf_ingredients <-
 
     mapped_list <- as.list(aes_df[["expr"]][aes_df$map])
     names(mapped_list) <- aes_df[["role"]][aes_df$map]
+    # . is placeholder for "no aesthetic mapping", so remove the dots
+    mapped_list[mapped_list == "."] <- NULL
     more_mapped_list <-
       lapply(aesthetics, function(x) deparse(rlang::get_expr(x))) %>%
       stats::setNames(names(aesthetics))
-    mapped_list <-  c(mapped_list, more_mapped_list)
+    mapped_list <-  modifyList(more_mapped_list, mapped_list)
 
     set_list <- as.list(aes_df[["expr"]][!aes_df$map])
     names(set_list) <- aes_df[["role"]][!aes_df$map]

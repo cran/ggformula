@@ -5,8 +5,8 @@
 \title{Formula interface to geom_spoke()}
 \usage{
 gf_spoke(object = NULL, gformula = NULL, data = NULL, angle, radius,
-  alpha, color, group, linetype, size, xlab, ylab, title, subtitle, caption,
-  geom = "spoke", stat = "identity", position = "identity",
+  alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
+  caption, geom = "spoke", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
   environment = parent.frame(), ...)
 }
@@ -120,14 +120,14 @@ in another.
 }
 
 \examples{
-D <- expand.grid(x = 1:10, y=1:10)
-D$angle <- runif(100, 0, 2*pi)
-D$speed <- runif(100, 0, sqrt(0.1 * D$x))
+SomeData <- expand.grid(x = 1:10, y=1:10)
+SomeData$angle <- runif(100, 0, 2*pi)
+SomeData$speed <- runif(100, 0, sqrt(0.1 * SomeData$x))
 
-gf_point(y ~ x, data = D) \%>\%
+gf_point(y ~ x, data = SomeData) \%>\%
   gf_spoke(y ~ x, angle = ~ angle, radius = 0.5)
 
-gf_point(y ~ x, data = D) \%>\%
+gf_point(y ~ x, data = SomeData) \%>\%
   gf_spoke(y ~ x, angle = ~ angle, radius = ~ speed)
 }
 \seealso{

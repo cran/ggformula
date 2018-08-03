@@ -5,15 +5,17 @@
 \alias{geom_lm}
 \title{Linear Model Displays}
 \usage{
-stat_lm(mapping = NULL, data = NULL, geom = "lm", position = "identity",
-  interval = c("none", "prediction", "confidence"), level = 0.95,
-  formula = y ~ x, lm.args = list(), backtrans = identity, ...,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+stat_lm(mapping = NULL, data = NULL, geom = "lm",
+  position = "identity", interval = c("none", "prediction",
+  "confidence"), level = 0.95, formula = y ~ x, lm.args = list(),
+  backtrans = identity, ..., na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE)
 
-geom_lm(mapping = NULL, data = NULL, stat = "lm", position = "identity",
-  interval = c("none", "prediction", "confidence"), level = 0.95,
-  formula = y ~ x, lm.args = list(), backtrans = identity, ...,
-  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
+geom_lm(mapping = NULL, data = NULL, stat = "lm",
+  position = "identity", interval = c("none", "prediction",
+  "confidence"), level = 0.95, formula = y ~ x, lm.args = list(),
+  backtrans = identity, ..., na.rm = FALSE, show.legend = NA,
+  inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or

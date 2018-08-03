@@ -4,8 +4,8 @@
 \alias{gf_contour}
 \title{Formula interface to geom_contour()}
 \usage{
-gf_contour(object = NULL, gformula = NULL, data = NULL, xlab, ylab, title,
-  subtitle, caption, geom = "contour", stat = "contour",
+gf_contour(object = NULL, gformula = NULL, data = NULL, xlab, ylab,
+  title, subtitle, caption, geom = "contour", stat = "contour",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 }

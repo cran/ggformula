@@ -5,20 +5,21 @@
 \alias{gf_label}
 \title{Formula interface to geom_text() and geom_label()}
 \usage{
-gf_text(object = NULL, gformula = NULL, data = NULL, label, alpha, angle,
-  color, family, fontface, group, hjust, lineheight, size, vjust,
-  parse = FALSE, nudge_x = 0, nudge_y = 0, check_overlap = FALSE, xlab,
-  ylab, title, subtitle, caption, geom = "text", stat = "identity",
+gf_text(object = NULL, gformula = NULL, data = NULL, label, alpha,
+  angle, color, family, fontface, group, hjust, lineheight, size, vjust,
+  parse = FALSE, nudge_x = 0, nudge_y = 0, check_overlap = FALSE,
+  xlab, ylab, title, subtitle, caption, geom = "text",
+  stat = "identity", position = "nudge", show.legend = NA,
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
+
+gf_label(object = NULL, gformula = NULL, data = NULL, label, alpha,
+  angle, color, family, fontface, group, hjust, lineheight, size, vjust,
+  parse, nudge_x = 0, nudge_y = 0, label.padding = unit(0.25,
+  "lines"), label.r = unit(0.15, "lines"), label.size = 0.25, xlab,
+  ylab, title, subtitle, caption, stat = "identity",
   position = "nudge", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
-
-gf_label(object = NULL, gformula = NULL, data = NULL, label, alpha, angle,
-  color, family, fontface, group, hjust, lineheight, size, vjust, parse,
-  nudge_x = 0, nudge_y = 0, label.padding = unit(0.25, "lines"),
-  label.r = unit(0.15, "lines"), label.size = 0.25, xlab, ylab, title,
-  subtitle, caption, stat = "identity", position = "nudge",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

@@ -4,10 +4,11 @@
 \alias{gf_rect}
 \title{Formula interface to geom_rect()}
 \usage{
-gf_rect(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
-  group, linetype, size, xlab, ylab, title, subtitle, caption, geom = "rect",
-  stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_rect(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
+  geom = "rect", stat = "identity", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -102,7 +103,13 @@ in another.
 
 \examples{
 gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
-
+# use data = data.frame() so we get 1 rectangle and not 1 per row of faithful
+# use inherit = FALSE because we are not reusing eruptions and waiting
+gf_point(eruptions ~ waiting, data = faithful) \%>\%
+  gf_rect(1.5 + 3 ~ 45 + 68, fill = "red", alpha = 0.2,
+          data = data.frame(), inherit = FALSE) \%>\%
+  gf_rect(3 + 5.5 ~ 68 + 100, fill = "green", alpha = 0.2,
+          data = data.frame(), inherit = FALSE)
 }
 \seealso{
 \code{\link[ggplot2:geom_rect]{ggplot2::geom_rect()}}

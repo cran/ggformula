@@ -8,21 +8,22 @@
 \usage{
 gf_qq(object = NULL, gformula = NULL, data = NULL, group,
   distribution = stats::qnorm, dparams = list(), xlab, ylab, title,
-  subtitle, caption, geom = "point", stat = "qq", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  subtitle, caption, geom = "point", stat = "qq",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 
 gf_qqline(object = NULL, gformula = NULL, data = NULL, group,
   distribution = stats::qnorm, dparams = list(), linetype = "dashed",
   alpha = 0.7, xlab, ylab, title, subtitle, caption, geom = "line",
   stat = "qqline", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
 
 gf_qqstep(object = NULL, gformula = NULL, data = NULL, group,
   distribution = stats::qnorm, dparams = list(), xlab, ylab, title,
-  subtitle, caption, geom = "step", stat = "qq", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  subtitle, caption, geom = "step", stat = "qq",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

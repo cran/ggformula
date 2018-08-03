@@ -7,18 +7,18 @@
 \alias{gf_coefline}
 \title{Reference lines -- horizontal, vertical, and diagonal.}
 \usage{
-gf_abline(object = NULL, gformula = NULL, data = NULL, slope, intercept,
+gf_abline(object = NULL, gformula = NULL, data = NULL, slope,
+  intercept, color, size, linetype, alpha, xlab, ylab, title, subtitle,
+  caption, show.legend = NA, show.help = NULL, inherit = FALSE,
+  environment = parent.frame(), ...)
+
+gf_hline(object = NULL, gformula = NULL, data = NULL, yintercept,
   color, size, linetype, alpha, xlab, ylab, title, subtitle, caption,
   show.legend = NA, show.help = NULL, inherit = FALSE,
   environment = parent.frame(), ...)
 
-gf_hline(object = NULL, gformula = NULL, data = NULL, yintercept, color,
-  size, linetype, alpha, xlab, ylab, title, subtitle, caption,
-  show.legend = NA, show.help = NULL, inherit = FALSE,
-  environment = parent.frame(), ...)
-
-gf_vline(object = NULL, gformula = NULL, data = NULL, xintercept, color,
-  size, linetype, alpha, xlab, ylab, title, subtitle, caption,
+gf_vline(object = NULL, gformula = NULL, data = NULL, xintercept,
+  color, size, linetype, alpha, xlab, ylab, title, subtitle, caption,
   show.legend = NA, show.help = NULL, inherit = FALSE,
   environment = parent.frame(), ...)
 

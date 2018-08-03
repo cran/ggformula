@@ -24,13 +24,13 @@ NA
 #' See details and examples.
 #'
 #' @param gformula A formula with shape `~x` or `y ~ x`.
-#'   `y` may be `..density..` or `..count..` or `..ndensity..` or `..ncount..`.
+#'   `y` may be `stat(density)` or `stat(count)` or `stat(ndensity)` or `stat(ncount)`.
 #'   Faceting can be achieved by including `|` in the formula.
 #' @param data A data frame with the variables to be plotted.
 #' @param environment An environment in which to look for variables not found in `data`.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
-#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~expression`, or
+#'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #' @param geom A character string naming the geom used to make the layer.
 #' @param stat A character string naming the stat used to make the layer.
@@ -124,7 +124,7 @@ stat_ash <-
 #' @export
 #' @examples
 #' ggplot(faithful, aes(x = eruptions)) +
-#'   geom_histogram(aes(y = ..density..),
+#'   geom_histogram(aes(y = stat(density)),
 #'     fill = "lightskyblue", colour = "gray50", alpha = 0.2) +
 #'   geom_ash(colour = "red") +
 #'   geom_ash(colour = "forestgreen", adjust = 2) +

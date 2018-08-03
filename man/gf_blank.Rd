@@ -5,13 +5,13 @@
 \alias{gf_frame}
 \title{Formula interface to geom_blank()}
 \usage{
-gf_blank(object = NULL, gformula = NULL, data = NULL, xlab, ylab, title,
-  subtitle, caption, geom = "blank", stat = "identity",
+gf_blank(object = NULL, gformula = NULL, data = NULL, xlab, ylab,
+  title, subtitle, caption, geom = "blank", stat = "identity",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 
-gf_frame(object = NULL, gformula = NULL, data = NULL, xlab, ylab, title,
-  subtitle, caption, geom = "blank", stat = "identity",
+gf_frame(object = NULL, gformula = NULL, data = NULL, xlab, ylab,
+  title, subtitle, caption, geom = "blank", stat = "identity",
   position = "identity", show.legend = NA, show.help = NULL,
   inherit = TRUE, environment = parent.frame(), ...)
 }
@@ -99,6 +99,9 @@ in another.
 gf_point((c(0,1)) ~ (c(0,5)))
 gf_frame((c(0,1)) ~ (c(0,5)))
 gf_blank((c(0,1)) ~ (c(0,5)))
+# gf_blank() can be used to expand the view
+gf_point((c(0,1)) ~ (c(0,5))) \%>\%
+  gf_blank((c(0,3)) ~ (c(-2,7)))
 }
 \seealso{
 \code{\link[ggplot2:geom_blank]{ggplot2::geom_blank()}}

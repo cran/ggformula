@@ -4,8 +4,8 @@
 \alias{gf_errorbar}
 \title{Formula interface to geom_errorbar()}
 \usage{
-gf_errorbar(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, xlab, ylab, title, subtitle, caption,
+gf_errorbar(object = NULL, gformula = NULL, data = NULL, alpha,
+  color, group, linetype, size, xlab, ylab, title, subtitle, caption,
   geom = "errorbar", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = FALSE,
   environment = parent.frame(), ...)

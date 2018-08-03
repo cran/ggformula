@@ -4,12 +4,13 @@
 \alias{gf_quantile}
 \title{Formula interface to geom_quantile()}
 \usage{
-gf_quantile(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, weight, lineend = "butt", linejoin = "round",
-  linemitre = 1, quantiles, formula, method, method.args, xlab, ylab, title,
-  subtitle, caption, geom = "quantile", stat = "quantile",
-  position = "identity", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+gf_quantile(object = NULL, gformula = NULL, data = NULL, alpha,
+  color, group, linetype, size, weight, lineend = "butt",
+  linejoin = "round", linemitre = 1, quantiles, formula, method,
+  method.args, xlab, ylab, title, subtitle, caption, geom = "quantile",
+  stat = "quantile", position = "identity", show.legend = NA,
+  show.help = NULL, inherit = TRUE, environment = parent.frame(),
+  ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions

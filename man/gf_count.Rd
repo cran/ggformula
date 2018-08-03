@@ -4,10 +4,11 @@
 \alias{gf_count}
 \title{Formula interface to geom_count()}
 \usage{
-gf_count(object = NULL, gformula = NULL, data = NULL, alpha, color, fill,
-  group, shape, size, stroke, xlab, ylab, title, subtitle, caption,
-  geom = "point", stat = "sum", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(), ...)
+gf_count(object = NULL, gformula = NULL, data = NULL, alpha, color,
+  fill, group, shape, size, stroke, xlab, ylab, title, subtitle, caption,
+  geom = "point", stat = "sum", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame(), ...)
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
