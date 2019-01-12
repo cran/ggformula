@@ -38,7 +38,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -140,14 +140,12 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
-  gf_density_2d(avg_drinks ~ age, data = HELPrct)
-}
-if (require(mosaicData)) {
-  gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) \%>\%
-  gf_density2d(avg_drinks ~ age, data = HELPrct)
-}
+gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
+          width = 0.4, height = 0.4) \%>\%
+  gf_density_2d(avg_drinks ~ age, data = mosaicData::HELPrct)
+gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
+          width = 0.4, height = 0.4) \%>\%
+  gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct)
 }
 \seealso{
 \code{\link[ggplot2:geom_density_2d]{ggplot2::geom_density_2d()}}

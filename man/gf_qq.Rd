@@ -44,7 +44,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{group}{Used for grouping.}
@@ -68,10 +68,10 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
+\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}.}
 
 \item{stat}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
+\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}

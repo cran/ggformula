@@ -119,12 +119,10 @@ in another.
 
 \examples{
 gf_line()
-if (require(mosaicData)) {
-  gf_point(age ~ sex, alpha = 0.25, data = HELPrct)
-  gf_point(births ~ date, color = ~ wday, data = Births78)
-  # lines make the exceptions stand out more prominently
-  gf_line(births ~ date, color = ~ wday, data = Births78)
-  }
+gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct)
+gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78)
+# lines make the exceptions stand out more prominently
+gf_line(births ~ date, color = ~ wday, data = mosaicData::Births78)
 
 gf_path()
 if (require(dplyr)) {

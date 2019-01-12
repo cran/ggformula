@@ -111,13 +111,11 @@ gf_point(mpg ~ hp | am ~ ., group = ~ cyl,  data = mtcars)
 mtcars \%>\% gf_point(mpg ~ wt)
 
 # short cuts for main labels in the plot
-if (require(mosaicData)) {
-  gf_point(births ~ date, color = ~ wday, data = Births78,
+gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78,
     xlab = "Date", ylab = "Number of Live Births",
     title = "Interesting Patterns in the Number of Births",
     subtitle = "(United States, 1978)",
     caption = "Source: mosaicData::Births78")
-}
 
 }
 \seealso{

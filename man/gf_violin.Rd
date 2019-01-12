@@ -40,7 +40,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -155,15 +155,11 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_violin(age ~ substance, data = HELPrct)
-  gf_violin(age ~ substance, data = HELPrct, fill = ~ sex)
-}
+gf_violin(age ~ substance, data = mosaicData::HELPrct)
+gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
 
-if (require(mosaicData)) {
-  gf_violinh(substance ~ age, data = HELPrct)
-  gf_violinh(substance ~ age, data = HELPrct, fill = ~ sex)
-}
+gf_violinh(substance ~ age, data = mosaicData::HELPrct)
+gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~ sex)
 }
 \references{
 Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box

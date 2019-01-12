@@ -29,7 +29,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{bins}{numeric vector giving number of bins in both vertical and
@@ -121,10 +121,9 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_hex(avg_drinks ~ age, data = HELPrct, bins = 15) \%>\%
-  gf_density2d(avg_drinks ~ age, data = HELPrct, color = "red", alpha = 0.5)
-}
+gf_hex(avg_drinks ~ age, data = mosaicData::HELPrct, bins = 15) \%>\%
+gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
+
 }
 \seealso{
 \code{\link[ggplot2:geom_hex]{ggplot2::geom_hex()}}

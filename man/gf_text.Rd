@@ -40,7 +40,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{label}{The text to be displayed.}
@@ -65,7 +65,7 @@ text relative the the specified location.}
 \item{size}{A numeric size or a formula used for mapping size.}
 
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
-displayed as described in ?plotmath}
+displayed as described in \code{?plotmath}.}
 
 \item{nudge_x}{Horizontal and vertical adjustment to nudge labels by.
 Useful for offsetting text from points, particularly on discrete scales.}
@@ -124,7 +124,7 @@ display.}
 a gg object
 }
 \description{
-\code{geom_text} adds text directly to the plot. \code{geom_label} draws
+\code{geom_text()} adds text directly to the plot. \code{geom_label()} draws
 a rectangle behind the text, making it easier to read.
 }
 \section{Specifying plot attributes}{

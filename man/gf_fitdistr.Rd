@@ -15,7 +15,7 @@ gf_fitdistr(object = NULL, gformula = NULL, data = NULL,
 \item{object}{When chaining, this holds an object produced in the earlier portions
 of the chain.  Most users can safely ignore this argument. See examples.}
 
-\item{gformula}{A formula with shape \code{~ x} used to specify the data
+\item{gformula}{A formula with shape \code{ ~ x} used to specify the data
 to be fit to a family of distributions.}
 
 \item{data}{A data frame containing the variable to be fitted.}
@@ -104,11 +104,10 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_fitdistr( ~ length, data = KidsFeet, inherit = FALSE) \%>\%
-    gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25)
+  gf_fitdistr( ~ length, data = mosaicData::KidsFeet, inherit = FALSE) \%>\%
+    gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
 
-  gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25) \%>\%
+  gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) \%>\%
     gf_fitdistr()
 
   set.seed(12345)
@@ -128,7 +127,6 @@ if (require(mosaicData)) {
       start = list(df1 = 2, df2 = 50)))
   args(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
 
-}
 }
 \seealso{
 \code{\link[mosaicCore:fit_distr_fun]{mosaicCore::fit_distr_fun()}}

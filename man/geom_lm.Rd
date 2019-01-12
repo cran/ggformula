@@ -34,7 +34,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{geom, stat}{Use to override the default connection between
@@ -58,7 +58,7 @@ the original scale when the \code{formula} includes a transformation on
 
 \item{...}{Other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
@@ -85,28 +85,26 @@ Stat calculation is performed by the (currently undocumented)
 calculated using the \code{\link[=predict]{predict()}} method.
 }
 \examples{
-if (require(mosaicData)) {
-  ggplot(data = KidsFeet, aes(y = length, x = width, color = sex)) +
-    geom_lm() +
-    geom_point()
-  ggplot(data = KidsFeet, aes(y = length, x = width, color = sex)) +
-    geom_lm(interval = "prediction", color = "skyblue") +
-    geom_lm(interval = "confidence") +
-    geom_point() +
-    facet_wrap(~sex)
- # non-standard display
-  ggplot(data = KidsFeet, aes(y = length, x = width, color = sex)) +
-    stat_lm(aes(fill = sex), color = NA, interval = "confidence", geom = "ribbon",
-    alpha = 0.2) +
-    geom_point() +
-    facet_wrap(~sex)
+ggplot(data = mosaicData::KidsFeet, aes(y = length, x = width, color = sex)) +
+  geom_lm() +
+  geom_point()
+ggplot(data = mosaicData::KidsFeet, aes(y = length, x = width, color = sex)) +
+  geom_lm(interval = "prediction", color = "skyblue") +
+  geom_lm(interval = "confidence") +
+  geom_point() +
+  facet_wrap(~sex)
+# non-standard display
+ggplot(data = mosaicData::KidsFeet, aes(y = length, x = width, color = sex)) +
+  stat_lm(aes(fill = sex), color = NA, interval = "confidence", geom = "ribbon",
+  alpha = 0.2) +
+  geom_point() +
+  facet_wrap(~sex)
 ggplot(mpg, aes(displ, hwy)) +
-   geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp,
+  geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp,
      interval = "prediction", fill = "skyblue") +
-   geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp, interval = "confidence",
+  geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp, interval = "confidence",
      color = "red") +
-   geom_point()
-}
+  geom_point()
 }
 \seealso{
 \code{\link[=lm]{lm()}} for details on linear model fitting.

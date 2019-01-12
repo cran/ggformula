@@ -50,7 +50,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30.}
@@ -92,10 +92,10 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
+\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}.}
 
 \item{stat}{Use to override the default connection between
-\code{geom_histogram}/\code{geom_freqpoly} and \code{stat_bin}.}
+\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -150,7 +150,7 @@ in another.
 }
 
 \examples{
-x <- rnorm(1000)
+x <<- rnorm(1000)
 gf_histogram(  ~ x, bins = 30)
 gf_dhistogram( ~ x, bins = 30)
 gf_dhistogram( ~ x, binwidth = 0.5, center = 0, color = "black")
@@ -161,14 +161,13 @@ gf_dhistogram( ~ x, bins = 30) \%>\%
 gf_histogram( ~ x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 
 gf_histogram( ~ Sepal.Length | Species, data = iris, binwidth = 0.25)
-if (require(mosaicData)) {
-  gf_histogram( ~ age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black")
-  # bins can be adjusted left/right using center or boundary
-  gf_histogram( ~ age, data = HELPrct,
-               binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
-  gf_histogram( ~ age, data = HELPrct,
-                binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
-}
+gf_histogram( ~ age, data = mosaicData::HELPrct, binwidth = 5,
+             fill = "skyblue", color = "black")
+# bins can be adjusted left/right using center or boundary
+gf_histogram( ~ age, data = mosaicData::HELPrct,
+             binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
+gf_histogram( ~ age, data = mosaicData::HELPrct,
+              binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
 
 gf_histogramh( ~ x, bins = 30)
 gf_histogramh( x ~ ., bins = 30)

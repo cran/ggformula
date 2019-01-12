@@ -35,8 +35,7 @@ specific \code{ggplot2} refinement functions and pass their \code{\dots}
 arguments through to the similarly named \code{ggplot2} functions.
 }
 \examples{
-if (require(mosaicData)) {
-gf_dens( ~ cesd, color = ~ substance, size = 1.5, data = HELPrct) \%>\%
+gf_dens( ~ cesd, color = ~ substance, size = 1.5, data = mosaicData::HELPrct) \%>\%
 gf_labs(
   title = "Center for Epidemiologic Studies Depression measure",
   subtitle = "(at baseline)",
@@ -51,7 +50,7 @@ gf_labs(
     legend.position = "top",
     plot.title = element_text(hjust = 0.5, color = "navy"),
     plot.subtitle = element_text(hjust = 0.5, color = "navy", size = 12))
-}
+
 gf_point(eruptions ~ waiting, data = faithful, alpha = 0.5)
 gf_point(eruptions ~ waiting, data = faithful, alpha = 0.5) \%>\%
   gf_lims(x = c(65, NA), y = c(3, NA))

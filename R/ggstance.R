@@ -18,19 +18,19 @@
 #' @seealso [ggstance::geom_barh()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_barh( ~ substance, data = HELPrct)
-#'   gf_barh( ~ substance, data = HELPrct, fill = ~ sex)
-#'   gf_barh( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   # gf_counts() is another name for gf_bar()
-#'   gf_counts( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   # gf_props() and gf_percents() use proportions or percentages instead of counts
-#'   gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   gf_percents( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   if (require(scales)) {
-#'     gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge()) %>%
-#'       gf_refine(scale_y_continuous(labels = scales::percent))
-#'   }
+#' gf_barh( ~ Diet, data = ChickWeight)
+#' gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+#' gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'         position = position_dodgev())
+#' # gf_counts() is another name for gf_bar()
+#' gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+#' # gf_props() and gf_percents() use proportions or percentages instead of counts
+#' gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
+#' gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
+#'
+#' if (require(scales)) {
+#'   gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge()) %>%
+#'     gf_refine(scale_y_continuous(labels = scales::percent))
 #' }
 
 gf_barh <-
@@ -115,21 +115,26 @@ gf_percentsh <-
 #' @importFrom ggstance geom_boxploth stat_boxploth position_dodgev
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_boxploth(substance ~ age, data = HELPrct)
-#'   gf_boxploth(substance ~ age, data = HELPrct, varwidth = TRUE)
-#'   gf_boxploth(substance ~ age, data = HELPrct, color = ~ sex)
-#'   gf_boxploth(substance ~ age, data = HELPrct, color = ~ sex, outlier.color = "gray50")
-#'   # longer whiskers
-#'   gf_boxploth(substance ~ age, data = HELPrct, color = ~ sex, coef = 2)
-#'   # Note: height for boxplots is full width of box.
-#'   #   For jittering, it is the half-height.
-#'   gf_boxploth(substance ~ age | sex, data = HELPrct, coef = 5, height = 0.4) %>%
-#'     gf_jitter(height = 0.2, alpha = 0.3)
-#'   # move boxplots away a bit by adjusting dodge
-#'   gf_boxploth(substance ~ age, data = HELPrct, color = ~ sex,
+#' gf_boxploth(sex ~ age, data = mosaicData::HELPrct, varwidth = TRUE)
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex)
+#' # move boxplots away a bit by adjusting dodge
+#'   gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex,
 #'     position = position_dodgev(height = 0.9))
-#' }
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, outlier.color = "gray50")
+#' # longer whiskers
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, coef = 2)
+#' # Note: height for boxplots is full width of box.
+#' #   For jittering, it is the half-height.
+#' gf_boxploth(substance ~ age | sex, data = mosaicData::HELPrct, coef = 5, height = 0.4) %>%
+#'   gf_jitter(height = 0.2, alpha = 0.3)
+#'
+#' # combining boxplots and histograms
+#' gf_histogram(~ eruptions, data = faithful) %>%
+#'   gf_boxploth(0 ~ eruptions, alpha = 0, width = 2)
+#' gf_histogram(~ eruptions, data = faithful) %>%
+#'  gf_boxploth(-2 ~ eruptions, alpha = 0, width = 2)
+#' gf_histogram(~ eruptions, data = faithful) %>%
+#'   gf_boxploth(32 ~ eruptions, alpha = 0, width = 2)
 
 gf_boxploth <-
   layer_factory(
@@ -229,10 +234,8 @@ gf_crossbarh <-
 
 #' @rdname gf_violin
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_violinh(substance ~ age, data = HELPrct)
-#'   gf_violinh(substance ~ age, data = HELPrct, fill = ~ sex)
-#' }
+#' gf_violinh(substance ~ age, data = mosaicData::HELPrct)
+#' gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~ sex)
 #' @export
 gf_violinh <-
   layer_factory(
@@ -265,8 +268,8 @@ gf_violinh <-
 #' @seealso [ggplot2::geom_errorbarh()]
 #' @export
 #' @examples
-#' if (require(mosaicData) && require(dplyr)) {
-#' HELP2 <- HELPrct %>%
+#' if (require(dplyr)) {
+#'   HELP2 <- mosaicData::HELPrct %>%
 #'   group_by(substance, sex) %>%
 #'   summarise(
 #'     mean.age = mean(age),
@@ -278,11 +281,11 @@ gf_violinh <-
 #'     hi = mean.age + sd.age
 #'     )
 #'
-#'   gf_jitter(substance ~ age, data = HELPrct,
+#'   gf_jitter(substance ~ age, data = mosaicData::HELPrct,
 #'       alpha = 0.5, height = 0.2, width = 0, color = "skyblue") %>%
 #'     gf_errorbarh( substance ~ lo + hi,  data = HELP2, inherit = FALSE) %>%
 #'     gf_facet_grid( ~ sex)
-#'   gf_jitter(age ~ substance, data = HELPrct,
+#'   gf_jitter(age ~ substance, data = mosaicData::HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
 #'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
 #'     gf_facet_grid( ~ sex)

@@ -36,7 +36,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -145,15 +145,17 @@ HELP2 <- HELPrct \%>\%
     gf_facet_grid( ~ sex)
   gf_jitter(age ~ substance, data = HELPrct,
       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") \%>\%
-    gf_errorbar( lo + hi ~ substance,  data = HELP2) \%>\%
+    gf_errorbar(lo + hi ~ substance,  data = HELP2) \%>\%
     gf_facet_grid( ~ sex)
   gf_jitter(age ~ substance, data = HELPrct,
       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") \%>\%
-    gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2, fill = "transparent") \%>\%
+    gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2,
+                fill = "transparent") \%>\%
     gf_facet_grid( ~ sex)
   gf_jitter(substance ~ age, data = HELPrct,
       alpha = 0.7, height = 0.2, width = 0, color = "skyblue") \%>\%
-    gf_crossbarh( substance ~ mean.age + lo + hi,  data = HELP2, fill = "transparent") \%>\%
+    gf_crossbarh(substance ~ mean.age + lo + hi, data = HELP2,
+                 fill = "transparent") \%>\%
     gf_facet_grid( ~ sex)
 }
 

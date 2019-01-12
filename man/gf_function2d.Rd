@@ -50,7 +50,7 @@ gf_fun_contour(object = NULL, formula = NULL, xlim = NULL,
 
 \item{contour}{A logical indicating whether the contour layer should be drawn.}
 
-\item{resolution}{A numeric vector of length 1 or 2 specifiying the
+\item{resolution}{A numeric vector of length 1 or 2 specifying the
 number of grid points at which the function is evaluated (in each dimension).}
 
 \item{formula}{A formula describing a function of two variables to be plotted.  See \code{\link[mosaic:makeFun]{mosaic::makeFun()}}

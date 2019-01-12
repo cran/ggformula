@@ -123,13 +123,11 @@ NA
 #' mtcars %>% gf_point(mpg ~ wt)
 #'
 #' # short cuts for main labels in the plot
-#' if (require(mosaicData)) {
-#'   gf_point(births ~ date, color = ~ wday, data = Births78,
+#' gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78,
 #'     xlab = "Date", ylab = "Number of Live Births",
 #'     title = "Interesting Patterns in the Number of Births",
 #'     subtitle = "(United States, 1978)",
 #'     caption = "Source: mosaicData::Births78")
-#' }
 #'
 
 gf_point <-
@@ -154,15 +152,13 @@ gf_point <-
 #' @export
 #' @examples
 #' gf_jitter()
-#' if (require(mosaicData)) {
-#'   # without jitter
-#'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct)
-#'   # jitter only horizontally
-#'   gf_jitter(age ~ sex, alpha = 0.25, data = HELPrct, width = 0.2, height = 0)
-#'   # alternative way to get jitter
-#'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct,
+#' # without jitter
+#' gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct)
+#' # jitter only horizontally
+#' gf_jitter(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct, width = 0.2, height = 0)
+#' # alternative way to get jitter
+#' gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct,
 #'     position = "jitter", width = 0.2, height = 0)
-#' }
 gf_jitter <-
   layer_factory(
     geom = "point",
@@ -187,12 +183,10 @@ gf_jitter <-
 #' @export
 #' @examples
 #' gf_line()
-#' if (require(mosaicData)) {
-#'   gf_point(age ~ sex, alpha = 0.25, data = HELPrct)
-#'   gf_point(births ~ date, color = ~ wday, data = Births78)
-#'   # lines make the exceptions stand out more prominently
-#'   gf_line(births ~ date, color = ~ wday, data = Births78)
-#'   }
+#' gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct)
+#' gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78)
+#' # lines make the exceptions stand out more prominently
+#' gf_line(births ~ date, color = ~ wday, data = mosaicData::Births78)
 #'
 gf_line <-
   layer_factory(
@@ -266,21 +260,26 @@ gf_polygon <-
 #' @examples
 #' gf_smooth()
 #' gf_lm()
-#' if (require(mosaicData)) {
-#'   gf_smooth(births ~ date, color = ~ wday, data = Births78)
-#'   gf_smooth(births ~ date, color = ~ wday, data = Births78, fullrange = TRUE)
-#'   gf_smooth(births ~ date, color = ~ wday, data = Births78, show.legend = FALSE, se = FALSE)
-#'   gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, alpha = 0.2) %>%
-#'     gf_point()
-#'   gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
-#'     gf_point()
-#'   gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
-#'         formula = y ~ poly(x,2), linetype = "dashed") %>%
-#'     gf_point()
-#'   gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
-#'         formula = log(y) ~ x, backtrans = exp) %>%
-#'     gf_point()
-#' }
+#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78)
+#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+#'           fullrange = TRUE)
+#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+#'           show.legend = FALSE, se = FALSE)
+#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+#'           show.legend = FALSE, se = TRUE)
+#' gf_lm(length ~ width, data = mosaicData::KidsFeet,
+#'       color = ~ biggerfoot, alpha = 0.2) %>%
+#'   gf_point()
+#' gf_lm(length ~ width, data = mosaicData::KidsFeet,
+#'       color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
+#'   gf_point()
+#' gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
+#'       formula = y ~ poly(x, 2), linetype = "dashed") %>%
+#'   gf_point()
+#' gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
+#'       formula = log(y) ~ x, backtrans = exp) %>%
+#'   gf_point()
+#'
 #' gf_lm(hwy ~ displ, data = mpg,
 #'       formula = log(y) ~ poly(x,3), backtrans = exp,
 #'      interval = "prediction", fill = "skyblue") %>%
@@ -324,11 +323,9 @@ gf_lm <-
 #' @seealso [geom_spline()], [gf_smooth()], [gf_lm()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_spline(births ~ date, color = ~ wday, data = Births78)
-#'   gf_spline(births ~ date, color = ~ wday, data = Births78, df = 20)
-#'   gf_spline(births ~ date, color = ~ wday, data = Births78, df = 4)
-#' }
+#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78)
+#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 20)
+#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 4)
 
 gf_spline <-
   layer_factory(
@@ -410,10 +407,9 @@ gf_quantile <-
 #' @seealso [ggplot2::geom_density_2d()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
-#'   gf_density_2d(avg_drinks ~ age, data = HELPrct)
-#' }
+#' gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
+#'           width = 0.4, height = 0.4) %>%
+#'   gf_density_2d(avg_drinks ~ age, data = mosaicData::HELPrct)
 
 gf_density_2d <-
   layer_factory(
@@ -427,17 +423,17 @@ gf_density_2d <-
 #' @rdname gf_density_2d
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_jitter(avg_drinks ~ age, alpha = 0.2, data = HELPrct, width = 0.4, height = 0.4) %>%
-#'   gf_density2d(avg_drinks ~ age, data = HELPrct)
-#' }
+#' gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
+#'           width = 0.4, height = 0.4) %>%
+#'   gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct)
 
 gf_density2d <-
   layer_factory(
     geom = "density2d",
     stat = "density2d",
     extras = alist(alpha = , color = , group = , linetype = , size = ,
-                   contour = TRUE, n = 100 , h = NULL , lineend = "butt", linejoin = "round",
+                   contour = TRUE, n = 100 , h = NULL ,
+                   lineend = "butt", linejoin = "round",
                    linemitre = 1 )
   )
 
@@ -453,10 +449,9 @@ gf_density2d <-
 #' @seealso [ggplot2::geom_hex()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_hex(avg_drinks ~ age, data = HELPrct, bins = 15) %>%
-#'   gf_density2d(avg_drinks ~ age, data = HELPrct, color = "red", alpha = 0.5)
-#' }
+#' gf_hex(avg_drinks ~ age, data = mosaicData::HELPrct, bins = 15) %>%
+#' gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
+#'
 gf_hex <-
   layer_factory(
     geom = "hex",
@@ -478,20 +473,23 @@ gf_hex <-
 #' @seealso [ggplot2::geom_boxplot()], [fivenum()], [df_stats()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_boxplot(age ~ substance, data = HELPrct)
-#'   gf_boxplot(age ~ substance, data = HELPrct, varwidth = TRUE)
-#'   gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex)
-#'   gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, outlier.color = "gray50")
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~ sex)
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+#'              color = ~ sex, outlier.color = "gray50")
 #'   # longer whiskers
-#'   gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, coef = 2)
-#'   # Note: width for boxplots is full width of box.  For jittering, it is the
-#'   # half-width.
-#'   gf_boxplot(age ~ substance | sex, data = HELPrct, coef = 5, width = 0.4) %>%
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+#'              color = ~ sex, coef = 2)
+#'
+#'   # Note: width for boxplots is full width of box.
+#'   #       For jittering, it is the half-width.
+#'   gf_boxplot(age ~ substance | sex, data = mosaicData::HELPrct,
+#'              coef = 5, width = 0.4) %>%
 #'     gf_jitter(width = 0.2, alpha = 0.3)
 #'   # move boxplots away a bit by adjusting dodge
-#'   gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, position = position_dodge(width = 0.9))
-#' }
+#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+#'              color = ~ sex, position = position_dodge(width = 0.9))
 
 gf_boxplot <-
   layer_factory(
@@ -635,10 +633,8 @@ gf_area <-
 #' @seealso [ggplot2::geom_violin()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_violin(age ~ substance, data = HELPrct)
-#'   gf_violin(age ~ substance, data = HELPrct, fill = ~ sex)
-#' }
+#' gf_violin(age ~ substance, data = mosaicData::HELPrct)
+#' gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
 #'
 gf_violin <-
   layer_factory(
@@ -702,9 +698,7 @@ gf_spoke <-
 #' @seealso [ggplot2::geom_step()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_step( births ~ date, data = Births78, color = ~ wday)
-#' }
+#' gf_step( births ~ date, data = mosaicData::Births78, color = ~ wday)
 #'
 #' # Roll your own Kaplan-Meier plot
 #'
@@ -898,7 +892,7 @@ gf_frame <-
 #' @seealso [ggplot2::geom_histogram()]
 #' @export
 #' @examples
-#' x <- rnorm(1000)
+#' x <<- rnorm(1000)
 #' gf_histogram(  ~ x, bins = 30)
 #' gf_dhistogram( ~ x, bins = 30)
 #' gf_dhistogram( ~ x, binwidth = 0.5, center = 0, color = "black")
@@ -909,14 +903,13 @@ gf_frame <-
 #' gf_histogram( ~ x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 #'
 #' gf_histogram( ~ Sepal.Length | Species, data = iris, binwidth = 0.25)
-#' if (require(mosaicData)) {
-#'   gf_histogram( ~ age, data = HELPrct, binwidth = 5, fill = "skyblue", color = "black")
-#'   # bins can be adjusted left/right using center or boundary
-#'   gf_histogram( ~ age, data = HELPrct,
-#'                binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
-#'   gf_histogram( ~ age, data = HELPrct,
-#'                 binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
-#' }
+#' gf_histogram( ~ age, data = mosaicData::HELPrct, binwidth = 5,
+#'              fill = "skyblue", color = "black")
+#' # bins can be adjusted left/right using center or boundary
+#' gf_histogram( ~ age, data = mosaicData::HELPrct,
+#'              binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
+#' gf_histogram( ~ age, data = mosaicData::HELPrct,
+#'               binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
 
 
 gf_histogram <-
@@ -939,7 +932,8 @@ gf_dhistogram <-
     geom = "bar", stat = "bin", position = "stack",
     aes_form = list( ~ x, y ~ x),
     extras =
-      alist(bins = 25, binwidth = , alpha = 0.5 , color = , fill = , group = , linetype = , size = ),
+      alist(bins = 25, binwidth = , alpha = 0.5 , color = , fill = , group = ,
+            linetype = , size = ),
     note =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.."
@@ -1026,6 +1020,11 @@ gf_dens <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
+#' @section Warning:
+#' Dotplots in `ggplot2` (and hence in `ggformula`) often require some fiddling because
+#' the default y-axis is meaningless and the ideal size of the dots depends on the
+#' aspect ratio of the plot.
+#'
 #' @seealso [ggplot2::geom_dotplot()]
 #' @export
 #' @examples
@@ -1063,19 +1062,22 @@ gf_dotplot <-
 #' @seealso [ggplot2::geom_bar()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_bar( ~ substance, data = HELPrct)
-#'   gf_bar( ~ substance, data = HELPrct, fill = ~ sex)
-#'   gf_bar( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   # gf_counts() is another name for gf_bar()
-#'   gf_counts( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   # gf_props() and gf_percents() use proportions or percentages instead of counts
-#'   gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   gf_percents( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-#'   if (require(scales)) {
-#'     gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge()) %>%
-#'       gf_refine(scale_y_continuous(labels = scales::percent))
-#'   }
+#' gf_bar( ~ substance, data = mosaicData::HELPrct)
+#' gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+#' gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'        position = position_dodge())
+#' # gf_counts() is another name for gf_bar()
+#' gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'           position = position_dodge())
+#' # gf_props() and gf_percents() use proportions or percentages instead of counts
+#' gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'          position = position_dodge())
+#' gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'             position = position_dodge())
+#' if (require(scales)) {
+#'   gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+#'            position = position_dodge()) %>%
+#'     gf_refine(scale_y_continuous(labels = scales::percent))
 #' }
 
 gf_bar <-
@@ -1352,18 +1354,16 @@ gf_contour <-
 #' @examples
 #' gf_ribbon()
 #'
-#' if (require(mosaicData)) {
-#' gf_ribbon(low_temp + high_temp ~ date, data = Weather, fill = ~ city, alpha = 0.4) %>%
+#' gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~ city, alpha = 0.4) %>%
 #'    gf_theme(theme = theme_minimal())
 #' gf_linerange(
 #'     low_temp + high_temp ~ date | city ~ ., color = ~ high_temp,
-#'     data = Weather) %>%
+#'     data = mosaicData::Weather) %>%
 #'   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
-#' gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather)
+#' gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 #' # Chaining in the data
-#' Weather %>% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
+#' mosaicData::Weather %>% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
 #'   gf_facet_grid(city ~ .)
-#' }
 
 gf_ribbon <-
   layer_factory(
@@ -1441,24 +1441,22 @@ gf_segment <-
 #' @examples
 #' gf_linerange()
 #'
-#' if (require(mosaicData)) {
-#' gf_ribbon(low_temp + high_temp ~ date, data = Weather,
+#' gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather,
 #'           fill = ~ city, alpha = 0.4) %>%
 #'    gf_theme(theme = theme_minimal())
 #' gf_linerange(
-#'   low_temp + high_temp ~ date | city ~ ., data = Weather,
+#'   low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather,
 #'   color = ~ ((low_temp + high_temp) / 2) ) %>%
 #'   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) %>%
 #'   gf_labs(color = "mid-temp")
 #'
-#' gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather)
+#' gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 #'
 #' # Chaining in the data
-#' Weather %>%
+#' mosaicData::Weather %>%
 #'   gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
 #'   gf_facet_grid(city ~ .)
-#' }
-#'
+
 gf_linerange <-
   layer_factory(
     geom = "linerange",
@@ -1544,20 +1542,24 @@ gf_pointrange <-
 #'     gf_facet_grid( ~ sex)
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
+#'     gf_errorbar(lo + hi ~ substance,  data = HELP2) %>%
 #'     gf_facet_grid( ~ sex)
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2, fill = "transparent") %>%
+#'     gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2,
+#'                 fill = "transparent") %>%
 #'     gf_facet_grid( ~ sex)
 #'   gf_jitter(substance ~ age, data = HELPrct,
 #'       alpha = 0.7, height = 0.2, width = 0, color = "skyblue") %>%
-#'     gf_crossbarh( substance ~ mean.age + lo + hi,  data = HELP2, fill = "transparent") %>%
+#'     gf_crossbarh(substance ~ mean.age + lo + hi, data = HELP2,
+#'                  fill = "transparent") %>%
 #'     gf_facet_grid( ~ sex)
 #' }
 #'
-#     gf_boxplot( age ~ substance,  data = HELPrct, color = "red", fill = "transparent") %>%
-#     gf_boxploth( substance ~ age,  data = HELPrct, color = "red", fill = "transparent") %>%
+#     gf_boxplot(age ~ substance,  data = HELPrct,
+#                 color = "red", fill = "transparent") %>%
+#     gf_boxploth(substance ~ age,  data = HELPrct,
+#                  color = "red", fill = "transparent") %>%
 
 gf_crossbar <-
   layer_factory(
@@ -1783,12 +1785,10 @@ utils::globalVariables(c("x"))
 #' @export
 #' @examples
 #' gf_function(fun = sqrt, xlim = c(0, 10))
-#' if (require(mosaicData)) {
-#'   gf_dhistogram( ~ age, data = HELPrct, binwidth = 3, alpha = 0.6) %>%
+#'   gf_dhistogram( ~ age, data = mosaicData::HELPrct, binwidth = 3, alpha = 0.6) %>%
 #'     gf_function(fun = stats::dnorm,
-#'       args = list(mean = mean(HELPrct$age), sd = sd(HELPrct$age)),
+#'       args = list(mean = mean(mosaicData::HELPrct$age), sd = sd(mosaicData::HELPrct$age)),
 #'       color = "red")
-#' }
 
 
 gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
@@ -1822,8 +1822,8 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
 #' @examples
 #' gf_fun(5 + 3 * cos(10 * x) ~ x, xlim = c(0,2))
 #' # Utility bill is quadratic in month?
-#' f <- makeFun(lm(totalbill ~ poly(month, 2), data = Utilities))
-#' gf_point(totalbill ~ month, data = Utilities, alpha = 0.6) %>%
+#' f <- makeFun(lm(totalbill ~ poly(month, 2), data = mosaicData::Utilities))
+#' gf_point(totalbill ~ month, data = mosaicData::Utilities, alpha = 0.6) %>%
 #'   gf_fun(f(m) ~ m, color = "red")
 
 gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
@@ -1881,11 +1881,10 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
 #' @seealso [mosaicCore::fit_distr_fun()]
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_fitdistr( ~ length, data = KidsFeet, inherit = FALSE) %>%
-#'     gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25)
+#'   gf_fitdistr( ~ length, data = mosaicData::KidsFeet, inherit = FALSE) %>%
+#'     gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
 #'
-#'   gf_dhistogram( ~ length, data = KidsFeet, binwidth = 0.5, alpha = 0.25) %>%
+#'   gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) %>%
 #'     gf_fitdistr()
 #'
 #'   set.seed(12345)
@@ -1905,7 +1904,6 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
 #'       start = list(df1 = 2, df2 = 50)))
 #'   args(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
 #'
-#' }
 
 gf_fitdistr <-
   layer_factory(

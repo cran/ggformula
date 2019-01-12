@@ -17,7 +17,7 @@ distribution for which the functions with names formed by prepending
 
 \item{...}{additional arguments passed both to the distribution functions and
 to the layer.  Note: Possible ambiguities using \code{params} or by preceding plot
-arguement with \code{plot_}.}
+argument with \code{plot_}.}
 
 \item{xlim}{A numeric vector of length 2 providing lower and upper bounds for the
 portion of the distribution that will be displayed.  The default is to attempt

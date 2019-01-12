@@ -109,7 +109,6 @@ and has worked well for a growing number of instructors in first
 (see for example Wang et al., 
 "Data Viz on Day One: bringing big ideas into intro stats early and often" (2017),
 TISE).
-**_addtional refs here?_** 
 
 ## Trouble in paradise
 
@@ -157,7 +156,7 @@ gf_violin(price ~ col, data = diamonds2, alpha = 0.3, fill = "navy", col = NA)
 
 ## Setting and mapping attributes of a plot
 
-In the example above, we set certain atributes (fill, color, opacity) to constants (`"navy"`, `NA`, `0.3`).  Often we want the values of these attributes to be 
+In the example above, we set certain attributes (fill, color, opacity) to constants (`"navy"`, `NA`, `0.3`).  Often we want the values of these attributes to be 
 determined by the data, this is called mapping rather than setting and is
 indicated by an additional `~`.  One can read 
 `fill = "navy"` as "fill is (or equals) navy" and `fill = ~ col` as 
@@ -191,7 +190,7 @@ on a legend with `auto.key = TRUE` and to introduce the `type` argument and the
 `c()` function to get both layers.  In `ggplot2`, we simply put one layer over the 
 other (so no new syntax to learn). 
 The (improved) legend is generated automatically, and the portion of the 
-plot devoted to the data is substancially larger than for the `lattice` plot.
+plot devoted to the data is substantially larger than for the `lattice` plot.
 So the `ggformula` plot is both technically better and syntactically simpler
 than its `lattice` counterpart.
 
@@ -227,7 +226,7 @@ gf_violin(price ~ col, data = diamonds2,
 
 ## Facets
 
-Sometimes it is prefereable to create multiple plot arranged in a grid rather 
+Sometimes it is preferable to create multiple plot arranged in a grid rather 
 than to overlay subgroups in the same space.  `ggformula` provides two ways 
 to create these facets.  The first uses `|` very much like `lattice` does.
 
@@ -300,7 +299,7 @@ diamonds %>%
 
 ## Summary
 
-The "Less Volume, More Creativity" appraoch based on a common formula template
+The "Less Volume, More Creativity" approach based on a common formula template
 has served well for several years, but the arrival of `ggformula` strengthens this
 approach by bringing a richer graphical system into reach for beginners without 
 introducing new syntactical structures.

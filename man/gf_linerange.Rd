@@ -50,7 +50,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -113,24 +113,21 @@ Various ways of representing a vertical interval defined by \code{x},
 \examples{
 gf_linerange()
 
-if (require(mosaicData)) {
-gf_ribbon(low_temp + high_temp ~ date, data = Weather,
+gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather,
           fill = ~ city, alpha = 0.4) \%>\%
    gf_theme(theme = theme_minimal())
 gf_linerange(
-  low_temp + high_temp ~ date | city ~ ., data = Weather,
+  low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather,
   color = ~ ((low_temp + high_temp) / 2) ) \%>\%
   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) \%>\%
   gf_labs(color = "mid-temp")
 
-gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather)
+gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 
 # Chaining in the data
-Weather \%>\%
+mosaicData::Weather \%>\%
   gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) \%>\%
   gf_facet_grid(city ~ .)
-}
-
 if (require(mosaicData) && require(dplyr)) {
 HELP2 <- HELPrct \%>\%
   group_by(substance, sex) \%>\%

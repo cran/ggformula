@@ -116,6 +116,13 @@ y axis are not meaningful, due to technical limitations of ggplot2. You can
 hide the y axis, as in one of the examples, or manually scale it
 to match the number of dots.
 }
+\section{Warning}{
+
+Dotplots in \code{ggplot2} (and hence in \code{ggformula}) often require some fiddling because
+the default y-axis is meaningless and the ideal size of the dots depends on the
+aspect ratio of the plot.
+}
+
 \section{Specifying plot attributes}{
 
 

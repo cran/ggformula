@@ -32,7 +32,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -128,7 +128,7 @@ if the notches of two boxes do not overlap, this suggests that the medians
 are significantly different.}
 
 \item{notchwidth}{For a notched box plot, width of the notch relative to
-the body (default 0.5)}
+the body (defaults to \code{notchwidth = 0.5}).}
 
 \item{varwidth}{If \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, boxes are drawn with widths proportional to the
@@ -209,20 +209,23 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_boxplot(age ~ substance, data = HELPrct)
-  gf_boxplot(age ~ substance, data = HELPrct, varwidth = TRUE)
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex)
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, outlier.color = "gray50")
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~ sex)
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+             color = ~ sex, outlier.color = "gray50")
   # longer whiskers
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, coef = 2)
-  # Note: width for boxplots is full width of box.  For jittering, it is the
-  # half-width.
-  gf_boxplot(age ~ substance | sex, data = HELPrct, coef = 5, width = 0.4) \%>\%
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+             color = ~ sex, coef = 2)
+
+  # Note: width for boxplots is full width of box.
+  #       For jittering, it is the half-width.
+  gf_boxplot(age ~ substance | sex, data = mosaicData::HELPrct,
+             coef = 5, width = 0.4) \%>\%
     gf_jitter(width = 0.2, alpha = 0.3)
   # move boxplots away a bit by adjusting dodge
-  gf_boxplot(age ~ substance, data = HELPrct, color = ~ sex, position = position_dodge(width = 0.9))
-}
+  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
+             color = ~ sex, position = position_dodge(width = 0.9))
 }
 \references{
 McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of

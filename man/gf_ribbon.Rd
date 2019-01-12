@@ -29,7 +29,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -80,18 +80,16 @@ by \code{ymin} and \code{ymax}. \code{geom_area} is a special case of
 \examples{
 gf_ribbon()
 
-if (require(mosaicData)) {
-gf_ribbon(low_temp + high_temp ~ date, data = Weather, fill = ~ city, alpha = 0.4) \%>\%
+gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~ city, alpha = 0.4) \%>\%
    gf_theme(theme = theme_minimal())
 gf_linerange(
     low_temp + high_temp ~ date | city ~ ., color = ~ high_temp,
-    data = Weather) \%>\%
+    data = mosaicData::Weather) \%>\%
   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
-gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = Weather)
+gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 # Chaining in the data
-Weather \%>\% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) \%>\%
+mosaicData::Weather \%>\% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) \%>\%
   gf_facet_grid(city ~ .)
-}
 }
 \seealso{
 \code{\link[ggplot2:geom_ribbon]{ggplot2::geom_ribbon()}}

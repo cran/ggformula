@@ -80,7 +80,7 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
+the plot data. The return value must be a \code{data.frame}, and
 will be used as the layer data.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
@@ -111,11 +111,11 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 \item{caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{geom}{Override the default connection between \code{geom_bar} and
-\code{stat_count}.}
+\item{geom}{Override the default connection between \code{geom_bar()} and
+\code{stat_count()}.}
 
-\item{stat}{Override the default connection between \code{geom_bar} and
-\code{stat_count}.}
+\item{stat}{Override the default connection between \code{geom_bar()} and
+\code{stat_count()}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -137,7 +137,7 @@ display.}
 (b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
 (c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
-\item{binwidth}{\code{geom_bar} no longer has a binwidth argument - if
+\item{binwidth}{\code{geom_bar()} no longer has a binwidth argument - if
 you use it you'll get an warning telling to you use
 \code{\link[=geom_histogram]{geom_histogram()}} instead.}
 }
@@ -145,13 +145,14 @@ you use it you'll get an warning telling to you use
 a gg object
 }
 \description{
-There are two types of bar charts: \code{geom_bar} makes the height of the
+There are two types of bar charts: \code{geom_bar()} and \code{geom_col()}.
+\code{geom_bar()} makes the height of the
 bar proportional to the number of cases in each group (or if the
 \code{weight} aesthetic is supplied, the sum of the weights). If you want the
 heights of the bars to represent values in the data, use
-\link{geom_col} instead. \code{geom_bar} uses \code{stat_count} by
-default: it counts the number of cases at each x position. \code{geom_col}
-uses \code{stat_identity}: it leaves the data as is.
+\code{geom_col()} instead. \code{geom_bar()} uses \code{stat_count()} by
+default: it counts the number of cases at each x position. \code{geom_col()}
+uses \code{stat_identity()}: it leaves the data as is.
 }
 \section{Specifying plot attributes}{
 
@@ -180,19 +181,22 @@ in another.
 }
 
 \examples{
-if (require(mosaicData)) {
-  gf_bar( ~ substance, data = HELPrct)
-  gf_bar( ~ substance, data = HELPrct, fill = ~ sex)
-  gf_bar( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-  # gf_counts() is another name for gf_bar()
-  gf_counts( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-  # gf_props() and gf_percents() use proportions or percentages instead of counts
-  gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-  gf_percents( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge())
-  if (require(scales)) {
-    gf_props( ~ substance, data = HELPrct, fill = ~ sex, position = position_dodge()) \%>\%
-      gf_refine(scale_y_continuous(labels = scales::percent))
-  }
+gf_bar( ~ substance, data = mosaicData::HELPrct)
+gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+       position = position_dodge())
+# gf_counts() is another name for gf_bar()
+gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+          position = position_dodge())
+# gf_props() and gf_percents() use proportions or percentages instead of counts
+gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+         position = position_dodge())
+gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+            position = position_dodge())
+if (require(scales)) {
+  gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
+           position = position_dodge()) \%>\%
+    gf_refine(scale_y_continuous(labels = scales::percent))
 }
 }
 \seealso{

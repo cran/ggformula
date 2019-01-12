@@ -19,8 +19,7 @@
 #' @rdname gf_aux
 #' @export
 #' @examples
-#' if (require(mosaicData)) {
-#' gf_dens( ~ cesd, color = ~ substance, size = 1.5, data = HELPrct) %>%
+#' gf_dens( ~ cesd, color = ~ substance, size = 1.5, data = mosaicData::HELPrct) %>%
 #' gf_labs(
 #'   title = "Center for Epidemiologic Studies Depression measure",
 #'   subtitle = "(at baseline)",
@@ -35,7 +34,7 @@
 #'     legend.position = "top",
 #'     plot.title = element_text(hjust = 0.5, color = "navy"),
 #'     plot.subtitle = element_text(hjust = 0.5, color = "navy", size = 12))
-#' }
+#'
 #' gf_point(eruptions ~ waiting, data = faithful, alpha = 0.5)
 #' gf_point(eruptions ~ waiting, data = faithful, alpha = 0.5) %>%
 #'   gf_lims(x = c(65, NA), y = c(3, NA))
@@ -95,19 +94,17 @@ gf_theme <- function(object, theme, ...) {
 #'
 #' @seealso [ggplot2::facet_grid()], [ggplot2::facet_wrap()].
 #' @examples
-#' if (require(mosaicData)) {
-#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
-#'     gf_facet_grid(~ substance)
-#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
-#'     gf_facet_grid(~ substance, scales = "free")
-#'   gf_histogram(~ avg_drinks, data = HELPrct) %>%
-#'     gf_facet_grid(~ substance, scales = "free", space = "free")
-#'   gf_line(births ~ date, data = Births, color = ~ wday) %>%
-#'     gf_facet_wrap( ~ year, scales = "free_x", nrow = 5) %>%
-#'     gf_theme(axis.title.x = element_blank(),
-#'              axis.text.x=element_blank(), axis.ticks.x=element_blank()) %>%
-#'     gf_labs(color = "Day")
-#' }
+#' gf_histogram(~ avg_drinks, data = mosaicData::HELPrct) %>%
+#'   gf_facet_grid(~ substance)
+#' gf_histogram(~ avg_drinks, data = mosaicData::HELPrct) %>%
+#'   gf_facet_grid(~ substance, scales = "free")
+#' gf_histogram(~ avg_drinks, data = mosaicData::HELPrct) %>%
+#'   gf_facet_grid(~ substance, scales = "free", space = "free")
+#' gf_line(births ~ date, data = mosaicData::Births, color = ~ wday) %>%
+#'   gf_facet_wrap( ~ year, scales = "free_x", nrow = 5) %>%
+#'   gf_theme(axis.title.x = element_blank(),
+#'            axis.text.x=element_blank(), axis.ticks.x=element_blank()) %>%
+#'   gf_labs(color = "Day")
 #'
 #' @rdname gf_facet_grid
 #' @export

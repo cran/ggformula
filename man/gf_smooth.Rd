@@ -29,25 +29,26 @@ Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
 
-\item{method}{Smoothing method (function) to use, eg. \code{lm}, \code{glm},
-\code{gam}, \code{loess}, \code{MASS::rlm}.
+\item{method}{Smoothing method (function) to use, accepts either a character vector,
+e.g. \code{"auto"}, \code{"lm"}, \code{"glm"}, \code{"gam"}, \code{"loess"} or a function, e.g.
+\code{MASS::rlm} or \code{mgcv::gam}, \code{base::lm}, or \code{base::loess}.
 
 For \code{method = "auto"} the smoothing method is chosen based on the
 size of the largest group (across all panels). \code{\link[=loess]{loess()}} is
 used for less than 1,000 observations; otherwise \code{\link[mgcv:gam]{mgcv::gam()}} is
 used with \code{formula = y ~ s(x, bs = "cs")}. Somewhat anecdotally,
-\code{loess} gives a better appearance, but is O(n^2) in memory, so does
-not work for larger datasets.
+\code{loess} gives a better appearance, but is \eqn{O(N^{2})}{O(N^2)} in memory,
+so does not work for larger datasets.
 
-If you have fewer than 1,000 observations but want to use the same \code{gam}
-model that \code{method = "auto"} would use then set
+If you have fewer than 1,000 observations but want to use the same \code{gam()}
+model that \code{method = "auto"} would use, then set
 \code{method = "gam", formula = y ~ s(x, bs = "cs")}.}
 
 \item{formula}{Formula to use in smoothing function, eg. \code{y ~ x},
 \code{y ~ poly(x, 2)}, \code{y ~ log(x)}}
 
-\item{se}{Display confidence interval around smooth? (TRUE by default, see
-level to control.)}
+\item{se}{Display confidence interval around smooth? (\code{TRUE} by default, see
+\code{level} to control.)}
 
 \item{method.args}{List of additional arguments passed on to the modelling
 function defined by \code{method}.}
@@ -139,21 +140,26 @@ in another.
 \examples{
 gf_smooth()
 gf_lm()
-if (require(mosaicData)) {
-  gf_smooth(births ~ date, color = ~ wday, data = Births78)
-  gf_smooth(births ~ date, color = ~ wday, data = Births78, fullrange = TRUE)
-  gf_smooth(births ~ date, color = ~ wday, data = Births78, show.legend = FALSE, se = FALSE)
-  gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, alpha = 0.2) \%>\%
-    gf_point()
-  gf_lm(length ~ width, data = KidsFeet, color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
-    gf_point()
-  gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
-        formula = y ~ poly(x,2), linetype = "dashed") \%>\%
-    gf_point()
-  gf_lm(length ~ width, color = ~ sex, data = KidsFeet,
-        formula = log(y) ~ x, backtrans = exp) \%>\%
-    gf_point()
-}
+gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78)
+gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+          fullrange = TRUE)
+gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+          show.legend = FALSE, se = FALSE)
+gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
+          show.legend = FALSE, se = TRUE)
+gf_lm(length ~ width, data = mosaicData::KidsFeet,
+      color = ~ biggerfoot, alpha = 0.2) \%>\%
+  gf_point()
+gf_lm(length ~ width, data = mosaicData::KidsFeet,
+      color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
+  gf_point()
+gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
+      formula = y ~ poly(x, 2), linetype = "dashed") \%>\%
+  gf_point()
+gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
+      formula = log(y) ~ x, backtrans = exp) \%>\%
+  gf_point()
+
 gf_lm(hwy ~ displ, data = mpg,
       formula = log(y) ~ poly(x,3), backtrans = exp,
      interval = "prediction", fill = "skyblue") \%>\%

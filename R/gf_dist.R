@@ -16,7 +16,7 @@ NA
 #'   to determine reasonable bounds using quantiles of the distribution.
 #' @param ... additional arguments passed both to the distribution functions and
 #'   to the layer.  Note: Possible ambiguities using `params` or by preceding plot
-#'   arguement with `plot_`.
+#'   argument with `plot_`.
 #' @param kind One of `"density"`, `"cdf"`, `"qq"`, `"qqstep"`, or `"histogram"`
 #'   describing what kind of plot to create.
 #' @param resolution An integer specifying the number of points to use for creating
