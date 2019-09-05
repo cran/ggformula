@@ -4,11 +4,11 @@
 \alias{gf_hex}
 \title{Formula interface to geom_hex()}
 \usage{
-gf_hex(object = NULL, gformula = NULL, data = NULL, bins, binwidth,
-  alpha, color, fill, group, size, xlab, ylab, title, subtitle, caption,
-  geom = "hex", stat = "binhex", position = "identity",
+gf_hex(object = NULL, gformula = NULL, data = NULL, ..., bins,
+  binwidth, alpha, color, fill, group, size, xlab, ylab, title, subtitle,
+  caption, geom = "hex", stat = "binhex", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -30,7 +30,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{bins}{numeric vector giving number of bins in both vertical and
 horizontal directions. Set to 30 by default.}
@@ -81,11 +87,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -122,8 +123,7 @@ in another.
 
 \examples{
 gf_hex(avg_drinks ~ age, data = mosaicData::HELPrct, bins = 15) \%>\%
-gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
-
+  gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
 }
 \seealso{
 \code{\link[ggplot2:geom_hex]{ggplot2::geom_hex()}}

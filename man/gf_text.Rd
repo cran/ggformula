@@ -5,21 +5,21 @@
 \alias{gf_label}
 \title{Formula interface to geom_text() and geom_label()}
 \usage{
-gf_text(object = NULL, gformula = NULL, data = NULL, label, alpha,
-  angle, color, family, fontface, group, hjust, lineheight, size, vjust,
-  parse = FALSE, nudge_x = 0, nudge_y = 0, check_overlap = FALSE,
-  xlab, ylab, title, subtitle, caption, geom = "text",
-  stat = "identity", position = "nudge", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(),
-  ...)
+gf_text(object = NULL, gformula = NULL, data = NULL, ..., label,
+  alpha, angle, color, family, fontface, group, hjust, lineheight, size,
+  vjust, parse = FALSE, nudge_x = 0, nudge_y = 0,
+  check_overlap = FALSE, xlab, ylab, title, subtitle, caption,
+  geom = "text", stat = "identity", position = "nudge",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame())
 
-gf_label(object = NULL, gformula = NULL, data = NULL, label, alpha,
-  angle, color, family, fontface, group, hjust, lineheight, size, vjust,
-  parse, nudge_x = 0, nudge_y = 0, label.padding = unit(0.25,
+gf_label(object = NULL, gformula = NULL, data = NULL, ..., label,
+  alpha, angle, color, family, fontface, group, hjust, vjust, lineheight,
+  size, parse, nudge_x = 0, nudge_y = 0, label.padding = unit(0.25,
   "lines"), label.r = unit(0.15, "lines"), label.size = 0.25, xlab,
   ylab, title, subtitle, caption, stat = "identity",
   position = "nudge", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -41,7 +41,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{label}{The text to be displayed.}
 
@@ -109,11 +115,6 @@ display.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
-
 \item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
 
 \item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
@@ -154,21 +155,26 @@ in another.
 }
 
 \examples{
-gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-  label = ~ Species, color = ~ Species, size = 2, angle = 30)
-gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) \%>\%
-gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-  label = ~ Species, color = ~ Species,
-  size = 2, angle = 0, hjust = 0, nudge_x  = 0.1, nudge_y = 0.1)
-
+gf_text(Sepal.Length ~ Sepal.Width,
+  data = iris,
+  label = ~Species, color = ~Species, size = 2, angle = 30
+)
+gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) \%>\%
+  gf_text(Sepal.Length ~ Sepal.Width,
+    data = iris,
+    label = ~Species, color = ~Species,
+    size = 2, angle = 0, hjust = 0, nudge_x = 0.1, nudge_y = 0.1
+  )
 if (require(dplyr)) {
   iris_means <-
     iris \%>\%
     group_by(Species) \%>\%
     summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
-  gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) \%>\%
-  gf_label(Sepal.Length ~ Sepal.Width, data = iris_means,
-    label = ~ Species, color = ~ Species, size = 2, alpha = 0.7)
+  gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) \%>\%
+    gf_label(Sepal.Length ~ Sepal.Width,
+      data = iris_means,
+      label = ~Species, color = ~Species, size = 2, alpha = 0.7
+    )
 }
 }
 \seealso{

@@ -4,11 +4,11 @@
 \alias{gf_freqpoly}
 \title{Formula interface to geom_freqpoly()}
 \usage{
-gf_freqpoly(object = NULL, gformula = NULL, data = NULL, alpha,
+gf_freqpoly(object = NULL, gformula = NULL, data = NULL, ..., alpha,
   color, group, linetype, size, binwidth, bins, center, boundary, xlab,
   ylab, title, subtitle, caption, geom = "path", stat = "bin",
   position = "identity", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -30,7 +30,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -43,8 +49,11 @@ for mapping linetype.}
 
 \item{size}{A numeric size or a formula used for mapping size.}
 
-\item{binwidth}{The width of the bins. Can be specified as a numeric value,
-or a function that calculates width from x.
+\item{binwidth}{The width of the bins. Can be specified as a numeric value
+or as a function that calculates width from unscaled x. Here, "unscaled x"
+refers to the original x values in the data, before application of any
+scale transformation. When specifying a function along with a grouping
+structure, the function will be called once per group.
 The default is to use \code{bins}
 bins that cover the range of the data. You should always override
 this value, exploring multiple widths to find the best to illustrate the
@@ -108,11 +117,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -152,13 +156,15 @@ in another.
 }
 
 \examples{
-gf_histogram( ~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) \%>\%
-  gf_freqpoly( ~ Sepal.Length, data = iris, color = ~ Species, bins = 20)
-gf_freqpoly( ~ Sepal.Length, color = ~ Species, data = iris, bins = 20)
+gf_histogram(~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) \%>\%
+  gf_freqpoly(~Sepal.Length, data = iris, color = ~Species, bins = 20)
+gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 20)
 if (utils::packageVersion("ggplot2") > "2.2.1") {
-  gf_dens( ~ Sepal.Length, data = iris, color = "navy") \%>\%
-    gf_freqpoly( stat(density) ~ Sepal.Length, data = iris,
-      color = "red", bins = 20)
+  gf_dens(~Sepal.Length, data = iris, color = "navy") \%>\%
+    gf_freqpoly(stat(density) ~ Sepal.Length,
+      data = iris,
+      color = "red", bins = 20
+    )
 }
 }
 \seealso{

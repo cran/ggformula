@@ -4,14 +4,14 @@
 \alias{gf_boxplot}
 \title{Formula interface to geom_boxplot()}
 \usage{
-gf_boxplot(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, coef, outlier.color = NULL,
+gf_boxplot(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, coef, outlier.color = NULL,
   outlier.fill = NULL, outlier.shape = 19, outlier.size = 1.5,
   outlier.stroke = 0.5, outlier.alpha = NULL, notch = FALSE,
   notchwidth = 0.5, varwidth = FALSE, xlab, ylab, title, subtitle,
   caption, geom = "boxplot", stat = "boxplot", position = "dodge",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -33,7 +33,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -168,11 +174,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -209,23 +210,31 @@ in another.
 }
 
 \examples{
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~ sex)
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-             color = ~ sex, outlier.color = "gray50")
-  # longer whiskers
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-             color = ~ sex, coef = 2)
+gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
+gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
+gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~sex)
+gf_boxplot(age ~ substance,
+  data = mosaicData::HELPrct,
+  color = ~sex, outlier.color = "gray50"
+)
+# longer whiskers
+gf_boxplot(age ~ substance,
+  data = mosaicData::HELPrct,
+  color = ~sex, coef = 2
+)
 
-  # Note: width for boxplots is full width of box.
-  #       For jittering, it is the half-width.
-  gf_boxplot(age ~ substance | sex, data = mosaicData::HELPrct,
-             coef = 5, width = 0.4) \%>\%
-    gf_jitter(width = 0.2, alpha = 0.3)
-  # move boxplots away a bit by adjusting dodge
-  gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-             color = ~ sex, position = position_dodge(width = 0.9))
+# Note: width for boxplots is full width of box.
+#       For jittering, it is the half-width.
+gf_boxplot(age ~ substance | sex,
+  data = mosaicData::HELPrct,
+  coef = 5, width = 0.4
+) \%>\%
+  gf_jitter(width = 0.2, alpha = 0.3)
+# move boxplots away a bit by adjusting dodge
+gf_boxplot(age ~ substance,
+  data = mosaicData::HELPrct,
+  color = ~sex, position = position_dodge(width = 0.9)
+)
 }
 \references{
 McGill, R., Tukey, J. W. and Larsen, W. A. (1978) Variations of

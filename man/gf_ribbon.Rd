@@ -4,11 +4,10 @@
 \alias{gf_ribbon}
 \title{Formula interface to geom_ribbon()}
 \usage{
-gf_ribbon(object = NULL, gformula = NULL, data = NULL, alpha = 0.3,
-  xlab, ylab, title, subtitle, caption, geom = "ribbon",
+gf_ribbon(object = NULL, gformula = NULL, data = NULL, ...,
+  alpha = 0.3, xlab, ylab, title, subtitle, caption, geom = "ribbon",
   stat = "identity", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(),
-  ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -30,7 +29,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -66,11 +71,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \description{
 For each x value, \code{geom_ribbon} displays a y interval defined
@@ -80,15 +80,18 @@ by \code{ymin} and \code{ymax}. \code{geom_area} is a special case of
 \examples{
 gf_ribbon()
 
-gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~ city, alpha = 0.4) \%>\%
-   gf_theme(theme = theme_minimal())
+gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~city, alpha = 0.4) \%>\%
+  gf_theme(theme = theme_minimal())
 gf_linerange(
-    low_temp + high_temp ~ date | city ~ ., color = ~ high_temp,
-    data = mosaicData::Weather) \%>\%
+  low_temp + high_temp ~ date | city ~ .,
+  color = ~high_temp,
+  data = mosaicData::Weather
+) \%>\%
   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
 gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 # Chaining in the data
-mosaicData::Weather \%>\% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) \%>\%
+mosaicData::Weather \%>\%
+  gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) \%>\%
   gf_facet_grid(city ~ .)
 }
 \seealso{

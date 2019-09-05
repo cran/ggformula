@@ -26,4 +26,3 @@ list2aes <- function(l) {
 # list2aes( list(a = ~ sex, b = ~ foo(group + color)))
 #
 # foo(length ~ width, list(color = ~ sex), template = y ~ x)
-

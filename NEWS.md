@@ -1,4 +1,18 @@
 
+# ggformula 0.9.2 
+
+ * Some internals in `layer_factory()` have been reimplemented to avoid making copies of ggplot2 functions at compile time. This should make things more stable when updating ggplot2 but not updating ggformula.
+ * Two new graphing functions were added: `gf_ellipse()` and `gf_ecdf()`
+ * `gf_rugx()` and `gf_label()` have been modified a bit to make them easier to use.
+ * Evaluation environments are now handled more stably.  Instead of using the environment
+ of the formula, the `environment` argument is used.  After some delay, this completes
+ the migration to ggplot2 version 2.2 (#96, #125)
+ * Bug fix in `gf_dist()` to avoid an error when using `params`. (#119)
+ * Default in `gf_errorbar()` is now `inherit = TRUE`.  The old default was required
+ due to inconvenient naming of aesthetics in `geom_errorbar()`, but those names have been
+ changed now. (#120)
+ * New function: `discrete_breaks()`.
+ 
 # ggformula 0.9.1
 
 This release includes a few minor improvements, including

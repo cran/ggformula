@@ -4,12 +4,11 @@
 \alias{gf_fitdistr}
 \title{Plot density function based on fit to data}
 \usage{
-gf_fitdistr(object = NULL, gformula = NULL, data = NULL,
+gf_fitdistr(object = NULL, gformula = NULL, data = NULL, ...,
   dist = "dnorm", start = NULL, alpha, color, fill, group, linetype,
   size, xlab, ylab, title, subtitle, caption, geom = "path",
   stat = "fitdistr", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = FALSE, environment = parent.frame(),
-  ...)
+  show.help = NULL, inherit = FALSE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +18,8 @@ of the chain.  Most users can safely ignore this argument. See examples.}
 to be fit to a family of distributions.}
 
 \item{data}{A data frame containing the variable to be fitted.}
+
+\item{...}{Additional arguments}
 
 \item{dist}{A quoted name of a distribution function.
 See \code{\link[mosaicCore:fit_distr_fun]{mosaicCore::fit_distr_fun()}} for more details about allowable distributions.}
@@ -67,8 +68,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments}
 }
 \value{
 a gg object
@@ -104,29 +103,31 @@ in another.
 }
 
 \examples{
-  gf_fitdistr( ~ length, data = mosaicData::KidsFeet, inherit = FALSE) \%>\%
-    gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
+gf_fitdistr(~length, data = mosaicData::KidsFeet, inherit = FALSE) \%>\%
+  gf_dhistogram(~length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
 
-  gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) \%>\%
-    gf_fitdistr()
+gf_dhistogram(~length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) \%>\%
+  gf_fitdistr()
 
-  set.seed(12345)
-  Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
-  gf_dhistogram( ~ g, data = Dat) \%>\%
-    gf_fitdistr(dist = "dgamma")
+set.seed(12345)
+Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
+gf_dhistogram(~g, data = Dat) \%>\%
+  gf_fitdistr(dist = "dgamma")
 
-  gf_dhistogram( ~ g, data = Dat) \%>\%
-    gf_fun(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
+gf_dhistogram(~g, data = Dat) \%>\%
+  gf_fun(mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma"))
 
-  gf_dhistogram( ~ f, data = Dat) \%>\%
-    gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
+gf_dhistogram(~f, data = Dat) \%>\%
+  gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
 
-  # fitted parameters are default argument values
-  args(
-    mosaicCore::fit_distr_fun( ~ f, data = Dat, dist = "df",
-      start = list(df1 = 2, df2 = 50)))
-  args(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
-
+# fitted parameters are default argument values
+args(
+  mosaicCore::fit_distr_fun(~f,
+    data = Dat, dist = "df",
+    start = list(df1 = 2, df2 = 50)
+  )
+)
+args(mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma"))
 }
 \seealso{
 \code{\link[mosaicCore:fit_distr_fun]{mosaicCore::fit_distr_fun()}}

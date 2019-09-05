@@ -24,37 +24,34 @@ NA
 #' @param params a list of parameters for the distribution.
 #' @export
 #' @examples
-#' gf_dhistogram( ~ rnorm(100), bins = 20) %>%
+#' gf_dhistogram(~ rnorm(100), bins = 20) %>%
 #'   gf_dist("norm", color = "red")
 #'
 #' # shading tails -- but see pdist() for this
-#' gf_dist("norm", fill = ~(abs(x) <= 2), geom = "area")
+#' gf_dist("norm", fill = ~ (abs(x) <= 2), geom = "area")
 #' gf_dist("norm", color = "red", kind = "cdf")
 #' gf_dist("norm", fill = "red", kind = "histogram")
 #' gf_dist("norm", color = "red", kind = "qqstep", resolution = 25) %>%
-#' gf_dist("norm", color = "black", kind = "qq", resolution = 25, size = 2, alpha = 0.5)
+#'   gf_dist("norm", color = "black", kind = "qq", resolution = 25, size = 2, alpha = 0.5)
 #' # size is used as parameter for binomial distribution
 #' gf_dist("binom", size = 20, prob = 0.25)
 #' # If we want to adjust size argument for plots, we have two choices:
 #' gf_dist("binom", size = 20, prob = 0.25, plot_size = 2)
 #' gf_dist("binom", params = list(size = 20, prob = 0.25), size = 2)
-
 gf_dist <- function(
-  object = ggplot(),
-  dist, ...,
-  xlim = NULL,
-#  xmin = NULL, xmax = NULL,
-  kind = c("density", "cdf", "qq", "qqstep", "histogram"),
-  resolution = 5000L, params = NULL )
-{
-
+                    object = ggplot(),
+                    dist, ...,
+                    xlim = NULL,
+                    #  xmin = NULL, xmax = NULL,
+                    kind = c("density", "cdf", "qq", "qqstep", "histogram"),
+                    resolution = 5000L, params = NULL) {
   if (is.character(object) && missing(dist)) {
     dist <- object
   }
-  kind = match.arg(kind)
-  ddist = paste('d', dist, sep='')
-  qdist = paste('q', dist, sep='')
-  pdist = paste('p', dist, sep='')
+  kind <- match.arg(kind)
+  ddist <- paste("d", dist, sep = "")
+  qdist <- paste("q", dist, sep = "")
+  pdist <- paste("p", dist, sep = "")
 
   dots <- list(...)
   original_call <- match.call()
@@ -76,17 +73,20 @@ gf_dist <- function(
   if (is.null(params)) {
     params <- original_call
     params[[1]] <- NULL
-    for (item in names(formals()) ) {
+    for (item in names(formals())) {
       if (item %in% names(params)) params[[item]] <- NULL
     }
-    dparams <- c(unnamed(params), named_among( params, names(formals(ddist))) )
-    pparams <- c(unnamed(params), named_among( params, names(formals(pdist))) )
-    qparams <- c(unnamed(params), named_among( params, names(formals(qdist))) )
-    dots[names(dparams) %>% union(names(pparams)) %>% union(names(qparams))] <- NULL
+    dparams <- c(unnamed(params), named_among(params, names(formals(ddist))))
+    pparams <- c(unnamed(params), named_among(params, names(formals(pdist))))
+    qparams <- c(unnamed(params), named_among(params, names(formals(qdist))))
+    dots[names(dparams) %>%
+      union(names(pparams)) %>%
+      union(names(qparams))] <- NULL
   } else {
     dparams <- params
     pparams <- params
     qparams <- params
+    dots[["params"]] <- NULL
   }
   names(dots) <- gsub("plot_", "", names(dots))
   # remove some things from dots
@@ -100,23 +100,28 @@ gf_dist <- function(
   pparams <- lapply(pparams, function(x) eval(x, env))
   qparams <- lapply(qparams, function(x) eval(x, env))
 
-  sample_values = do.call(qdist, c(p=list(ppoints(resolution)), qparams))
+  sample_values <- do.call(qdist, c(p = list(ppoints(resolution)), qparams))
 
   unique_values <- unique(sample_values)
-  discrete <- length(unique_values) < length(sample_values)
+  # in a discrete distribution, we expect lots of ties
+  discrete <- length(unique_values) < 0.9 * length(sample_values)
 
   if (is.null(xlim)) {
     xlim_opts <- do.call(qdist, c(list(p = c(0, 0.001, 0.999, 1)), qparams))
     dxlim_opts <- diff(xlim_opts)
     xlim <- xlim_opts[2:3]
-    if (dxlim_opts[1] < dxlim_opts[2]){xlim[1] <- xlim_opts[1]}
-    if (dxlim_opts[3] < dxlim_opts[2]){xlim[2] <- xlim_opts[4]}
+    if (dxlim_opts[1] < dxlim_opts[2]) {
+      xlim[1] <- xlim_opts[1]
+    }
+    if (dxlim_opts[3] < dxlim_opts[2]) {
+      xlim[2] <- xlim_opts[4]
+    }
   }
   plim <- do.call(pdist, c(list(q = xlim), pparams))
   #  dpqrdist(dist, type = "p", q = xlim)
 
-  if (! discrete) {
-    unif_values = seq(
+  if (!discrete) {
+    unif_values <- seq(
       do.call(qdist, c(list(p = plim[1]), qparams)),
       do.call(qdist, c(list(p = plim[2]), qparams)),
       length.out = resolution
@@ -126,105 +131,150 @@ gf_dist <- function(
     fewer_values <- unique_values
   }
 
-  if (kind=='cdf') {
+  if (kind == "cdf") {
     if (discrete) {
-      step = min(diff(fewer_values))
-      cdfx <- seq( min(fewer_values) -1.5 * step , max(fewer_values) + 1.5 * step, length.out = resolution)
-      cdfx <- sort(unique( c(fewer_values, cdfx) ) )
-      cdfy <- approxfun( fewer_values, do.call(pdist, c(list(q=fewer_values),pparams)), method='constant',
-                         f=0, yleft=0, yright=1 ) (cdfx)
+      step <- min(diff(fewer_values))
+      cdfx <- seq(min(fewer_values) - 1.5 * step, max(fewer_values) + 1.5 * step, length.out = resolution)
+      cdfx <- sort(unique(c(fewer_values, cdfx)))
+      cdfy <- approxfun(fewer_values, do.call(pdist, c(list(q = fewer_values), pparams)),
+        method = "constant",
+        f = 0, yleft = 0, yright = 1
+      )(cdfx)
       PlotData <- data.frame(y = cdfy, x = cdfx)
     } else {
       cdfx <- unif_values
-      cdfy <- do.call( pdist, c(list(q=unif_values), pparams) )
+      cdfy <- do.call(pdist, c(list(q = unif_values), pparams))
       PlotData <- data.frame(y = cdfy, x = cdfx)
     }
   }
 
   ydata <-
     switch(kind,
-           density = do.call(ddist, c(list(x = fewer_values), dparams)),
-           cdf = cdfy,
-           qq = NULL,
-           qqstep = NULL,
-           histogram = do.call(ddist, c(list(x = sample_values), dparams))
-     )
+      density = do.call(ddist, c(list(x = fewer_values), dparams)),
+      cdf = cdfy,
+      qq = NULL,
+      qqstep = NULL,
+      histogram = do.call(ddist, c(list(x = sample_values), dparams))
+    )
 
   # print(length(fewer_values))
 
   if (discrete) {
     switch(kind,
-           density =
-             do.call(gf_point,
-                     c(list(
-                       do.call(gf_segment,
-                               c(list(object,
-                                      rlang::set_env(density + 0 ~ x + x, parent.frame()),
-                                      data = data.frame(density = ydata, x = fewer_values)),
-                                 dots)),
-                       rlang::set_env(y ~ x, parent.frame()),
-                       data = data.frame(y = ydata, x = fewer_values)),
-                       dots)
-             ),
-           cdf =
-             do.call(
-               gf_step,
-               c(list(object, rlang::set_env(cumulative_density ~ x, parent.frame()),
-                      data = data.frame(cumulative_density = ydata, x = cdfx)),
-                 dots)
-             ),
-           qq =
-             do.call(gf_qq,
-                     c(list(object, rlang::set_env(~ x, parent.frame()),
-                            data = data.frame(x = sample_values)),
-                       dots)),
-           qqstep =
-             do.call(
-               gf_qqstep,
-               c(list(object, rlang::set_env(~ x, parent.frame()),
-                      data = data.frame(x = sample_values)),
-                 dots)),
-           histogram =
-             do.call(
-               gf_histogram,
-               c(list(object, rlang::set_env(..density.. ~ x, parent.frame()),
-                      data = data.frame(x = sample_values)),
-                 dots))
+      density =
+        do.call(
+          gf_point,
+          c(
+            list(
+              do.call(
+                gf_segment,
+                c(
+                  list(object,
+                    rlang::set_env(density + 0 ~ x + x, parent.frame()),
+                    data = data.frame(density = ydata, x = fewer_values)
+                  ),
+                  dots
+                )
+              ),
+              rlang::set_env(y ~ x, parent.frame()),
+              data = data.frame(y = ydata, x = fewer_values)
+            ),
+            dots
+          )
+        ),
+      cdf =
+        do.call(
+          gf_step,
+          c(
+            list(object, rlang::set_env(cumulative_density ~ x, parent.frame()),
+              data = data.frame(cumulative_density = ydata, x = cdfx)
+            ),
+            dots
+          )
+        ),
+      qq =
+        do.call(
+          gf_qq,
+          c(
+            list(object, rlang::set_env(~x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        ),
+      qqstep =
+        do.call(
+          gf_qqstep,
+          c(
+            list(object, rlang::set_env(~x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        ),
+      histogram =
+        do.call(
+          gf_histogram,
+          c(
+            list(object, rlang::set_env(..density.. ~ x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        )
     )
   } else {
     switch(kind,
-           density =
-             do.call(
-               gf_line,
-               c(list(object, rlang::set_env(density ~ x, parent.frame()),
-                      data = data.frame(density = ydata, x = fewer_values)),
-                 dots)),
-           cdf =
-             do.call(
-               gf_line,
-               c(list(object, rlang::set_env(cumulative_density ~ x, parent.frame()),
-                      data = data.frame(cumulative_density = ydata, x = cdfx)),
-                 dots)),
-           qq =
-             do.call(
-               gf_qq,
-               c(list(object, rlang::set_env(~ x, parent.frame()),
-                      data = data.frame(x = sample_values)),
-                 dots)),
-           qqstep =
-             do.call(
-               gf_qqstep,
-               c(list(object, rlang::set_env(~ x, parent.frame()),
-                      data = data.frame(x = sample_values)),
-                 dots)),
-           histogram =
-             do.call(
-               gf_histogram,
-               c(list(object, rlang::set_env(..density.. ~ x, parent.frame()),
-                      data = data.frame(x = sample_values)),
-                 dots))
+      density =
+        do.call(
+          gf_line,
+          c(
+            list(object, rlang::set_env(density ~ x, parent.frame()),
+              data = data.frame(density = ydata, x = fewer_values)
+            ),
+            dots
+          )
+        ),
+      cdf =
+        do.call(
+          gf_line,
+          c(
+            list(object, rlang::set_env(cumulative_density ~ x, parent.frame()),
+              data = data.frame(cumulative_density = ydata, x = cdfx)
+            ),
+            dots
+          )
+        ),
+      qq =
+        do.call(
+          gf_qq,
+          c(
+            list(object, rlang::set_env(~x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        ),
+      qqstep =
+        do.call(
+          gf_qqstep,
+          c(
+            list(object, rlang::set_env(~x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        ),
+      histogram =
+        do.call(
+          gf_dhistogram,
+          c(
+            list(object, rlang::set_env( ~ x, parent.frame()),
+              data = data.frame(x = sample_values)
+            ),
+            dots
+          )
+        )
     )
   }
 }
-
-

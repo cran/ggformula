@@ -4,11 +4,11 @@
 \alias{gf_spoke}
 \title{Formula interface to geom_spoke()}
 \usage{
-gf_spoke(object = NULL, gformula = NULL, data = NULL, angle, radius,
-  alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
+gf_spoke(object = NULL, gformula = NULL, data = NULL, ..., angle,
+  radius, alpha, color, group, linetype, size, xlab, ylab, title, subtitle,
   caption, geom = "spoke", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -30,7 +30,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{angle}{The angle at which segment leaves the point (x,y).}
 
@@ -79,11 +85,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -120,15 +121,15 @@ in another.
 }
 
 \examples{
-SomeData <- expand.grid(x = 1:10, y=1:10)
-SomeData$angle <- runif(100, 0, 2*pi)
+SomeData <- expand.grid(x = 1:10, y = 1:10)
+SomeData$angle <- runif(100, 0, 2 * pi)
 SomeData$speed <- runif(100, 0, sqrt(0.1 * SomeData$x))
 
 gf_point(y ~ x, data = SomeData) \%>\%
-  gf_spoke(y ~ x, angle = ~ angle, radius = 0.5)
+  gf_spoke(y ~ x, angle = ~angle, radius = 0.5)
 
 gf_point(y ~ x, data = SomeData) \%>\%
-  gf_spoke(y ~ x, angle = ~ angle, radius = ~ speed)
+  gf_spoke(y ~ x, angle = ~angle, radius = ~speed)
 }
 \seealso{
 \code{\link[ggplot2:geom_spoke]{ggplot2::geom_spoke()}}

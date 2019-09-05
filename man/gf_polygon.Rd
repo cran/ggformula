@@ -4,11 +4,11 @@
 \alias{gf_polygon}
 \title{Formula interface to geom_polygon()}
 \usage{
-gf_polygon(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  size, shape, fill, group, stroke, xlab, ylab, title, subtitle, caption,
-  geom = "polygon", stat = "identity", position = "identity",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+gf_polygon(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, size, shape, fill, group, stroke, xlab, ylab, title, subtitle,
+  caption, geom = "polygon", stat = "identity",
+  position = "identity", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,12 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression},
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
+(d) arguments for the geom, stat, or position function.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -63,12 +69,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression},
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
-(d) arguments for the geom, stat, or position function.}
 }
 \value{
 a gg object
@@ -112,13 +112,16 @@ if (require(maps) && require(ggthemes) && require(dplyr)) {
     dplyr::summarise(lat = mean(range(lat)), long = mean(range(long))) \%>\%
     dplyr::mutate(name = abbreviate(region, 3))
 
-  gf_polygon(lat ~ long, data = US, group = ~ group,
-             fill = ~ name_length, color = "white") \%>\%
-  gf_text(lat ~ long, label = ~ name, data = States,
-    color = "gray70", inherit = FALSE) \%>\%
-  gf_refine(ggthemes::theme_map())
+  gf_polygon(lat ~ long,
+    data = US, group = ~group,
+    fill = ~name_length, color = "white"
+  ) \%>\%
+    gf_text(lat ~ long,
+      label = ~name, data = States,
+      color = "gray70", inherit = FALSE
+    ) \%>\%
+    gf_refine(ggthemes::theme_map())
 }
-
 }
 \seealso{
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}, \code{\link[=gf_line]{gf_line()}}, \code{\link[=gf_jitter]{gf_jitter()}}

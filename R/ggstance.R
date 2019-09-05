@@ -18,28 +18,30 @@
 #' @seealso [ggstance::geom_barh()]
 #' @export
 #' @examples
-#' gf_barh( ~ Diet, data = ChickWeight)
-#' gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
-#' gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'         position = position_dodgev())
+#' gf_barh(~Diet, data = ChickWeight)
+#' gf_barh(~substance, data = mosaicData::HELPrct, fill = ~sex)
+#' gf_barh(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodgev()
+#' )
 #' # gf_counts() is another name for gf_bar()
-#' gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+#' gf_counts(~substance, data = mosaicData::HELPrct, fill = ~sex)
 #' # gf_props() and gf_percents() use proportions or percentages instead of counts
-#' gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
-#' gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
+#' gf_props(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge())
+#' gf_percents(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge())
 #'
 #' if (require(scales)) {
-#'   gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge()) %>%
+#'   gf_props(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge()) %>%
 #'     gf_refine(scale_y_continuous(labels = scales::percent))
 #' }
-
 gf_barh <-
   layer_factory(
     geom = "barh", stat = "counth", position = "stackv",
-    aes_form = list( ~ y, y ~ x),
+    aes_form = list(~y, y ~ x),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL)
+      width = NULL
+    )
   )
 
 #' @rdname gf_bar
@@ -48,10 +50,11 @@ gf_barh <-
 gf_countsh <-
   layer_factory(
     geom = "barh", stat = "counth", position = "stackv",
-    aes_form = list(~ y, y ~ .),
+    aes_form = list(~y, y ~ .),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL, binwidth = NULL)
+      width = NULL, binwidth = NULL
+    )
   )
 
 #' @rdname gf_bar
@@ -63,7 +66,8 @@ gf_colh <-
     aes_form = list(y ~ x),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL, binwidth = NULL)
+      width = NULL, binwidth = NULL
+    )
   )
 
 #' @rdname gf_bar
@@ -71,10 +75,12 @@ gf_colh <-
 gf_propsh <-
   layer_factory(
     geom = "barh", stat = "counth", position = "stackv",
-    aes_form = list( ~ y, y ~ .),
+    aes_form = list(~y, y ~ .),
     extras =
-      alist(alpha = , color = , fill = , group = ,
-            linetype = , size = , xlab = "proportion"),
+      alist(
+        alpha = , color = , fill = , group = ,
+        linetype = , size = , xlab = "proportion"
+      ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(x = ..count.. / sum(..count..))
@@ -88,9 +94,11 @@ gf_propsh <-
 gf_percentsh <-
   layer_factory(
     geom = "barh", stat = "counth", position = "stackv",
-    aes_form = list( ~ y, y ~ .),
-    extras = alist(alpha = , color = , fill = , group = ,
-                   linetype = , size = , xlab = "percent"),
+    aes_form = list(~y, y ~ .),
+    extras = alist(
+      alpha = , color = , fill = , group = ,
+      linetype = , size = , xlab = "percent"
+    ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(x = 100 * ..count.. / sum(..count..))
@@ -116,33 +124,34 @@ gf_percentsh <-
 #' @export
 #' @examples
 #' gf_boxploth(sex ~ age, data = mosaicData::HELPrct, varwidth = TRUE)
-#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex)
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex)
 #' # move boxplots away a bit by adjusting dodge
-#'   gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex,
-#'     position = position_dodgev(height = 0.9))
-#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, outlier.color = "gray50")
+#' gf_boxploth(substance ~ age,
+#'   data = mosaicData::HELPrct, color = ~sex,
+#'   position = position_dodgev(height = 0.9)
+#' )
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex, outlier.color = "gray50")
 #' # longer whiskers
-#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, coef = 2)
+#' gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex, coef = 2)
 #' # Note: height for boxplots is full width of box.
 #' #   For jittering, it is the half-height.
 #' gf_boxploth(substance ~ age | sex, data = mosaicData::HELPrct, coef = 5, height = 0.4) %>%
 #'   gf_jitter(height = 0.2, alpha = 0.3)
 #'
 #' # combining boxplots and histograms
-#' gf_histogram(~ eruptions, data = faithful) %>%
+#' gf_histogram(~eruptions, data = faithful) %>%
 #'   gf_boxploth(0 ~ eruptions, alpha = 0, width = 2)
-#' gf_histogram(~ eruptions, data = faithful) %>%
-#'  gf_boxploth(-2 ~ eruptions, alpha = 0, width = 2)
-#' gf_histogram(~ eruptions, data = faithful) %>%
+#' gf_histogram(~eruptions, data = faithful) %>%
+#'   gf_boxploth(-2 ~ eruptions, alpha = 0, width = 2)
+#' gf_histogram(~eruptions, data = faithful) %>%
 #'   gf_boxploth(32 ~ eruptions, alpha = 0, width = 2)
-
 gf_boxploth <-
   layer_factory(
     aes_form =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         y ~ x
       } else {
-        list(y ~ x, ~ x, y ~ .)
+        list(y ~ x, ~x, y ~ .)
       },
     geom = "boxploth",
     stat = "boxploth",
@@ -152,43 +161,43 @@ gf_boxploth <-
       coef = ,
       outlier.color = NULL, outlier.fill = NULL,
       outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
-      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE)
+      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE
+    )
   )
 
 #' @rdname gf_histogram
 #' @export
 #' @examples
 #'
-#' gf_histogramh( ~ x, bins = 30)
-#' gf_histogramh( x ~ ., bins = 30)
-#' gf_histogramh( x ~ stat(density), bins = 30)
-
+#' gf_histogramh(~x, bins = 30)
+#' gf_histogramh(x ~ ., bins = 30)
+#' gf_histogramh(x ~ stat(density), bins = 30)
 gf_histogramh <-
   layer_factory(
-    aes_form = list(y ~ x, ~ y, y ~ .),
+    aes_form = list(y ~ x, ~y, y ~ .),
     geom = "barh",
     stat = "binh",
     position = "stackv",
     note = "x may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)",
     extras = alist(
       bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
-      linetype = , size = )
+      linetype = , size =
+      )
   )
 
 #' @rdname gf_histogram
 #' @export
 #' @examples
-#' gf_dhistogramh(~ x, bins = 30)
+#' gf_dhistogramh(~x, bins = 30)
 #' gf_dhistogramh(x ~ ., bins = 30)
 #' # better to use gf_histogramh() here, but this works
 #' gf_dhistogramh(x ~ stat(count), bins = 30)
-
 gf_dhistogramh <-
   layer_factory(
     geom = "barh", stat = "binh", position = "stackv",
-    aes_form = list(y ~ x, ~ y, y ~ .),
+    aes_form = list(y ~ x, ~y, y ~ .),
     extras =
-      alist(bins = 25, binwidth = , alpha = 0.5 , color = , fill = , group = , linetype = , size = ),
+      alist(bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = , linetype = , size = ),
     note = "x may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)",
     aesthetics = aes(x = stat(density))
   )
@@ -196,29 +205,31 @@ gf_dhistogramh <-
 #' @rdname gf_linerange
 #' @export
 #' @examples
-#' gf_linerangeh( date ~ low_temp + high_temp | ~ city, data = Weather,
-#'   color = ~ avg_temp) %>%
+#' gf_linerangeh(date ~ low_temp + high_temp | ~city,
+#'   data = Weather,
+#'   color = ~avg_temp
+#' ) %>%
 #'   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
-
 gf_linerangeh <-
   layer_factory(
     geom = "linerangeh",
     aes_form = y ~ xmin + xmax,
-    extras = alist( alpha = , color = , group = , linetype = , size = )
+    extras = alist(alpha = , color = , group = , linetype = , size = )
   )
 
 #' @rdname gf_linerange
 #' @export
 #' @examples
-#' gf_pointrangeh( date ~ avg_temp + low_temp + high_temp | ~ city, data = Weather,
-#'   color = ~ avg_temp) %>%
+#' gf_pointrangeh(date ~ avg_temp + low_temp + high_temp | ~city,
+#'   data = Weather,
+#'   color = ~avg_temp
+#' ) %>%
 #'   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
-#'
 gf_pointrangeh <-
   layer_factory(
     geom = "pointrangeh",
     aes_form = y ~ x + xmin + xmax,
-    extras = alist( alpha = , color = , group = , linetype = , size = )
+    extras = alist(alpha = , color = , group = , linetype = , size = )
   )
 
 #' @rdname gf_crossbar
@@ -235,17 +246,19 @@ gf_crossbarh <-
 #' @rdname gf_violin
 #' @examples
 #' gf_violinh(substance ~ age, data = mosaicData::HELPrct)
-#' gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~ sex)
+#' gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~sex)
 #' @export
 gf_violinh <-
   layer_factory(
-    aes_form = list(y ~ x, ~ x),
+    aes_form = list(y ~ x, ~x),
     geom = "violinh",
     stat = "xdensity",
     position = "dodgev",
-    extras = alist(alpha = , color = , fill = , group = , linetype = ,
-                   size = , weight = , draw_quantiles = NULL, trim = TRUE,
-                   scale = "area", bw = , adjust = 1, kernel = "gaussian")
+    extras = alist(
+      alpha = , color = , fill = , group = , linetype = ,
+      size = , weight = , draw_quantiles = NULL, trim = TRUE,
+      scale = "area", bw = , adjust = 1, kernel = "gaussian"
+    )
   )
 
 #' Formula interface to geom_errorbarh()
@@ -260,42 +273,39 @@ gf_violinh <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#' @section Note:
-#'   There is discrepancy between the information required for `gf_errorbar()`
-#'   and `gf_errobarh()`.  It expected that this will change in a future release
-#'   of `ggplot2`.
 #'
 #' @seealso [ggplot2::geom_errorbarh()]
 #' @export
 #' @examples
 #' if (require(dplyr)) {
 #'   HELP2 <- mosaicData::HELPrct %>%
-#'   group_by(substance, sex) %>%
-#'   summarise(
-#'     mean.age = mean(age),
-#'     median.age = median(age),
-#'     max.age = max(age),
-#'     min.age = min(age),
-#'     sd.age = sd(age),
-#'     lo = mean.age - sd.age,
-#'     hi = mean.age + sd.age
+#'     group_by(substance, sex) %>%
+#'     summarise(
+#'       mean.age = mean(age),
+#'       median.age = median(age),
+#'       max.age = max(age),
+#'       min.age = min(age),
+#'       sd.age = sd(age),
+#'       lo = mean.age - sd.age,
+#'       hi = mean.age + sd.age
 #'     )
 #'
 #'   gf_jitter(substance ~ age, data = mosaicData::HELPrct,
 #'       alpha = 0.5, height = 0.2, width = 0, color = "skyblue") %>%
-#'     gf_errorbarh( substance ~ lo + hi,  data = HELP2, inherit = FALSE) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_errorbarh(substance ~ lo + hi, data = HELP2, inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(age ~ substance, data = mosaicData::HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_errorbar(lo + hi ~ substance, data = HELP2, inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
 #' }
-
 gf_errorbarh <-
   layer_factory(
     geom = "errorbarh",
     aes_form = y ~ xmin + xmax,
+    check.aes = FALSE,
     extras = alist(
       alpha = , color = , group = , linetype = , size =
-    )
+      )
   )

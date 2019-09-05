@@ -32,17 +32,17 @@ NA
 #' of \pkg{lattice}.
 #'
 #' @section Evaluation:
-#' Evaluation of the \pkg{ggplot2} code occurs in the environment of `gformula`.
-#' This will typically do the right thing when formulas are created on the fly, but might not
-#' be the right thing if formulas created in one environment are used to create plots
-#' in another.
+#' Evaluation of the \pkg{ggplot2} code occurs in the environment specified
+#' by `environment`. This will typically do the right thing, but is exposed
+#' in case some non-standard behavior is desired. In earlier versions,
+#' the environment of the formula was used, but since some functions in
+#' the package do not require a formula, a separate argument is used now.
 #'
 #' @rdname ggformula
 #' @name ggformula
 #' @examples
 #' apropos("gf_")
 #' gf_point()
-
 NA
 
 #' Formula interface to geom_point()
@@ -110,30 +110,32 @@ NA
 #' @export
 #' @examples
 #' gf_point()
-#' gf_point( (10 * ((1:25) %/% 10)) ~ ((1:25) %% 10), shape = 1:25,
-#'   fill = "skyblue", color = "navy", size = 4, stroke = 1, data = NA)
-#' gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars)
+#' gf_point((10 * ((1:25) %/% 10)) ~ ((1:25) %% 10),
+#'   shape = 1:25,
+#'   fill = "skyblue", color = "navy", size = 4, stroke = 1, data = NA
+#' )
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars)
 #' # faceting -- two ways
 #' gf_point(mpg ~ hp, data = mtcars) %>%
-#'   gf_facet_wrap( ~ am)
-#' gf_point(mpg ~ hp | am, group = ~ cyl, data = mtcars)
-#' gf_point(mpg ~ hp | ~ am, group = ~ cyl, data = mtcars)
-#' gf_point(mpg ~ hp | am ~ ., group = ~ cyl,  data = mtcars)
+#'   gf_facet_wrap(~am)
+#' gf_point(mpg ~ hp | am, group = ~cyl, data = mtcars)
+#' gf_point(mpg ~ hp | ~am, group = ~cyl, data = mtcars)
+#' gf_point(mpg ~ hp | am ~ ., group = ~cyl, data = mtcars)
 #' # Chaining in the data
 #' mtcars %>% gf_point(mpg ~ wt)
 #'
 #' # short cuts for main labels in the plot
-#' gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78,
-#'     xlab = "Date", ylab = "Number of Live Births",
-#'     title = "Interesting Patterns in the Number of Births",
-#'     subtitle = "(United States, 1978)",
-#'     caption = "Source: mosaicData::Births78")
-#'
-
+#' gf_point(births ~ date,
+#'   color = ~wday, data = mosaicData::Births78,
+#'   xlab = "Date", ylab = "Number of Live Births",
+#'   title = "Interesting Patterns in the Number of Births",
+#'   subtitle = "(United States, 1978)",
+#'   caption = "Source: mosaicData::Births78"
+#' )
 gf_point <-
   layer_factory(
     geom = "point",
-    extras = alist(alpha = ,  color = , size = , shape = , fill = , group = , stroke = )
+    extras = alist(alpha = , color = , size = , shape = , fill = , group = , stroke = )
   )
 
 #' Formula interface to geom_jitter()
@@ -157,15 +159,19 @@ gf_point <-
 #' # jitter only horizontally
 #' gf_jitter(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct, width = 0.2, height = 0)
 #' # alternative way to get jitter
-#' gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct,
-#'     position = "jitter", width = 0.2, height = 0)
+#' gf_point(age ~ sex,
+#'   alpha = 0.25, data = mosaicData::HELPrct,
+#'   position = "jitter", width = 0.2, height = 0
+#' )
 gf_jitter <-
   layer_factory(
     geom = "point",
     position = "jitter",
-    extras = alist(alpha = ,  color = , size = , shape = , fill = ,
-                   width = , height = , group = , stroke = )
-    )
+    extras = alist(
+      alpha = , color = , size = , shape = , fill = ,
+      width = , height = , group = , stroke =
+      )
+  )
 
 #' Formula interface to geom_line() and geom_path()
 #'
@@ -184,16 +190,17 @@ gf_jitter <-
 #' @examples
 #' gf_line()
 #' gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct)
-#' gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78)
+#' gf_point(births ~ date, color = ~wday, data = mosaicData::Births78)
 #' # lines make the exceptions stand out more prominently
-#' gf_line(births ~ date, color = ~ wday, data = mosaicData::Births78)
-#'
+#' gf_line(births ~ date, color = ~wday, data = mosaicData::Births78)
 gf_line <-
   layer_factory(
     geom = "line",
-    extras = alist(alpha = , color = , fill = , group = , linetype = , size = ,
-                   lineend = , linejoin = , linemitre = , arrow = )
-    )
+    extras = alist(
+      alpha = , color = , fill = , group = , linetype = , size = ,
+      lineend = , linejoin = , linemitre = , arrow =
+      )
+  )
 
 #' @rdname gf_line
 #' @inheritParams ggplot2::geom_path
@@ -202,15 +209,70 @@ gf_line <-
 #' gf_path()
 #' if (require(dplyr)) {
 #'   data.frame(t = seq(1, 10 * pi, length.out = 400)) %>%
-#'   mutate( x = t * cos(t), y = t * sin(t)) %>%
-#'   gf_path(y ~ x, color = ~ t)
-#'   }
-
+#'     mutate(x = t * cos(t), y = t * sin(t)) %>%
+#'     gf_path(y ~ x, color = ~t)
+#' }
 gf_path <-
   layer_factory(
     geom = "path",
-    extras = alist(alpha = , color = , group = , linetype = , size = ,
-                   lineend = "butt", linejoin = "round", linemitre = 1, arrow = NULL)
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      lineend = "butt", linejoin = "round", linemitre = 1, arrow = NULL
+    )
+  )
+
+#' Formula interface to stat_ellipse()
+#'
+#' Formula interface to [ggplot2::stat_ellipse()].
+#'
+#' @inheritParams gf_line
+#' @inheritParams ggplot2::stat_ellipse
+#' @inheritParams ggplot2::geom_path
+#' @param geom Geom for drawing ellipse.  Note: `"polygon"` allows fill; `"path"` does not;
+#'   on the other hand, `"path"` allows `alpha` to be applied to the border, while `"polygon"`
+#'   applies `alpha` only to the interior.
+#' @seealso [ggplot2::stat_ellipse()]
+#' @export
+#' @examples
+#' gf_ellipse()
+#' gf_point(eruptions ~ waiting, data = faithful) %>%
+#'   gf_ellipse(alpha = 0.5)
+#'
+#' gf_point(eruptions ~ waiting, data = faithful, color = ~ (eruptions > 3)) %>%
+#'   gf_ellipse(alpha = 0.5)
+#'
+#' gf_point(eruptions ~ waiting, data = faithful, color = ~ (eruptions > 3)) %>%
+#'   gf_ellipse(type = "norm", linetype = ~ "norm") %>%
+#'   gf_ellipse(type = "t",    linetype = ~ "t")
+#'
+#' gf_point(eruptions ~ waiting, data = faithful, color = ~ (eruptions > 3)) %>%
+#'   gf_ellipse(type = "norm",   linetype = ~ "norm") %>%
+#'   gf_ellipse(type = "euclid", linetype = ~ "euclid", level = 3) %>%
+#'   gf_refine(coord_fixed())
+#'
+#' # Use geom = "polygon" to enable fill
+#' gf_point(eruptions ~ waiting, data = faithful, fill = ~ (eruptions > 3)) %>%
+#'   gf_ellipse(geom = "polygon", alpha = 0.3, color = "black")
+#'
+#' gf_point(eruptions ~ waiting, data = faithful, fill = ~ (eruptions > 3)) %>%
+#'   gf_ellipse(geom = "polygon", alpha = 0.3) %>%
+#'   gf_ellipse(alpha = 0.3, color = "black")
+#'
+#' gf_ellipse(eruptions ~ waiting, data = faithful, show.legend = FALSE,
+#'   alpha = 0.3, fill = ~ (eruptions > 3), geom = "polygon") %>%
+#'   gf_ellipse(level = 0.68, geom = "polygon", alpha = 0.3) %>%
+#'   gf_point(data = faithful, color = ~ (eruptions > 3), show.legend = FALSE)
+
+gf_ellipse <-
+  layer_factory(
+    geom = "path",
+    stat = "ellipse",
+    extras = alist(
+      alpha = , color = , group = ,
+      type = "t", level = 0.95, segments = 51
+      # linetype = , size = ,
+      # lineend = "butt", linejoin = "round", linemitre = 1, arrow = NULL
+    )
   )
 
 #' Formula interface to geom_polygon()
@@ -227,13 +289,16 @@ gf_path <-
 #'     dplyr::summarise(lat = mean(range(lat)), long = mean(range(long))) %>%
 #'     dplyr::mutate(name = abbreviate(region, 3))
 #'
-#'   gf_polygon(lat ~ long, data = US, group = ~ group,
-#'              fill = ~ name_length, color = "white") %>%
-#'   gf_text(lat ~ long, label = ~ name, data = States,
-#'     color = "gray70", inherit = FALSE) %>%
-#'   gf_refine(ggthemes::theme_map())
+#'   gf_polygon(lat ~ long,
+#'     data = US, group = ~group,
+#'     fill = ~name_length, color = "white"
+#'   ) %>%
+#'     gf_text(lat ~ long,
+#'       label = ~name, data = States,
+#'       color = "gray70", inherit = FALSE
+#'     ) %>%
+#'     gf_refine(ggthemes::theme_map())
 #' }
-#'
 #' @export
 gf_polygon <-
   layer_factory(
@@ -260,41 +325,59 @@ gf_polygon <-
 #' @examples
 #' gf_smooth()
 #' gf_lm()
-#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78)
-#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
-#'           fullrange = TRUE)
-#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
-#'           show.legend = FALSE, se = FALSE)
-#' gf_smooth(births ~ date, color = ~ wday, data = mosaicData::Births78,
-#'           show.legend = FALSE, se = TRUE)
-#' gf_lm(length ~ width, data = mosaicData::KidsFeet,
-#'       color = ~ biggerfoot, alpha = 0.2) %>%
+#' gf_smooth(births ~ date, color = ~wday, data = mosaicData::Births78)
+#' gf_smooth(births ~ date,
+#'   color = ~wday, data = mosaicData::Births78,
+#'   fullrange = TRUE
+#' )
+#' gf_smooth(births ~ date,
+#'   color = ~wday, data = mosaicData::Births78,
+#'   show.legend = FALSE, se = FALSE
+#' )
+#' gf_smooth(births ~ date,
+#'   color = ~wday, data = mosaicData::Births78,
+#'   show.legend = FALSE, se = TRUE
+#' )
+#' gf_lm(length ~ width,
+#'   data = mosaicData::KidsFeet,
+#'   color = ~biggerfoot, alpha = 0.2
+#' ) %>%
 #'   gf_point()
-#' gf_lm(length ~ width, data = mosaicData::KidsFeet,
-#'       color = ~ biggerfoot, fullrange = FALSE, alpha = 0.2)
+#' gf_lm(length ~ width,
+#'   data = mosaicData::KidsFeet,
+#'   color = ~biggerfoot, fullrange = FALSE, alpha = 0.2
+#' )
+#' gf_point()
+#' gf_lm(length ~ width,
+#'   color = ~sex, data = mosaicData::KidsFeet,
+#'   formula = y ~ poly(x, 2), linetype = "dashed"
+#' ) %>%
 #'   gf_point()
-#' gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
-#'       formula = y ~ poly(x, 2), linetype = "dashed") %>%
-#'   gf_point()
-#' gf_lm(length ~ width, color = ~ sex, data = mosaicData::KidsFeet,
-#'       formula = log(y) ~ x, backtrans = exp) %>%
+#' gf_lm(length ~ width,
+#'   color = ~sex, data = mosaicData::KidsFeet,
+#'   formula = log(y) ~ x, backtrans = exp
+#' ) %>%
 #'   gf_point()
 #'
-#' gf_lm(hwy ~ displ, data = mpg,
-#'       formula = log(y) ~ poly(x,3), backtrans = exp,
-#'      interval = "prediction", fill = "skyblue") %>%
+#' gf_lm(hwy ~ displ,
+#'   data = mpg,
+#'   formula = log(y) ~ poly(x, 3), backtrans = exp,
+#'   interval = "prediction", fill = "skyblue"
+#' ) %>%
 #'   gf_lm(
-#'      formula = log(y) ~ poly(x,3), backtrans = exp,
-#'      interval = "confidence", color = "red") %>%
+#'     formula = log(y) ~ poly(x, 3), backtrans = exp,
+#'     interval = "confidence", color = "red"
+#'   ) %>%
 #'   gf_point()
-#'
 gf_smooth <-
   layer_factory(
     geom = "smooth",
     stat = "smooth",
-    extras = alist(method = "auto", formula = y ~ x, se = FALSE, method.args = ,
-                   n = 80 , span = 0.75 , fullrange = FALSE, level = 0.95)
+    extras = alist(
+      method = "auto", formula = y ~ x, se = FALSE, method.args = ,
+      n = 80, span = 0.75, fullrange = FALSE, level = 0.95
     )
+  )
 
 #' @rdname gf_smooth
 #' @inheritParams geom_lm
@@ -323,17 +406,18 @@ gf_lm <-
 #' @seealso [geom_spline()], [gf_smooth()], [gf_lm()]
 #' @export
 #' @examples
-#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78)
-#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 20)
-#' gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 4)
-
+#' gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78)
+#' gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78, df = 20)
+#' gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78, df = 4)
 gf_spline <-
   layer_factory(
     geom = "line",
     stat = "spline",
-    extras = alist(alpha = , color = , group = , linetype = , size = ,
-                   weight = , df = , spar = , tol = )
-    )
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      weight = , df = , spar = , tol =
+      )
+  )
 
 #' Formula interface to geom_raster()
 #'
@@ -355,16 +439,17 @@ gf_spline <-
 #' D$z <- runif(nrow(D))
 #' # centered squares
 #' gf_raster(z ~ x + y, data = D)
-#' gf_raster(y ~ x, fill = ~ z, data = D)
+#' gf_raster(y ~ x, fill = ~z, data = D)
 #' # zero padding
 #' gf_raster(z ~ x + y, data = D, hjust = 0, vjust = 0)
-
 gf_raster <-
   layer_factory(
     geom = "raster",
     aes_form = list(y ~ x, fill ~ x + y),
-    extras = alist(alpha = , color = , fill = , group = , linetype = , size = ,
-                   hjust = 0.5, vjust = 0.5, interpolate = FALSE)
+    extras = alist(
+      alpha = , color = , fill = , group = , linetype = , size = ,
+      hjust = 0.5, vjust = 0.5, interpolate = FALSE
+    )
   )
 
 #' Formula interface to geom_quantile()
@@ -382,16 +467,17 @@ gf_raster <-
 #' @seealso [ggplot2::geom_quantile()]
 #' @export
 #' @examples
-#' gf_point((1/hwy) ~ displ, data = mpg) %>%
-#'   gf_quantile((1/hwy) ~ displ)
-
+#' gf_point((1 / hwy) ~ displ, data = mpg) %>%
+#'   gf_quantile((1 / hwy) ~ displ)
 gf_quantile <-
   layer_factory(
     geom = "quantile",
     stat = "quantile",
-    extras = alist(alpha = , color = , group = , linetype = , size = , weight =,
-                   lineend = "butt", linejoin = "round", linemitre = 1, quantiles = ,
-                   formula = , method = ,  method.args =  )
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = , weight = ,
+      lineend = "butt", linejoin = "round", linemitre = 1, quantiles = ,
+      formula = , method = , method.args =
+      )
   )
 
 #' Formula interface to geom_density_2d()
@@ -407,34 +493,40 @@ gf_quantile <-
 #' @seealso [ggplot2::geom_density_2d()]
 #' @export
 #' @examples
-#' gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
-#'           width = 0.4, height = 0.4) %>%
+#' gf_jitter(avg_drinks ~ age,
+#'   alpha = 0.2, data = mosaicData::HELPrct,
+#'   width = 0.4, height = 0.4
+#' ) %>%
 #'   gf_density_2d(avg_drinks ~ age, data = mosaicData::HELPrct)
-
 gf_density_2d <-
   layer_factory(
     geom = "density_2d",
     stat = "density_2d",
-    extras = alist(alpha = , color = , group = , linetype = , size = ,
-                   contour = TRUE, n = 100 , h = NULL , lineend = "butt", linejoin = "round",
-                   linemitre = 1 )
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      contour = TRUE, n = 100, h = NULL, lineend = "butt", linejoin = "round",
+      linemitre = 1
+    )
   )
 
 #' @rdname gf_density_2d
 #' @export
 #' @examples
-#' gf_jitter(avg_drinks ~ age, alpha = 0.2, data = mosaicData::HELPrct,
-#'           width = 0.4, height = 0.4) %>%
+#' gf_jitter(avg_drinks ~ age,
+#'   alpha = 0.2, data = mosaicData::HELPrct,
+#'   width = 0.4, height = 0.4
+#' ) %>%
 #'   gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct)
-
 gf_density2d <-
   layer_factory(
     geom = "density2d",
     stat = "density2d",
-    extras = alist(alpha = , color = , group = , linetype = , size = ,
-                   contour = TRUE, n = 100 , h = NULL ,
-                   lineend = "butt", linejoin = "round",
-                   linemitre = 1 )
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      contour = TRUE, n = 100, h = NULL,
+      lineend = "butt", linejoin = "round",
+      linemitre = 1
+    )
   )
 
 #' Formula interface to geom_hex()
@@ -450,8 +542,7 @@ gf_density2d <-
 #' @export
 #' @examples
 #' gf_hex(avg_drinks ~ age, data = mosaicData::HELPrct, bins = 15) %>%
-#' gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
-#'
+#'   gf_density2d(avg_drinks ~ age, data = mosaicData::HELPrct, color = "red", alpha = 0.5)
 gf_hex <-
   layer_factory(
     geom = "hex",
@@ -473,31 +564,38 @@ gf_hex <-
 #' @seealso [ggplot2::geom_boxplot()], [fivenum()], [df_stats()]
 #' @export
 #' @examples
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~ sex)
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-#'              color = ~ sex, outlier.color = "gray50")
-#'   # longer whiskers
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-#'              color = ~ sex, coef = 2)
+#' gf_boxplot(age ~ substance, data = mosaicData::HELPrct)
+#' gf_boxplot(age ~ substance, data = mosaicData::HELPrct, varwidth = TRUE)
+#' gf_boxplot(age ~ substance, data = mosaicData::HELPrct, color = ~sex)
+#' gf_boxplot(age ~ substance,
+#'   data = mosaicData::HELPrct,
+#'   color = ~sex, outlier.color = "gray50"
+#' )
+#' # longer whiskers
+#' gf_boxplot(age ~ substance,
+#'   data = mosaicData::HELPrct,
+#'   color = ~sex, coef = 2
+#' )
 #'
-#'   # Note: width for boxplots is full width of box.
-#'   #       For jittering, it is the half-width.
-#'   gf_boxplot(age ~ substance | sex, data = mosaicData::HELPrct,
-#'              coef = 5, width = 0.4) %>%
-#'     gf_jitter(width = 0.2, alpha = 0.3)
-#'   # move boxplots away a bit by adjusting dodge
-#'   gf_boxplot(age ~ substance, data = mosaicData::HELPrct,
-#'              color = ~ sex, position = position_dodge(width = 0.9))
-
+#' # Note: width for boxplots is full width of box.
+#' #       For jittering, it is the half-width.
+#' gf_boxplot(age ~ substance | sex,
+#'   data = mosaicData::HELPrct,
+#'   coef = 5, width = 0.4
+#' ) %>%
+#'   gf_jitter(width = 0.2, alpha = 0.3)
+#' # move boxplots away a bit by adjusting dodge
+#' gf_boxplot(age ~ substance,
+#'   data = mosaicData::HELPrct,
+#'   color = ~sex, position = position_dodge(width = 0.9)
+#' )
 gf_boxplot <-
   layer_factory(
     aes_form =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         y ~ x
       } else {
-        list(y ~ x, ~ y, y ~ .)
+        list(y ~ x, ~y, y ~ .)
       },
     geom = "boxplot",
     stat = "boxplot",
@@ -507,7 +605,8 @@ gf_boxplot <-
       coef = ,
       outlier.color = NULL, outlier.fill = NULL,
       outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
-      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE)
+      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE
+    )
   )
 
 #' Formula interface to geom_text() and geom_label()
@@ -529,26 +628,32 @@ gf_boxplot <-
 #' @seealso [ggplot2::geom_text()]
 #' @export
 #' @examples
-#' gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-#'   label = ~ Species, color = ~ Species, size = 2, angle = 30)
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) %>%
-#' gf_text(Sepal.Length ~ Sepal.Width, data = iris,
-#'   label = ~ Species, color = ~ Species,
-#'   size = 2, angle = 0, hjust = 0, nudge_x  = 0.1, nudge_y = 0.1)
-#'
+#' gf_text(Sepal.Length ~ Sepal.Width,
+#'   data = iris,
+#'   label = ~Species, color = ~Species, size = 2, angle = 30
+#' )
+#' gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) %>%
+#'   gf_text(Sepal.Length ~ Sepal.Width,
+#'     data = iris,
+#'     label = ~Species, color = ~Species,
+#'     size = 2, angle = 0, hjust = 0, nudge_x = 0.1, nudge_y = 0.1
+#'   )
 gf_text <-
   layer_factory(
     geom = "text",
     position = "nudge",
     pre = {
-      if (nudge_x != 0 || nudge_y != 0)
+      if ((nudge_x != 0) || (nudge_y != 0)) {
         position <- position_nudge(nudge_x, nudge_y)
-      },
+      }
+    },
     extras = alist(
-      label = , alpha = , angle = , color = , family = , fontface = , group = , hjust = ,
-      lineheight = , size = , vjust = , parse = FALSE, nudge_x = 0, nudge_y = 0,
+      label = , alpha = , angle = , color = ,
+      family = , fontface = , group = , hjust = ,
+      lineheight = , size = , vjust = , parse = FALSE,
+      nudge_x = 0, nudge_y = 0,
       check_overlap = FALSE
-      )
+    )
   )
 
 #' @rdname gf_text
@@ -559,27 +664,35 @@ gf_text <-
 #'     iris %>%
 #'     group_by(Species) %>%
 #'     summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
-#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species) %>%
-#'   gf_label(Sepal.Length ~ Sepal.Width, data = iris_means,
-#'     label = ~ Species, color = ~ Species, size = 2, alpha = 0.7)
+#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) %>%
+#'     gf_label(Sepal.Length ~ Sepal.Width,
+#'       data = iris_means,
+#'       label = ~Species, color = ~Species, size = 2, alpha = 0.7
+#'     )
 #' }
-
 gf_label <-
   layer_factory(
+    stat = "identity",
     geom = "label",
     position = "nudge",
     pre = {
-      if (nudge_x != 0 || nudge_y != 0)
+      if ((nudge_x != 0) || (nudge_y != 0)) {
         position <- position_nudge(nudge_x, nudge_y)
-      },
-    layer_fun = ggplot2::geom_label,
+      }
+    },
+    layer_fun = quo(ggplot2::geom_label),
     extras = alist(
-      label =, alpha = , angle = , color = , family = , fontface = , group = , hjust = ,
-      lineheight = , size = , vjust = ,
+      label =, alpha = , angle = , color = ,
+      family = , fontface = , group = , hjust = ,
+      label = , alpha = , angle = , color = ,
+      family = , fontface = ,
+      group = , hjust = , vjust = ,
+      lineheight = , size = ,
       parse = ,
       nudge_x = 0, nudge_y = 0,
       label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
-      label.size = 0.25)
+      label.size = 0.25
+    )
   )
 
 #' Formula interface to geom_area()
@@ -598,23 +711,22 @@ gf_label <-
 #' if (require(dplyr) && require(mosaicData)) {
 #'   Temps <- Weather %>%
 #'     filter(city == "Chicago", year == 2016, month <= 4)
-#'   gf_linerange(low_temp + high_temp  ~ date, color = ~ high_temp, data = Temps)
+#'   gf_linerange(low_temp + high_temp ~ date, color = ~high_temp, data = Temps)
 #'   gf_ribbon(low_temp + high_temp ~ date, data = Temps, color = "navy", alpha = 0.3)
 #'   gf_area(high_temp ~ date, data = Temps, color = "navy", alpha = 0.3)
 #'
 #'   gf_ribbon(low_temp + high_temp ~ date, data = Weather, alpha = 0.3) %>%
 #'     gf_facet_grid(city ~ .)
 #'
-#'   gf_linerange(low_temp + high_temp ~ date, color = ~ high_temp, data = Weather) %>%
+#'   gf_linerange(low_temp + high_temp ~ date, color = ~high_temp, data = Weather) %>%
 #'     gf_facet_grid(city ~ .) %>%
 #'     gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
 #' }
-#'
 gf_area <-
   layer_factory(
     geom = "area",
     extras = alist(alpha = , color = , fill = , group = , linetype = , size = )
-    )
+  )
 
 #' Formula interface to geom_violin()
 #'
@@ -634,16 +746,17 @@ gf_area <-
 #' @export
 #' @examples
 #' gf_violin(age ~ substance, data = mosaicData::HELPrct)
-#' gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
-#'
+#' gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~sex)
 gf_violin <-
   layer_factory(
     geom = "violin",
     stat = "ydensity",
     position = "dodge",
-    extras = alist(alpha = , color = , fill = , group = , linetype = ,
-                   size = , weight = , draw_quantiles = NULL, trim = TRUE,
-                   scale = "area", bw = , adjust = 1, kernel = "gaussian")
+    extras = alist(
+      alpha = , color = , fill = , group = , linetype = ,
+      size = , weight = , draw_quantiles = NULL, trim = TRUE,
+      scale = "area", bw = , adjust = 1, kernel = "gaussian"
+    )
   )
 
 #' Formula interface to geom_spoke()
@@ -665,22 +778,22 @@ gf_violin <-
 #' @seealso [ggplot2::geom_spoke()]
 #' @export
 #' @examples
-#' SomeData <- expand.grid(x = 1:10, y=1:10)
-#' SomeData$angle <- runif(100, 0, 2*pi)
+#' SomeData <- expand.grid(x = 1:10, y = 1:10)
+#' SomeData$angle <- runif(100, 0, 2 * pi)
 #' SomeData$speed <- runif(100, 0, sqrt(0.1 * SomeData$x))
 #'
 #' gf_point(y ~ x, data = SomeData) %>%
-#'   gf_spoke(y ~ x, angle = ~ angle, radius = 0.5)
+#'   gf_spoke(y ~ x, angle = ~angle, radius = 0.5)
 #'
 #' gf_point(y ~ x, data = SomeData) %>%
-#'   gf_spoke(y ~ x, angle = ~ angle, radius = ~ speed)
-
+#'   gf_spoke(y ~ x, angle = ~angle, radius = ~speed)
 gf_spoke <-
   layer_factory(
     geom = "spoke",
     extras = alist(
       angle = , radius = ,
-      alpha = , color = , group = , linetype = , size = ),
+      alpha = , color = , group = , linetype = , size =
+      ),
     note = "Note: angle and radius must be set or mapped."
   )
 
@@ -698,7 +811,7 @@ gf_spoke <-
 #' @seealso [ggplot2::geom_step()]
 #' @export
 #' @examples
-#' gf_step( births ~ date, data = mosaicData::Births78, color = ~ wday)
+#' gf_step(births ~ date, data = mosaicData::Births78, color = ~wday)
 #'
 #' # Roll your own Kaplan-Meier plot
 #'
@@ -714,12 +827,11 @@ gf_spoke <-
 #'     gf_step(estimate ~ time) %>%
 #'     gf_ribbon(conf.low + conf.high ~ time, alpha = 0.2)
 #' }
-
 gf_step <-
   layer_factory(
     geom = "step",
-    extras = alist(alpha = , color = , group = , linetype = , size = , direction = "hv" )
-    )
+    extras = alist(alpha = , color = , group = , linetype = , size = , direction = "hv")
+  )
 
 #' Formula interface to geom_tile()
 #'
@@ -736,9 +848,8 @@ gf_step <-
 #' @examples
 #' D <- expand.grid(x = 0:5, y = 0:5)
 #' D$z <- runif(nrow(D))
-#' gf_tile(y ~ x, fill = ~ z, data = D)
+#' gf_tile(y ~ x, fill = ~z, data = D)
 #' gf_tile(z ~ x + y, data = D)
-
 gf_tile <-
   layer_factory(
     geom = "tile",
@@ -763,7 +874,6 @@ gf_tile <-
 #' @examples
 #' gf_bin2d(eruptions ~ waiting, data = faithful, bins = 15) %>%
 #'   gf_refine(scale_fill_viridis_c(begin = 0.1, end = 0.9))
-
 gf_bin2d <-
   layer_factory(
     geom = "tile",
@@ -790,14 +900,13 @@ gf_bin2d <-
 #'
 #' gf_count(hwy ~ cty, data = mpg, alpha = 0.5) %>%
 #'   gf_refine(scale_size_area())
-#'
 gf_count <-
   layer_factory(
     geom = "point",
     stat = "sum",
     extras = alist(
       alpha = , color = , fill = , group = , shape = , size = , stroke =
-    )
+      )
   )
 
 #' Formula interface to geom_col()
@@ -820,7 +929,7 @@ gf_count <-
 #'
 #' # A Pareto chart
 #'
-#' if(require(dplyr) && require(mosaicData)) {
+#' if (require(dplyr) && require(mosaicData)) {
 #'   HELPrct %>%
 #'     group_by(substance) %>%
 #'     summarise(count = n()) %>%
@@ -828,23 +937,22 @@ gf_count <-
 #'     dplyr::arrange(-count) %>%
 #'     mutate(
 #'       cumcount = cumsum(count),
-#'       substance = reorder(substance, - count)
+#'       substance = reorder(substance, -count)
 #'     ) %>%
 #'     gf_col(count ~ substance, fill = "skyblue") %>%
 #'     gf_point(cumcount ~ substance) %>%
 #'     gf_line(cumcount ~ substance, group = 1) %>%
 #'     gf_refine(
-#'       scale_y_continuous(sec.axis = sec_axis( ~ . /nrow(HELPrct)))
+#'       scale_y_continuous(sec.axis = sec_axis(~ . / nrow(HELPrct)))
 #'     )
-#'   }
-
+#' }
 gf_col <-
   layer_factory(
     geom = "col",
     position = "stack",
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size =
-    )
+      )
   )
 
 #' Formula interface to geom_blank()
@@ -860,13 +968,12 @@ gf_col <-
 #' @export
 #' @examples
 #'
-#' gf_point((c(0,1)) ~ (c(0,5)))
-#' gf_frame((c(0,1)) ~ (c(0,5)))
-#' gf_blank((c(0,1)) ~ (c(0,5)))
+#' gf_point((c(0, 1)) ~ (c(0, 5)))
+#' gf_frame((c(0, 1)) ~ (c(0, 5)))
+#' gf_blank((c(0, 1)) ~ (c(0, 5)))
 #' # gf_blank() can be used to expand the view
-#' gf_point((c(0,1)) ~ (c(0,5))) %>%
-#'   gf_blank((c(0,3)) ~ (c(-2,7)))
-
+#' gf_point((c(0, 1)) ~ (c(0, 5))) %>%
+#'   gf_blank((c(0, 3)) ~ (c(-2, 7)))
 gf_blank <-
   layer_factory(geom = "blank", check.aes = FALSE)
 
@@ -892,35 +999,39 @@ gf_frame <-
 #' @seealso [ggplot2::geom_histogram()]
 #' @export
 #' @examples
-#' x <<- rnorm(1000)
-#' gf_histogram(  ~ x, bins = 30)
-#' gf_dhistogram( ~ x, bins = 30)
-#' gf_dhistogram( ~ x, binwidth = 0.5, center = 0, color = "black")
-#' gf_dhistogram( ~ x, binwidth = 0.5, boundary = 0, color = "black")
-#' gf_dhistogram( ~ x, bins = 30) %>%
-#'  gf_fitdistr(dist = "dnorm")  # see help for gf_fitdistr() for more info.
+#' x <- rnorm(1000)
+#' gf_histogram(~x, bins = 30)
+#' gf_dhistogram(~x, bins = 30)
+#' gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black")
+#' gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black")
+#' gf_dhistogram(~x, bins = 30) %>%
+#'   gf_fitdistr(dist = "dnorm") # see help for gf_fitdistr() for more info.
 #'
-#' gf_histogram( ~ x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
+#' gf_histogram(~x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 #'
-#' gf_histogram( ~ Sepal.Length | Species, data = iris, binwidth = 0.25)
-#' gf_histogram( ~ age, data = mosaicData::HELPrct, binwidth = 5,
-#'              fill = "skyblue", color = "black")
+#' gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+#' gf_histogram(~age,
+#'   data = mosaicData::HELPrct, binwidth = 5,
+#'   fill = "skyblue", color = "black"
+#' )
 #' # bins can be adjusted left/right using center or boundary
-#' gf_histogram( ~ age, data = mosaicData::HELPrct,
-#'              binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
-#' gf_histogram( ~ age, data = mosaicData::HELPrct,
-#'               binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
-
-
+#' gf_histogram(~age,
+#'   data = mosaicData::HELPrct,
+#'   binwidth = 5, fill = "skyblue", color = "black", center = 42.5
+#' )
+#' gf_histogram(~age,
+#'   data = mosaicData::HELPrct,
+#'   binwidth = 5, fill = "skyblue", color = "black", boundary = 40
+#' )
 gf_histogram <-
   layer_factory(
     geom = "bar", stat = "bin", position = "stack",
-    aes_form = list( ~ x, y ~ x),
+    aes_form = list(~x, y ~ x),
     extras = alist(bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = , linetype = , size = ),
     note =
       if (packageVersion("ggplot2") <= "2.2.1") {
         "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.., but see gf_dhistogram()."
-      }else {
+      } else {
         "y may be stat(density) or stat(count) or stat(ndensity) or stat(ncount), but see gf_dhistogram()."
       }
   )
@@ -930,10 +1041,12 @@ gf_histogram <-
 gf_dhistogram <-
   layer_factory(
     geom = "bar", stat = "bin", position = "stack",
-    aes_form = list( ~ x, y ~ x),
+    aes_form = list(~x, y ~ x),
     extras =
-      alist(bins = 25, binwidth = , alpha = 0.5 , color = , fill = , group = ,
-            linetype = , size = ),
+      alist(
+        bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
+        linetype = , size =
+        ),
     note =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.."
@@ -971,18 +1084,20 @@ gf_dhistogram <-
 #' @export
 #' @examples
 #' gf_dens()
-#' gf_density( ~ Sepal.Length,  fill = ~ Species, data = iris)
-#' gf_dens( ~ Sepal.Length, color = ~ Species, data = iris)
-#' gf_freqpoly( ~ Sepal.Length, color = ~ Species, data = iris, bins = 15)
+#' gf_density(~Sepal.Length, fill = ~Species, data = iris)
+#' gf_dens(~Sepal.Length, color = ~Species, data = iris)
+#' gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 15)
 #' # Chaining in the data
-#' iris %>% gf_dens( ~ Sepal.Length, color = ~ Species)
+#' iris %>% gf_dens(~Sepal.Length, color = ~Species)
 gf_density <-
   layer_factory(
     geom = "area", stat = "density",
-    aes_form = ~ x,
-    extras = alist(alpha = 0.5 , color = , fill = ,
-                   group = , linetype = , size = ,
-                   kernel = "gaussian", n = 512, trim = FALSE),
+    aes_form = ~x,
+    extras = alist(
+      alpha = 0.5, color = , fill = ,
+      group = , linetype = , size = ,
+      kernel = "gaussian", n = 512, trim = FALSE
+    ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(y = ..density..)
@@ -997,10 +1112,12 @@ gf_density <-
 gf_dens <-
   layer_factory(
     geom = "line", stat = "density",
-    aes_form = ~ x,
-    extras = alist(alpha = 0.5 , color = ,
-                   group = , linetype = , size = ,
-                   kernel = "gaussian", n = 512, trim = FALSE),
+    aes_form = ~x,
+    extras = alist(
+      alpha = 0.5, color = ,
+      group = , linetype = , size = ,
+      kernel = "gaussian", n = 512, trim = FALSE
+    ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(y = ..density..)
@@ -1028,19 +1145,20 @@ gf_dens <-
 #' @seealso [ggplot2::geom_dotplot()]
 #' @export
 #' @examples
-#' gf_dotplot( ~ Sepal.Length, fill = ~ Species, data = iris)
-
+#' gf_dotplot(~Sepal.Length, fill = ~Species, data = iris)
 gf_dotplot <-
   layer_factory(
-    geom = "dotplot", stat = ggplot2::StatBin,
-    layer_fun = ggplot2::geom_dotplot,
-    aes_form = ~ x,
+    geom = "dotplot",
+    stat = rlang::quo(ggplot2::StatBin),
+    layer_fun = rlang::quo(ggplot2::geom_dotplot),
+    aes_form = ~x,
     extras = alist(
       alpha = , color = , fill = , group = ,
       binwidth = NULL, binaxis = "x", method = "dotdensity",
       binpositions = "bygroup", stackdir = "up", stackratio = 1,
       dotsize = 1, stackgroups = FALSE, origin = NULL, right = TRUE,
-      width = 0.9, drop = FALSE)
+      width = 0.9, drop = FALSE
+    )
   )
 
 #' Formula interface to geom_bar()
@@ -1062,31 +1180,41 @@ gf_dotplot <-
 #' @seealso [ggplot2::geom_bar()]
 #' @export
 #' @examples
-#' gf_bar( ~ substance, data = mosaicData::HELPrct)
-#' gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
-#' gf_bar( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'        position = position_dodge())
+#' gf_bar(~substance, data = mosaicData::HELPrct)
+#' gf_bar(~substance, data = mosaicData::HELPrct, fill = ~sex)
+#' gf_bar(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge()
+#' )
 #' # gf_counts() is another name for gf_bar()
-#' gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'           position = position_dodge())
+#' gf_counts(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge()
+#' )
 #' # gf_props() and gf_percents() use proportions or percentages instead of counts
-#' gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'          position = position_dodge())
-#' gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'             position = position_dodge())
+#' gf_props(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge()
+#' )
+#' gf_percents(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge()
+#' )
 #' if (require(scales)) {
-#'   gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-#'            position = position_dodge()) %>%
+#'   gf_props(~substance,
+#'     data = mosaicData::HELPrct, fill = ~sex,
+#'     position = position_dodge()
+#'   ) %>%
 #'     gf_refine(scale_y_continuous(labels = scales::percent))
 #' }
-
 gf_bar <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list( ~ x, y ~ x),
+    aes_form = list(~x, y ~ x),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL)
+      width = NULL
+    )
   )
 
 #' @rdname gf_bar
@@ -1095,10 +1223,11 @@ gf_bar <-
 gf_counts <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = ~ x,
+    aes_form = ~x,
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
-      width = NULL, binwidth = NULL)
+      width = NULL, binwidth = NULL
+    )
   )
 
 #' @rdname gf_bar
@@ -1106,10 +1235,12 @@ gf_counts <-
 gf_props <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list( ~ x),
+    aes_form = list(~x),
     extras =
-      alist(alpha = , color = , fill = , group = ,
-            linetype = , size = , ylab = "proportion"),
+      alist(
+        alpha = , color = , fill = , group = ,
+        linetype = , size = , ylab = "proportion"
+      ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(y = ..count.. / sum(..count..))
@@ -1123,9 +1254,11 @@ gf_props <-
 gf_percents <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list( ~ x),
-    extras = alist(alpha = , color = , fill = , group = ,
-                   linetype = , size = , ylab = "percent"),
+    aes_form = list(~x),
+    extras = alist(
+      alpha = , color = , fill = , group = ,
+      linetype = , size = , ylab = "percent"
+    ),
     aesthetics =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         aes(y = 100 * ..count.. / sum(..count..))
@@ -1149,23 +1282,24 @@ gf_percents <-
 #' @seealso [ggplot2::geom_freqpoly()]
 #' @export
 #' @examples
-#' gf_histogram( ~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) %>%
-#'   gf_freqpoly( ~ Sepal.Length, data = iris, color = ~ Species, bins = 20)
-#' gf_freqpoly( ~ Sepal.Length, color = ~ Species, data = iris, bins = 20)
+#' gf_histogram(~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) %>%
+#'   gf_freqpoly(~Sepal.Length, data = iris, color = ~Species, bins = 20)
+#' gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 20)
 #' if (utils::packageVersion("ggplot2") > "2.2.1") {
-#'   gf_dens( ~ Sepal.Length, data = iris, color = "navy") %>%
-#'     gf_freqpoly( stat(density) ~ Sepal.Length, data = iris,
-#'       color = "red", bins = 20)
+#'   gf_dens(~Sepal.Length, data = iris, color = "navy") %>%
+#'     gf_freqpoly(stat(density) ~ Sepal.Length,
+#'       data = iris,
+#'       color = "red", bins = 20
+#'     )
 #' }
-
 gf_freqpoly <-
   layer_factory(
     geom = "path", stat = "bin",
-    aes_form = list( ~ x, y ~ x),
+    aes_form = list(~x, y ~ x),
     extras = alist(
-      alpha = , color = , group = , linetype = , size =,
-      binwidth =, bins = , center = , boundary =
-    ),
+      alpha = , color = , group = , linetype = , size = ,
+      binwidth = , bins = , center = , boundary =
+      ),
     note =
       if (utils::packageVersion("ggplot2") <= "2.2.1") {
         "y may be omitted or ..density.. or ..count.. or ..ndensity.. or ..ncount.."
@@ -1193,16 +1327,16 @@ gf_freqpoly <-
 #' @seealso [ggplot2::geom_qq()]
 #' @export
 #' @examples
-#' gf_qq( ~ rnorm(100))
-#' gf_qq( ~ Sepal.Length | Species, data = iris) %>% gf_qqline()
-#' gf_qq( ~ Sepal.Length | Species, data = iris) %>% gf_qqline(tail = 0.10)
-#' gf_qq( ~ Sepal.Length, color = ~ Species, data = iris) %>%
-#' gf_qqstep( ~ Sepal.Length, color = ~ Species, data = iris)
+#' gf_qq(~ rnorm(100))
+#' gf_qq(~ Sepal.Length | Species, data = iris) %>% gf_qqline()
+#' gf_qq(~ Sepal.Length | Species, data = iris) %>% gf_qqline(tail = 0.10)
+#' gf_qq(~Sepal.Length, color = ~Species, data = iris) %>%
+#'   gf_qqstep(~Sepal.Length, color = ~Species, data = iris)
 gf_qq <-
   layer_factory(
     geom = "point", stat = "qq",
-    aes_form = ~ sample,
-    extras = alist(group = , distribution = stats::qnorm , dparams = list())
+    aes_form = ~sample,
+    extras = alist(group = , distribution = stats::qnorm, dparams = list())
   )
 #' @rdname gf_qq
 #' @export
@@ -1210,9 +1344,11 @@ gf_qq <-
 gf_qqline <-
   layer_factory(
     geom = "line", stat = "qqline",
-    aes_form = ~ sample,
-    extras = alist(group = , distribution = stats::qnorm , dparams = list(),
-                   linetype = "dashed", alpha = 0.7)
+    aes_form = ~sample,
+    extras = alist(
+      group = , distribution = stats::qnorm, dparams = list(),
+      linetype = "dashed", alpha = 0.7
+    )
   )
 
 #' @export
@@ -1221,10 +1357,41 @@ gf_qqline <-
 gf_qqstep <-
   layer_factory(
     geom = "step", stat = "qq", position = "identity",
-    aes_form = ~ sample,
-    extras = alist(group = , distribution = stats::qnorm , dparams = list())
+    aes_form = ~sample,
+    extras = alist(group = , distribution = stats::qnorm, dparams = list())
   )
 
+#' Formula interace to empirical cumulative distribution
+#'
+#' The empirical cumulative distribution function (ECDF) provides an alternative
+#' visualisation of distribution. Compared to other visualisations that rely on
+#' density (like histograms or density plots) the ECDF doesn't require any tuning
+#' parameters and handles both continuous and categorical variables. The
+#' downside is that it requires more training to accurately interpret, and the
+#' underlying visual tasks are somewhat more challenging.
+#'
+#' @inheritParams ggplot2::stat_ecdf
+#' @inheritParams gf_step
+#' @export
+#' @examples
+#' Data <- data.frame(
+#'   x = c(rnorm(100, 0, 1), rnorm(100, 0, 3), rt(100, df = 3)),
+#'   g = gl(3, 100, labels = c("N(0, 1)", "N(0, 3)", "T(df = 3)") )
+#' )
+#' gf_ecdf( ~ x, data = Data)
+
+#' # Don't go to positive/negative infinity
+#' gf_ecdf( ~ x, data = Data, pad = FALSE)
+#'
+#' # Multiple ECDFs
+#' gf_ecdf( ~ x, data = Data, color = ~ g)
+
+gf_ecdf <-
+  layer_factory(
+    geom = "step", stat = "ecdf", position = "identity",
+    aes_form = ~ x,
+    extras = alist(group = , pad = , n = NULL)
+  )
 
 #' Formula interface to geom_rug()
 #'
@@ -1236,9 +1403,10 @@ gf_qqstep <-
 #' @inheritParams ggplot2::geom_rug
 #' @inherit gf_line
 #'
-#'
 #' @param gformula A formula with shape `y ~ x` (`gf_rug()`) or `~ x` (`gf_rugx()`) or
 #'   `~ y` (`gf_rugy()`).
+#' @param width amount of horizontal jittering when position is jittered.
+#' @param height amount of vertical jittering when position is jittered.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
@@ -1247,74 +1415,88 @@ gf_qqstep <-
 #' @export
 #' @examples
 #' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_rug(Sepal.Length ~ Sepal.Width)
+#'   gf_rug(Sepal.Length ~ Sepal.Width)
 #'
 #' # There are several ways to control x- and y-rugs separately
 #' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_rugx( ~ Sepal.Width,  data = iris, color = "red") %>%
-#' gf_rugy(Sepal.Length ~ ., data = iris, color = "green")
+#'   gf_rugx(~Sepal.Width, data = iris, color = "red") %>%
+#'   gf_rugy(Sepal.Length ~ ., data = iris, color = "green")
 #'
 #' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_rug(. ~ Sepal.Width,  data = iris, color = "red", inherit = FALSE) %>%
-#' gf_rug(Sepal.Length ~ ., data = iris, color = "green", inherit = FALSE)
+#'   gf_rug(. ~ Sepal.Width, data = iris, color = "red", inherit = FALSE) %>%
+#'   gf_rug(Sepal.Length ~ ., data = iris, color = "green", inherit = FALSE)
 #'
 #' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_rug(. ~ Sepal.Width,  data = iris, color = "red", sides = "b") %>%
-#' gf_rug(Sepal.Length ~ ., data = iris, color = "green", sides = "l")
+#'   gf_rug(. ~ Sepal.Width, data = iris, color = "red", sides = "b") %>%
+#'   gf_rug(Sepal.Length ~ ., data = iris, color = "green", sides = "l")
 #'
 #' # jitter requires both an x and a y, but we can turn off one or the other with sides
 #' gf_jitter(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#' gf_rug(color = "green", sides = "b", position = "jitter")
+#'   gf_rug(color = "green", sides = "b", position = "jitter")
 #'
 #' # rugs work with some 1-varialbe plots as well.
-#' gf_histogram( ~ eruptions, data = faithful) %>%
-#' gf_rug( ~ eruptions, data = faithful, color = "red")%>%
-#' gf_rug( ~ eruptions, data = faithful, color = "navy", sides = "t")
+#' gf_histogram(~eruptions, data = faithful) %>%
+#'   gf_rug(~eruptions, data = faithful, color = "red") %>%
+#'   gf_rug(~eruptions, data = faithful, color = "navy", sides = "t")
 #'
 #' # we can take advantage of inheritance to shorten the code
-#' gf_histogram( ~ eruptions, data = faithful) %>%
-#' gf_rug(color = "red") %>%
-#' gf_rug(color = "navy", sides = "t")
+#' gf_histogram(~eruptions, data = faithful) %>%
+#'   gf_rug(color = "red") %>%
+#'   gf_rug(color = "navy", sides = "t")
 #'
 #' # Need to turn off inheritance when using gf_dhistogram:
-#' gf_dhistogram( ~ eruptions, data = faithful) %>%
-#' gf_rug( ~ eruptions, data = faithful, color = "red", inherit = FALSE)
+#' gf_dhistogram(~eruptions, data = faithful) %>%
+#'   gf_rug(~eruptions, data = faithful, color = "red", inherit = FALSE)
 #'
 #' # using jitter with gf_histogram() requires manually setting the y value.
-#' gf_dhistogram( ~ Sepal.Width, data = iris) %>%
-#' gf_rug(0 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
+#' gf_dhistogram(~Sepal.Width, data = iris) %>%
+#'   gf_rug(0 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
 #'
 #' # the choice of y value can affect how the plot looks.
-#' gf_dhistogram( ~ Sepal.Width, data = iris) %>%
-#' gf_rug(0.5 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
-
-
+#' gf_dhistogram(~Sepal.Width, data = iris) %>%
+#'   gf_rug(0.5 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
 gf_rug <-
   layer_factory(
     geom = "rug",
-    aes_form = list( ~ x, y ~ x, NULL),
+    aes_form = list(~x, y ~ x, NULL),
     extras = alist(sides = "bl", alpha = , color = , group = , linetype = , size = )
-    )
+  )
 
 #' @rdname gf_rug
 #' @export
+#' @importFrom rlang %||%
 gf_rugx <-
   layer_factory(
     geom = "rug",
-    aes_form = list( ~ x, NULL),
-    inherit.aes = FALSE,
-    extras = alist(sides = "b", alpha = , color = , group = , linetype = , size = )
-    )
+    aes_form = list( ~ x, y ~ x, NULL),
+    check.aes = FALSE,
+    extras = alist(sides = "b", alpha = , color = , group = , linetype = , size = ,
+                   height = 0),
+    pre = {
+      if (inherits(object, "gg")) {
+        if (uses_stat(object$mapping$y)) {
+          orig_args[["y"]] <- orig_args[["y"]] %||% ~ 0
+        }
+      }
+    }
+  )
 
 #' @rdname gf_rug
 #' @export
 gf_rugy <-
   layer_factory(
     geom = "rug",
-    aes_form = list( ~ y, y ~ ., NULL),
-    inherit.aes = FALSE,
-    extras = alist(sides = "l", alpha = , color = , group = , linetype = , size = )
-    )
+    aes_form = list(~y, y ~ ., NULL),
+    extras = alist(sides = "l", alpha = , color = , group = , linetype = , size = ,
+                   width = 0),
+    pre = {
+      if (inherits(object, "gg")) {
+        if (uses_stat(object$mapping$x)) {
+          orig_args[["x"]] <- orig_args[["x"]] %||% ~ 0
+        }
+      }
+    }
+  )
 
 #' Formula interface to geom_contour()
 #'
@@ -1331,11 +1513,11 @@ gf_rugy <-
 #' @examples
 #' gf_density_2d(eruptions ~ waiting, data = faithful, alpha = 0.5, color = "navy") %>%
 #'   gf_contour(density ~ waiting + eruptions, data = faithfuld, bins = 10, color = "red")
-
 gf_contour <-
   layer_factory(
     geom = "contour", stat = "contour",
-    aes_form = z ~ x + y)
+    aes_form = z ~ x + y
+  )
 
 #' Formula interface to geom_ribbon()
 #'
@@ -1354,21 +1536,24 @@ gf_contour <-
 #' @examples
 #' gf_ribbon()
 #'
-#' gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~ city, alpha = 0.4) %>%
-#'    gf_theme(theme = theme_minimal())
+#' gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather, fill = ~city, alpha = 0.4) %>%
+#'   gf_theme(theme = theme_minimal())
 #' gf_linerange(
-#'     low_temp + high_temp ~ date | city ~ ., color = ~ high_temp,
-#'     data = mosaicData::Weather) %>%
+#'   low_temp + high_temp ~ date | city ~ .,
+#'   color = ~high_temp,
+#'   data = mosaicData::Weather
+#' ) %>%
 #'   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5))))
 #' gf_ribbon(low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather)
 #' # Chaining in the data
-#' mosaicData::Weather %>% gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
+#' mosaicData::Weather %>%
+#'   gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
 #'   gf_facet_grid(city ~ .)
-
 gf_ribbon <-
   layer_factory(
     geom = "ribbon", aes_form = ymin + ymax ~ x,
-    extras = list(alpha = 0.3))
+    extras = list(alpha = 0.3)
+  )
 
 #' Formula interface to geom_curve()
 #'
@@ -1388,13 +1573,13 @@ gf_ribbon <-
 #' gf_point(mpg ~ wt, data = mtcars) %>%
 #'   gf_curve(y1 + y2 ~ x1 + x2, data = D, color = "navy") %>%
 #'   gf_segment(y1 + y2 ~ x1 + x2, data = D, color = "red")
-
 gf_curve <-
   layer_factory(
     geom = "curve", aes_form = y + yend ~ x + xend,
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
-      curvature = 0.5, angle = 90, ncp = 5, arrow = NULL, lineend = "butt")
+      curvature = 0.5, angle = 90, ncp = 5, arrow = NULL, lineend = "butt"
+    )
   )
 
 #' Formula interface to geom_segment()
@@ -1414,7 +1599,6 @@ gf_curve <-
 #' gf_point(mpg ~ wt, data = mtcars) %>%
 #'   gf_curve(y1 + y2 ~ x1 + x2, data = D, color = "navy") %>%
 #'   gf_segment(y1 + y2 ~ x1 + x2, data = D, color = "red")
-
 gf_segment <-
   layer_factory(
     geom = "segment",
@@ -1422,7 +1606,7 @@ gf_segment <-
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       arrow = NULL, lineend = "butt"
-      )
+    )
   )
 
 #' Formula interface to geom_linerange() and geom_pointrange()
@@ -1441,12 +1625,16 @@ gf_segment <-
 #' @examples
 #' gf_linerange()
 #'
-#' gf_ribbon(low_temp + high_temp ~ date, data = mosaicData::Weather,
-#'           fill = ~ city, alpha = 0.4) %>%
-#'    gf_theme(theme = theme_minimal())
+#' gf_ribbon(low_temp + high_temp ~ date,
+#'   data = mosaicData::Weather,
+#'   fill = ~city, alpha = 0.4
+#' ) %>%
+#'   gf_theme(theme = theme_minimal())
 #' gf_linerange(
-#'   low_temp + high_temp ~ date | city ~ ., data = mosaicData::Weather,
-#'   color = ~ ((low_temp + high_temp) / 2) ) %>%
+#'   low_temp + high_temp ~ date | city ~ .,
+#'   data = mosaicData::Weather,
+#'   color = ~ ((low_temp + high_temp) / 2)
+#' ) %>%
 #'   gf_refine(scale_colour_gradientn(colors = rev(rainbow(5)))) %>%
 #'   gf_labs(color = "mid-temp")
 #'
@@ -1456,12 +1644,11 @@ gf_segment <-
 #' mosaicData::Weather %>%
 #'   gf_ribbon(low_temp + high_temp ~ date, alpha = 0.4) %>%
 #'   gf_facet_grid(city ~ .)
-
 gf_linerange <-
   layer_factory(
     geom = "linerange",
     aes_form = ymin + ymax ~ x,
-    extras = alist( alpha = , color = , group = , linetype = , size = )
+    extras = alist(alpha = , color = , group = , linetype = , size = )
   )
 
 #' @rdname gf_linerange
@@ -1470,42 +1657,129 @@ gf_linerange <-
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
-#' HELP2 <- HELPrct %>%
-#'   group_by(substance, sex) %>%
-#'   summarise(
-#'     mean.age = mean(age),
-#'     median.age = median(age),
-#'     max.age = max(age),
-#'     min.age = min(age),
-#'     sd.age = sd(age),
-#'     lo = mean.age - sd.age,
-#'     hi = mean.age + sd.age
+#'   HELP2 <- HELPrct %>%
+#'     group_by(substance, sex) %>%
+#'     summarise(
+#'       age = NA,
+#'       mean.age = mean(age),
+#'       median.age = median(age),
+#'       max.age = max(age),
+#'       min.age = min(age),
+#'       sd.age = sd(age),
+#'       lo = mean.age - sd.age,
+#'       hi = mean.age + sd.age
 #'     )
 #'
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_pointrange( mean.age + lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_pointrange(mean.age + lo + hi ~ substance, data = HELP2) %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
-#'  # width is defined differently for gf_boxplot() and gf_jitter()
-#'  #   * for gf_boxplot() it is the full width of the box.
-#'  #   * for gf_jitter() it is half that -- the maximum amount added or subtracted.
-#'  gf_boxplot(age ~ substance, data = HELPrct, width = 0.4) %>%
-#'    gf_jitter(width = 0.4, height = 0, color = "skyblue", alpha = 0.5)
-#'  gf_boxplot(age ~ substance, data = HELPrct, width = 0.4) %>%
-#'    gf_jitter(width = 0.2, height = 0, color = "skyblue", alpha = 0.5)
+#'     alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
+#'     gf_errorbar(lo + hi ~ substance, data = HELP2, inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
+#'
+#'   # width is defined differently for gf_boxplot() and gf_jitter()
+#'   #   * for gf_boxplot() it is the full width of the box.
+#'   #   * for gf_jitter() it is half that -- the maximum amount added or subtracted.
+#'   gf_boxplot(age ~ substance, data = HELPrct, width = 0.4) %>%
+#'     gf_jitter(width = 0.4, height = 0, color = "skyblue", alpha = 0.5)
+#'
+#'   gf_boxplot(age ~ substance, data = HELPrct, width = 0.4) %>%
+#'     gf_jitter(width = 0.2, height = 0, color = "skyblue", alpha = 0.5)
 #' }
-
 gf_pointrange <-
   layer_factory(
     geom = "pointrange",
     aes_form = y + ymin + ymax ~ x,
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
-      fatten = 2 )
+      fatten = 2
+    )
+  )
+
+#' @rdname gf_linerange
+#' @inheritParams ggplot2::geom_pointrange
+#' @inheritParams ggplot2::stat_summary
+#' @seealso [ggplot2::geom_pointrange()], [ggplot2::stat_summary()]
+#' @export
+#' @examples
+#' p <- gf_jitter(mpg ~ cyl, data = mtcars, height = 0, width = 0.15); p
+#' p %>% gf_summary(fun.data = "mean_cl_boot", color = "red", size = 2)
+
+#' # You can supply individual functions to summarise the value at
+#' # each x:
+#' p %>% gf_summary(fun.y = "median", color = "red", size = 2, geom = "point")
+#' p %>%
+#'   gf_summary(fun.y = "mean", color = "red", size = 2, geom = "point") %>%
+#'   gf_summary(fun.y = mean, geom = "line")
+
+#' p %>%
+#'   gf_summary(fun.y = mean, fun.ymin = min, fun.ymax = max, color = "red")
+
+#' p %>%
+#'   gf_summary(fun.ymin = min, fun.ymax = max, color = "red", geom = "linerange")
+#'
+#' gf_bar(~ cut, data = diamonds)
+#' gf_col(price ~ cut, data = diamonds, stat = "summary_bin", fun.y = "mean")
+#'
+#' # Don't use gf_lims() to zoom into a summary plot - this throws the
+#' # data away
+#' p <- gf_summary(mpg ~ cyl, data = mtcars, fun.y = "mean", geom = "point")
+#' p
+#' p %>% gf_lims(y = c(15, 30))
+#' # Instead use coord_cartesian()
+#' p %>% gf_refine(coord_cartesian(ylim = c(15, 30)))
+
+#' # A set of useful summary functions is provided from the Hmisc package.
+#'
+#' p <- gf_jitter(mpg ~ cyl, data = mtcars, width = 0.15, height = 0); p
+#' p %>% gf_summary(fun.data = mean_cl_boot, color = "red")
+#' p %>% gf_summary(fun.data = mean_cl_boot, color = "red", geom = "crossbar")
+#' p %>% gf_summary(fun.data = mean_sdl, group = ~ cyl, color = "red",
+#'                    geom = "crossbar", width = 0.3)
+#' p %>% gf_summary(group = ~ cyl, color = "red", geom = "crossbar", width = 0.3,
+#'         fun.data = mean_sdl, fun.args = list(mult = 1))
+#' p %>% gf_summary(fun.data = median_hilow, group = ~ cyl, color = "red",
+#'         geom = "crossbar", width = 0.3)
+#'
+
+#' # An example with highly skewed distributions:
+#' if (require("ggplot2movies")) {
+#'   set.seed(596)
+#'   Mov <- movies[sample(nrow(movies), 1000), ]
+#'   m2 <- gf_jitter(votes ~ factor(round(rating)), data = Mov, width = 0.15, height = 0, alpha = 0.3)
+#'   m2 <- m2 %>%
+#'     gf_summary(fun.data = "mean_cl_boot", geom = "crossbar",
+#'                colour = "red", width = 0.3) %>%
+#'     gf_labs(x = "rating")
+#'   m2
+#'   # Notice how the overplotting skews off visual perception of the mean
+#'   # supplementing the raw data with summary statistics is _very_ important
+#'
+#'   # Next, we'll look at votes on a log scale.
+#'
+#'   # Transforming the scale means the data are transformed
+#'   # first, after which statistics are computed:
+#'   m2 %>% gf_refine(scale_y_log10())
+#'   # Transforming the coordinate system occurs after the
+#'   # statistic has been computed. This means we're calculating the summary on the raw data
+#'   # and stretching the geoms onto the log scale.  Compare the widths of the
+#'   # standard errors.
+#'   m2 %>% gf_refine(coord_trans(y="log10"))
+#' }
+
+gf_summary <-
+  layer_factory(
+    geom = "pointrange",
+    stat = "summary",
+    aes_form = y ~ x,
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      fun.y = NULL, fun.ymax = NULL, fun.ymin = NULL, fun.args = list(),
+      fatten = 2
+    )
   )
 
 #' Formula interface to geom_crossbar()
@@ -1524,43 +1798,41 @@ gf_pointrange <-
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
-#' HELP2 <- HELPrct %>%
-#'   group_by(substance, sex) %>%
-#'   summarise(
-#'     mean.age = mean(age),
-#'     median.age = median(age),
-#'     max.age = max(age),
-#'     min.age = min(age),
-#'     sd.age = sd(age),
-#'     lo = mean.age - sd.age,
-#'     hi = mean.age + sd.age
+#'   HELP2 <- HELPrct %>%
+#'     group_by(substance, sex) %>%
+#'     summarise(
+#'       mean.age   = mean(age),
+#'       median.age = median(age),
+#'       max.age    = max(age),
+#'       min.age    = min(age),
+#'       sd.age     = sd(age),
+#'       lo         = mean.age - sd.age,
+#'       hi         = mean.age + sd.age
 #'     )
 #'
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_pointrange( mean.age + lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_pointrange(mean.age + lo + hi ~ substance, data = HELP2) %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(age ~ substance, data = HELPrct,
-#'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar(lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue")  %>%
+#'     gf_errorbar(lo + hi ~ substance, data = HELP2, inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") %>%
 #'     gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2,
-#'                 fill = "transparent") %>%
-#'     gf_facet_grid( ~ sex)
+#'       fill = "transparent") %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(substance ~ age, data = HELPrct,
 #'       alpha = 0.7, height = 0.2, width = 0, color = "skyblue") %>%
 #'     gf_crossbarh(substance ~ mean.age + lo + hi, data = HELP2,
-#'                  fill = "transparent") %>%
-#'     gf_facet_grid( ~ sex)
+#'       fill = "transparent", color = "red") %>%
+#'     gf_facet_grid(~sex)
 #' }
 #'
-#     gf_boxplot(age ~ substance,  data = HELPrct,
-#                 color = "red", fill = "transparent") %>%
-#     gf_boxploth(substance ~ age,  data = HELPrct,
-#                  color = "red", fill = "transparent") %>%
-
 gf_crossbar <-
   layer_factory(
     geom = "crossbar",
@@ -1581,49 +1853,47 @@ gf_crossbar <-
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
 #' @seealso [ggplot2::geom_errorbar()]
-#' @section Note:
-#'   There is discrepancy between the information required for `gf_errorbar()`
-#'   and `gf_errobarh()`.  It expected that this will change in a future release
-#'   of `ggplot2`.
 #' @export
 #' @examples
 #' if (require(mosaicData) && require(dplyr)) {
-#' HELP2 <- HELPrct %>%
-#'   group_by(substance, sex) %>%
-#'   summarise(
-#'     mean.age = mean(age),
-#'     median.age = median(age),
-#'     max.age = max(age),
-#'     min.age = min(age),
-#'     sd.age = sd(age),
-#'     lo = mean.age - sd.age,
-#'     hi = mean.age + sd.age
+#'   HELP2 <- HELPrct %>%
+#'     group_by(substance, sex) %>%
+#'     summarise(
+#'       mean.age = mean(age),
+#'       median.age = median(age),
+#'       max.age = max(age),
+#'       min.age = min(age),
+#'       sd.age = sd(age),
+#'       lo = mean.age - sd.age,
+#'       hi = mean.age + sd.age
 #'     )
 #'
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_pointrange( mean.age + lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_pointrange(mean.age + lo + hi ~ substance, data = HELP2,
+#'       inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
+#'
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_errorbar( lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_errorbar(lo + hi ~ substance, data = HELP2, inherit = FALSE) %>%
+#'     gf_facet_grid(~sex)
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") %>%
-#'     gf_boxplot( age ~ substance,  data = HELPrct, color = "red") %>%
-#'     gf_crossbar( mean.age + lo + hi ~ substance,  data = HELP2) %>%
-#'     gf_facet_grid( ~ sex)
+#'     gf_boxplot(age ~ substance, data = HELPrct, color = "red") %>%
+#'     gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2) %>%
+#'     gf_facet_grid(~sex)
 #' }
-
 gf_errorbar <-
   layer_factory(
     geom = "errorbar",
     aes_form = ymin + ymax ~ x,
-    inherit.aes = FALSE,
+    inherit.aes = TRUE, # changed from FALSE to TRUE after aesthetic renaming in ggplot2
+    check.aes = FALSE,
     extras = alist(
       alpha = , color = , group = , linetype = , size =
       )
-    )
+  )
 
 
 
@@ -1643,15 +1913,16 @@ gf_errorbar <-
 #' @seealso [ggplot2::geom_rect()]
 #' @export
 #' @examples
-#' gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
+#' gf_rect(1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
 #' # use data = data.frame() so we get 1 rectangle and not 1 per row of faithful
 #' # use inherit = FALSE because we are not reusing eruptions and waiting
 #' gf_point(eruptions ~ waiting, data = faithful) %>%
-#'   gf_rect(1.5 + 3 ~ 45 + 68, fill = "red", alpha = 0.2,
-#'           data = data.frame(), inherit = FALSE) %>%
-#'   gf_rect(3 + 5.5 ~ 68 + 100, fill = "green", alpha = 0.2,
-#'           data = data.frame(), inherit = FALSE)
-
+#'   gf_rect(1.5 + 3 ~ 45 + 68,
+#'     fill = "red", alpha = 0.2,
+#'     data = data.frame(), inherit = FALSE) %>%
+#'   gf_rect(3 + 5.5 ~ 68 + 100,
+#'     fill = "green", alpha = 0.2,
+#'     data = data.frame(), inherit = FALSE)
 gf_rect <-
   layer_factory(
     geom = "rect",
@@ -1681,56 +1952,65 @@ gf_rect <-
 #'   [ggplot2::geom_hline()]
 #' @export
 #' @examples
-#' mtcars2 <- df_stats( wt ~ cyl, data = mtcars, median_wt = median)
-#' gf_point(wt ~ hp, size = ~ wt, color = ~ cyl, data = mtcars) %>%
-#'   gf_abline(slope = ~ 0, intercept = ~ median_wt, color = ~ cyl, data = mtcars2)
+#' mtcars2 <- df_stats(wt ~ cyl, data = mtcars, median_wt = median)
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_abline(slope = ~0, intercept = ~median_wt, color = ~cyl, data = mtcars2)
 #'
-#' gf_point(wt ~ hp, size = ~ wt, color = ~ cyl, data = mtcars) %>%
-#'   gf_abline(slope = 0, intercept = 3, color = "green", data = NA)
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_abline(slope = 0, intercept = 3, color = "green")
 #'
-#' gf_point(wt ~ hp, size = ~ wt, color = ~ cyl, data = mtcars) %>%
-#'   gf_hline(yintercept = ~ median_wt, color = ~ cyl, data = mtcars2)
+#' # avoid warnings by using formulas:
 #'
-#' gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars) %>%
-#'   gf_abline(color="red", slope = -0.10, intercept = 35)
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_abline(slope = ~0, intercept = ~3, color = "green")
 #'
-#' gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars) %>%
-#'   gf_abline(color = "red", slope = ~ slope, intercept = ~ intercept,
-#'   data = data.frame(slope = -0.10, intercept = 33:35))
+#' gf_point(wt ~ hp, size = ~wt, color = ~cyl, data = mtcars) %>%
+#'   gf_hline(yintercept = ~median_wt, color = ~cyl, data = mtcars2)
+#'
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
+#'   gf_abline(color = "red", slope = ~ - 0.10, intercept = ~ 35)
+#'
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars) %>%
+#'   gf_abline(
+#'     color = "red", slope = ~slope, intercept = ~intercept,
+#'     data = data.frame(slope = -0.10, intercept = 33:35)
+#'   )
 #'
 #' # We can set the color of the guidelines while mapping color in other layers
-#' gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars) %>%
-#'   gf_hline(color = "navy", yintercept = c(20, 25), data = NA) %>%
-#'   gf_vline(color = "brown", xintercept = c(200, 300), data = NA)
+#' gf_point(mpg ~ hp, color = ~cyl, size = ~ wt, data = mtcars) %>%
+#'   gf_hline(color = "navy", yintercept = ~ c(20, 25), data = NA) %>%
+#'   gf_vline(color = "brown", xintercept = ~ c(200, 300), data = NA)
 #'
 #' # If we want to map the color of the guidelines, it must work with the
 #' # scale of the other colors in the plot.
-#' gf_point(mpg ~ hp, size = ~ wt, data = mtcars, alpha = 0.3) %>%
-#'   gf_hline(color = ~ "horizontal", yintercept = ~ c(20, 25), data = NA) %>%
-#'   gf_vline(color = ~ "vertical", xintercept = ~ c(100, 200, 300), data = NA)
+#' gf_point(mpg ~ hp, size = ~wt, data = mtcars, alpha = 0.3) %>%
+#'   gf_hline(color = ~"horizontal", yintercept = ~ c(20, 25), data = NA) %>%
+#'   gf_vline(color = ~"vertical", xintercept = ~ c(100, 200, 300), data = NA)
 #'
-#' gf_point(mpg ~ hp, size = ~ wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) %>%
-#'   gf_hline(color = "orange", yintercept = 20, data = NA) %>%
+#' gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) %>%
+#'   gf_hline(color = "orange", yintercept = ~ 20) %>%
 #'   gf_vline(color = ~ c("4", "6", "8"), xintercept = ~ c(80, 120, 250), data = NA)
 #'
-#' gf_point(mpg ~ hp, size = ~ wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) %>%
-#'   gf_hline(color = "orange", yintercept = 20, data = NA) %>%
-#'   gf_vline(color = c("green", "red", "blue"), xintercept = c(80, 120, 250), data = NA)
+#' gf_point(mpg ~ hp, size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3) %>%
+#'   gf_hline(color = "orange", yintercept = ~ 20) %>%
+#'   gf_vline(color = c("green", "red", "blue"), xintercept = ~ c(80, 120, 250),
+#'     data = NA)
 #'
 #' # reversing the layers requires using inherit = FALSE
-#' gf_hline(color = "orange", yintercept = 20, data = NA) %>%
+#' gf_hline(color = "orange", yintercept = ~ 20) %>%
 #'   gf_vline(color = ~ c("4", "6", "8"), xintercept = ~ c(80, 120, 250), data = NA) %>%
-#'   gf_point(mpg ~ hp, size = ~ wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3,
-#'     inherit = FALSE)
-#'
+#'   gf_point(mpg ~ hp,
+#'     size = ~wt, color = ~ factor(cyl), data = mtcars, alpha = 0.3,
+#'     inherit = FALSE
+#'   )
 gf_abline <-
   layer_factory(
     geom = "abline",
     aes_form = NULL,
-    extras = alist( slope =, intercept =, color =, size =, linetype =, alpha =  ),
+    extras = alist(slope = , intercept = , color = , size = , linetype = , alpha = ),
     inherit.aes = FALSE,
     data = NA,
-    layer_fun = ggplot2::geom_abline
+    layer_fun = rlang::quo(ggplot2::geom_abline)
   )
 
 #' @rdname gf_lines
@@ -1739,10 +2019,10 @@ gf_hline <-
   layer_factory(
     geom = "hline",
     aes_form = NULL,
-    extras = alist( yintercept =, color =, size =, linetype =, alpha =  ),
+    extras = alist(yintercept = , color = , size = , linetype = , alpha = ),
     inherit.aes = FALSE,
     data = NA,
-    layer_fun = ggplot2::geom_hline
+    layer_fun = rlang::quo(ggplot2::geom_hline)
   )
 
 #' @rdname gf_lines
@@ -1751,11 +2031,11 @@ gf_vline <-
   layer_factory(
     geom = "vline",
     aes_form = NULL,
-    extras = alist( xintercept =, color =, size =, linetype =, alpha =  ),
+    extras = alist(xintercept = , color = , size = , linetype = , alpha = ),
     inherit.aes = FALSE,
     data = NA,
-    layer_fun = ggplot2::geom_vline
-    )
+    layer_fun = rlang::quo(ggplot2::geom_vline)
+  )
 
 #' @rdname gf_lines
 #' @param coef A numeric vector of coefficients.
@@ -1767,7 +2047,8 @@ gf_coefline <- function(object = NULL, coef = NULL, model = NULL, ...) {
   if (is.null(coef)) coef <- coef(model)
   if (length(coef) > 2) warning("Ignoring all but first two values of coef.")
   if (length(coef) < 2) stop("coef must be of length at least 2.")
-  gf_abline(object = object, intercept = coef[1], slope = coef[2], ..., inherit = FALSE)
+  gf_abline(object = object, intercept = ~ coef[1], slope = ~ coef[2], ...,
+            inherit = TRUE)
 }
 
 utils::globalVariables(c("x"))
@@ -1785,12 +2066,12 @@ utils::globalVariables(c("x"))
 #' @export
 #' @examples
 #' gf_function(fun = sqrt, xlim = c(0, 10))
-#'   gf_dhistogram( ~ age, data = mosaicData::HELPrct, binwidth = 3, alpha = 0.6) %>%
-#'     gf_function(fun = stats::dnorm,
-#'       args = list(mean = mean(mosaicData::HELPrct$age), sd = sd(mosaicData::HELPrct$age)),
-#'       color = "red")
-
-
+#' gf_dhistogram(~age, data = mosaicData::HELPrct, binwidth = 3, alpha = 0.6) %>%
+#'   gf_function(
+#'     fun = stats::dnorm,
+#'     args = list(mean = mean(mosaicData::HELPrct$age), sd = sd(mosaicData::HELPrct$age)),
+#'     color = "red"
+#'   )
 gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
   if (rlang::is_function(object) || rlang::is_character(object)) {
     fun <- object
@@ -1805,11 +2086,12 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
   object +
     do.call(
       ggplot2::layer,
-      list(geom = "path", stat = "function", position = "identity",
-           mapping = afq$mapping,
-           inherit.aes = inherit,
-           data = if (missing(xlim)) NULL else data.frame(x = xlim),
-           params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
+      list(
+        geom = "path", stat = "function", position = "identity",
+        mapping = afq$mapping,
+        inherit.aes = inherit,
+        data = if (missing(xlim)) NULL else data.frame(x = xlim),
+        params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
       )
     )
 }
@@ -1820,12 +2102,11 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
 #'   the first layer in a plot.  Ignored when creating a subsequent layer.
 #' @export
 #' @examples
-#' gf_fun(5 + 3 * cos(10 * x) ~ x, xlim = c(0,2))
+#' gf_fun(5 + 3 * cos(10 * x) ~ x, xlim = c(0, 2))
 #' # Utility bill is quadratic in month?
 #' f <- makeFun(lm(totalbill ~ poly(month, 2), data = mosaicData::Utilities))
 #' gf_point(totalbill ~ month, data = mosaicData::Utilities, alpha = 0.6) %>%
 #'   gf_fun(f(m) ~ m, color = "red")
-
 gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
   if (rlang::is_formula(object) && missing(formula)) {
     formula <- object
@@ -1842,11 +2123,12 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
   object +
     do.call(
       ggplot2::layer,
-        list(geom = "path", stat = "function", position = "identity",
-             mapping = afq$mapping,
-             inherit.aes = inherit,
-             data = if (missing(xlim)) NULL else data.frame(x = xlim),
-             params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
+      list(
+        geom = "path", stat = "function", position = "identity",
+        mapping = afq$mapping,
+        inherit.aes = inherit,
+        data = if (missing(xlim)) NULL else data.frame(x = xlim),
+        params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
       )
     )
 }
@@ -1881,36 +2163,39 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
 #' @seealso [mosaicCore::fit_distr_fun()]
 #' @export
 #' @examples
-#'   gf_fitdistr( ~ length, data = mosaicData::KidsFeet, inherit = FALSE) %>%
-#'     gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
+#' gf_fitdistr(~length, data = mosaicData::KidsFeet, inherit = FALSE) %>%
+#'   gf_dhistogram(~length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25)
 #'
-#'   gf_dhistogram( ~ length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) %>%
-#'     gf_fitdistr()
+#' gf_dhistogram(~length, data = mosaicData::KidsFeet, binwidth = 0.5, alpha = 0.25) %>%
+#'   gf_fitdistr()
 #'
-#'   set.seed(12345)
-#'   Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
-#'   gf_dhistogram( ~ g, data = Dat) %>%
-#'     gf_fitdistr(dist = "dgamma")
+#' set.seed(12345)
+#' Dat <- data.frame(g = rgamma(500, 3, 10), f = rf(500, df1 = 3, df2 = 47))
+#' gf_dhistogram(~g, data = Dat) %>%
+#'   gf_fitdistr(dist = "dgamma")
 #'
-#'   gf_dhistogram( ~ g, data = Dat) %>%
-#'     gf_fun(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
+#' gf_dhistogram(~g, data = Dat) %>%
+#'   gf_fun(mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma"))
 #'
-#'   gf_dhistogram( ~ f, data = Dat) %>%
-#'     gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
+#' gf_dhistogram(~f, data = Dat) %>%
+#'   gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
 #'
-#'   # fitted parameters are default argument values
-#'   args(
-#'     mosaicCore::fit_distr_fun( ~ f, data = Dat, dist = "df",
-#'       start = list(df1 = 2, df2 = 50)))
-#'   args(mosaicCore::fit_distr_fun( ~ g, data = Dat, dist = "dgamma"))
-#'
-
+#' # fitted parameters are default argument values
+#' args(
+#'   mosaicCore::fit_distr_fun(~f,
+#'     data = Dat, dist = "df",
+#'     start = list(df1 = 2, df2 = 50)
+#'   )
+#' )
+#' args(mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma"))
 gf_fitdistr <-
   layer_factory(
     geom = "path", stat = "fitdistr", position = "identity",
-    aes_form = list( ~ x), inherit.aes = "x",
-    extras = alist(dist = "dnorm", start = NULL, alpha = ,
-                   color = , fill = , group = , linetype = , size = ),
+    aes_form = list(~x), inherit.aes = "x",
+    extras = alist(
+      dist = "dnorm", start = NULL, alpha = ,
+      color = , fill = , group = , linetype = , size =
+      ),
     note = "dist should be a density function like dnorm or dgamma"
   )
 
@@ -1931,48 +2216,52 @@ gf_fitdistr <-
 #' if (require(maps) && require(maptools) &&
 #'   require(sf) && require(rgeos) &&
 #'   utils::packageVersion("ggplot2") > "2.2.1") {
-#'   US <- sf::st_as_sf(map('state', plot = FALSE, fill = TRUE))
-#'   gf_sf( fill = ~ factor(nchar(ID)), data = US) %>%
-#'   gf_refine(coord_sf())
+#'   US <- sf::st_as_sf(map("state", plot = FALSE, fill = TRUE))
+#'   gf_sf(fill = ~ factor(nchar(ID)), data = US) %>%
+#'     gf_refine(coord_sf())
 #'
 #'   # We can specify shape data and external data separately using geometry
-#'   MI <- sf::st_as_sf(map('county', 'michigan', plot = FALSE, fill = TRUE))
-#'   gf_sf(fill = ~ log10(population), data = MIpop %>% dplyr::arrange(county),
-#'         geometry = ~ MI$geometry, color = "white") %>%
-#'   gf_refine(coord_sf(), theme_bw())
+#'   MI <- sf::st_as_sf(map("county", "michigan", plot = FALSE, fill = TRUE))
+#'   gf_sf(
+#'     fill = ~ log10(population), data = MIpop %>% dplyr::arrange(county),
+#'     geometry = ~ MI$geometry, color = "white"
+#'   ) %>%
+#'     gf_refine(coord_sf(), theme_bw())
 #'
 #'   # alternatively we can merge external data and shape data into one data frame.
 #'   MI %>%
 #'     dplyr::mutate(county = gsub("michigan,", "", ID)) %>%
 #'     dplyr::left_join(MIpop %>% dplyr::mutate(county = tolower(county))) %>%
-#'     gf_sf(fill = ~ population/1e3) %>%
-#'   gf_refine(
-#'     coord_sf(), theme_bw(),
-#'     scale_fill_continuous(name = "population (thousands)", trans = "log10"))
+#'     gf_sf(fill = ~ population / 1e3) %>%
+#'     gf_refine(
+#'       coord_sf(), theme_bw(),
+#'       scale_fill_continuous(name = "population (thousands)", trans = "log10")
+#'     )
 #' }
-
 gf_sf <-
   if (utils::packageVersion("ggplot2") <= "2.2.1") {
     function(object = NULL, gformula = NULL, data = NULL, alpha,
-             color, fill, group, linetype, size, geometry, xlab,
-             ylab, title, subtitle, caption, stat = "sf", position
-             = "identity", show.legend = NA, show.help = NULL,
-             inherit = TRUE, environment = parent.frame(), ...) {
+                 color, fill, group, linetype, size, geometry, xlab,
+                 ylab, title, subtitle, caption, stat = "sf", position
+                 = "identity", show.legend = NA, show.help = NULL,
+                 inherit = TRUE, environment = parent.frame(), ...) {
       message("gf_sf() requires a newer version of ggplot2.")
     }
   } else {
     layer_factory(
-      layer_fun = ggplot2::geom_sf,
+      layer_fun = quo(ggplot2::geom_sf),
       geom = "sf", stat = "sf",
       position = "identity",
       aes_form = list(NULL),
-      extras = alist(alpha = , color = , fill = , group = , linetype = ,
-                     size =, geometry =  ),
+      extras = alist(
+        alpha = , color = , fill = , group = , linetype = ,
+        size = , geometry =
+        ),
       pre = {
-          if (! requireNamespace("sf", quietly = TRUE)) {
-            stop("The sf package is required.  Please install and try again.")
-          }
+        if (!requireNamespace("sf", quietly = TRUE)) {
+          stop("The sf package is required.  Please install and try again.")
         }
+      }
     )
   }
 
@@ -1987,10 +2276,10 @@ gf_sf <-
 #' @examples
 #' gf_empty()
 #' gf_empty() %>%
-#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species)
-#'
+#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species)
 #' @export
 gf_empty <- function(environment = parent.frame()) {
   ggplot2::ggplot(environment = environment)
 }
+
 

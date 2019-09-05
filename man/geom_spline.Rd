@@ -85,8 +85,7 @@ Similar to \link{geom_smooth}, this adds spline fits to plots.
 }
 \examples{
 if (require(mosaicData)) {
-  ggplot(Births) + geom_spline(aes(x = date, y=births, colour = wday))
-  ggplot(Births) + geom_spline(aes(x = date, y=births, colour = wday), nknots = 10)
+  ggplot(Births) + geom_spline(aes(x = date, y = births, colour = wday))
+  ggplot(Births) + geom_spline(aes(x = date, y = births, colour = wday), nknots = 10)
 }
-
 }

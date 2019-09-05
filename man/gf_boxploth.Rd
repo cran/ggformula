@@ -4,14 +4,14 @@
 \alias{gf_boxploth}
 \title{Formula interface to geom_boxploth()}
 \usage{
-gf_boxploth(object = NULL, gformula = NULL, data = NULL, alpha,
+gf_boxploth(object = NULL, gformula = NULL, data = NULL, ..., alpha,
   color, fill, group, linetype, size, coef, outlier.color = NULL,
   outlier.fill = NULL, outlier.shape = 19, outlier.size = 1.5,
   outlier.stroke = 0.5, outlier.alpha = NULL, notch = FALSE,
   notchwidth = 0.5, varwidth = FALSE, xlab, ylab, title, subtitle,
   caption, geom = "boxploth", stat = "boxploth", position = "dodgev",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -32,8 +32,14 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -104,7 +110,7 @@ if the notches of two boxes do not overlap, this suggests that the medians
 are significantly different.}
 
 \item{notchwidth}{For a notched box plot, width of the notch relative to
-the body (default 0.5)}
+the body (defaults to \code{notchwidth = 0.5}).}
 
 \item{varwidth}{If \code{FALSE} (default) make a standard box plot. If
 \code{TRUE}, boxes are drawn with widths proportional to the
@@ -143,11 +149,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -183,24 +184,26 @@ in another.
 
 \examples{
 gf_boxploth(sex ~ age, data = mosaicData::HELPrct, varwidth = TRUE)
-gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex)
+gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex)
 # move boxplots away a bit by adjusting dodge
-  gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex,
-    position = position_dodgev(height = 0.9))
-gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, outlier.color = "gray50")
+gf_boxploth(substance ~ age,
+  data = mosaicData::HELPrct, color = ~sex,
+  position = position_dodgev(height = 0.9)
+)
+gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex, outlier.color = "gray50")
 # longer whiskers
-gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~ sex, coef = 2)
+gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex, coef = 2)
 # Note: height for boxplots is full width of box.
 #   For jittering, it is the half-height.
 gf_boxploth(substance ~ age | sex, data = mosaicData::HELPrct, coef = 5, height = 0.4) \%>\%
   gf_jitter(height = 0.2, alpha = 0.3)
 
 # combining boxplots and histograms
-gf_histogram(~ eruptions, data = faithful) \%>\%
+gf_histogram(~eruptions, data = faithful) \%>\%
   gf_boxploth(0 ~ eruptions, alpha = 0, width = 2)
-gf_histogram(~ eruptions, data = faithful) \%>\%
- gf_boxploth(-2 ~ eruptions, alpha = 0, width = 2)
-gf_histogram(~ eruptions, data = faithful) \%>\%
+gf_histogram(~eruptions, data = faithful) \%>\%
+  gf_boxploth(-2 ~ eruptions, alpha = 0, width = 2)
+gf_histogram(~eruptions, data = faithful) \%>\%
   gf_boxploth(32 ~ eruptions, alpha = 0, width = 2)
 }
 \seealso{

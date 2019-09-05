@@ -4,12 +4,12 @@
 \alias{gf_raster}
 \title{Formula interface to geom_raster()}
 \usage{
-gf_raster(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, hjust = 0.5, vjust = 0.5,
+gf_raster(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, hjust = 0.5, vjust = 0.5,
   interpolate = FALSE, xlab, ylab, title, subtitle, caption,
   geom = "raster", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,11 @@ See details and examples.}
 \item{gformula}{A formula with shape  \code{y ~ x} or \code{fill ~ x + y}}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -73,11 +78,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -117,7 +117,7 @@ D <- expand.grid(x = 0:5, y = 0:5)
 D$z <- runif(nrow(D))
 # centered squares
 gf_raster(z ~ x + y, data = D)
-gf_raster(y ~ x, fill = ~ z, data = D)
+gf_raster(y ~ x, fill = ~z, data = D)
 # zero padding
 gf_raster(z ~ x + y, data = D, hjust = 0, vjust = 0)
 }

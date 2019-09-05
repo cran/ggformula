@@ -7,29 +7,29 @@
 \alias{gf_dhistogramh}
 \title{Formula interface to geom_histogram()}
 \usage{
-gf_histogram(object = NULL, gformula = NULL, data = NULL,
+gf_histogram(object = NULL, gformula = NULL, data = NULL, ...,
   bins = 25, binwidth, alpha = 0.5, color, fill, group, linetype, size,
   xlab, ylab, title, subtitle, caption, geom = "bar", stat = "bin",
   position = "stack", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 
-gf_dhistogram(object = NULL, gformula = NULL, data = NULL,
+gf_dhistogram(object = NULL, gformula = NULL, data = NULL, ...,
   bins = 25, binwidth, alpha = 0.5, color, fill, group, linetype, size,
   xlab, ylab, title, subtitle, caption, geom = "bar", stat = "bin",
   position = "stack", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 
-gf_histogramh(object = NULL, gformula = NULL, data = NULL,
+gf_histogramh(object = NULL, gformula = NULL, data = NULL, ...,
   bins = 25, binwidth, alpha = 0.5, color, fill, group, linetype, size,
   xlab, ylab, title, subtitle, caption, geom = "barh", stat = "binh",
   position = "stackv", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 
-gf_dhistogramh(object = NULL, gformula = NULL, data = NULL,
+gf_dhistogramh(object = NULL, gformula = NULL, data = NULL, ...,
   bins = 25, binwidth, alpha = 0.5, color, fill, group, linetype, size,
   xlab, ylab, title, subtitle, caption, geom = "barh", stat = "binh",
   position = "stackv", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -51,12 +51,21 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30.}
 
-\item{binwidth}{The width of the bins. Can be specified as a numeric value,
-or a function that calculates width from x.
+\item{binwidth}{The width of the bins. Can be specified as a numeric value
+or as a function that calculates width from unscaled x. Here, "unscaled x"
+refers to the original x values in the data, before application of any
+scale transformation. When specifying a function along with a grouping
+structure, the function will be called once per group.
 The default is to use \code{bins}
 bins that cover the range of the data. You should always override
 this value, exploring multiple widths to find the best to illustrate the
@@ -111,11 +120,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -150,29 +154,35 @@ in another.
 }
 
 \examples{
-x <<- rnorm(1000)
-gf_histogram(  ~ x, bins = 30)
-gf_dhistogram( ~ x, bins = 30)
-gf_dhistogram( ~ x, binwidth = 0.5, center = 0, color = "black")
-gf_dhistogram( ~ x, binwidth = 0.5, boundary = 0, color = "black")
-gf_dhistogram( ~ x, bins = 30) \%>\%
- gf_fitdistr(dist = "dnorm")  # see help for gf_fitdistr() for more info.
+x <- rnorm(1000)
+gf_histogram(~x, bins = 30)
+gf_dhistogram(~x, bins = 30)
+gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black")
+gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black")
+gf_dhistogram(~x, bins = 30) \%>\%
+  gf_fitdistr(dist = "dnorm") # see help for gf_fitdistr() for more info.
 
-gf_histogram( ~ x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
+gf_histogram(~x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 
-gf_histogram( ~ Sepal.Length | Species, data = iris, binwidth = 0.25)
-gf_histogram( ~ age, data = mosaicData::HELPrct, binwidth = 5,
-             fill = "skyblue", color = "black")
+gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+gf_histogram(~age,
+  data = mosaicData::HELPrct, binwidth = 5,
+  fill = "skyblue", color = "black"
+)
 # bins can be adjusted left/right using center or boundary
-gf_histogram( ~ age, data = mosaicData::HELPrct,
-             binwidth = 5, fill = "skyblue", color = "black", center = 42.5)
-gf_histogram( ~ age, data = mosaicData::HELPrct,
-              binwidth = 5, fill = "skyblue", color = "black", boundary = 40)
+gf_histogram(~age,
+  data = mosaicData::HELPrct,
+  binwidth = 5, fill = "skyblue", color = "black", center = 42.5
+)
+gf_histogram(~age,
+  data = mosaicData::HELPrct,
+  binwidth = 5, fill = "skyblue", color = "black", boundary = 40
+)
 
-gf_histogramh( ~ x, bins = 30)
-gf_histogramh( x ~ ., bins = 30)
-gf_histogramh( x ~ stat(density), bins = 30)
-gf_dhistogramh(~ x, bins = 30)
+gf_histogramh(~x, bins = 30)
+gf_histogramh(x ~ ., bins = 30)
+gf_histogramh(x ~ stat(density), bins = 30)
+gf_dhistogramh(~x, bins = 30)
 gf_dhistogramh(x ~ ., bins = 30)
 # better to use gf_histogramh() here, but this works
 gf_dhistogramh(x ~ stat(count), bins = 30)

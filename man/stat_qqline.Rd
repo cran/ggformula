@@ -43,6 +43,6 @@ the purpose of providing reference lines for QQ-plots.
 \examples{
 ggplot(data = iris, aes(sample = Sepal.Length)) +
   geom_qq() +
-  stat_qqline( alpha = 0.7, color = "red", linetype = "dashed") +
+  stat_qqline(alpha = 0.7, color = "red", linetype = "dashed") +
   facet_wrap(~Species)
 }

@@ -5,21 +5,19 @@
 \alias{gf_violinh}
 \title{Formula interface to geom_violin()}
 \usage{
-gf_violin(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, weight, draw_quantiles = NULL,
+gf_violin(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, weight, draw_quantiles = NULL,
   trim = TRUE, scale = "area", bw, adjust = 1, kernel = "gaussian",
   xlab, ylab, title, subtitle, caption, geom = "violin",
   stat = "ydensity", position = "dodge", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(),
-  ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame())
 
-gf_violinh(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, weight, draw_quantiles = NULL,
+gf_violinh(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, weight, draw_quantiles = NULL,
   trim = TRUE, scale = "area", bw, adjust = 1, kernel = "gaussian",
   xlab, ylab, title, subtitle, caption, geom = "violinh",
   stat = "xdensity", position = "dodgev", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(),
-  ...)
+  show.help = NULL, inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -41,7 +39,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -113,11 +117,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -156,10 +155,9 @@ in another.
 
 \examples{
 gf_violin(age ~ substance, data = mosaicData::HELPrct)
-gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
-
+gf_violin(age ~ substance, data = mosaicData::HELPrct, fill = ~sex)
 gf_violinh(substance ~ age, data = mosaicData::HELPrct)
-gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~ sex)
+gf_violinh(substance ~ age, data = mosaicData::HELPrct, fill = ~sex)
 }
 \references{
 Hintze, J. L., Nelson, R. D. (1998) Violin Plots: A Box

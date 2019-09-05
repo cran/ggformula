@@ -4,11 +4,11 @@
 \alias{gf_point}
 \title{Formula interface to geom_point()}
 \usage{
-gf_point(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  size, shape, fill, group, stroke, xlab, ylab, title, subtitle, caption,
-  geom = "point", stat = "identity", position = "identity",
+gf_point(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, size, shape, fill, group, stroke, xlab, ylab, title, subtitle,
+  caption, geom = "point", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,12 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression},
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
+(d) arguments for the geom, stat, or position function.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -57,12 +63,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression},
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}, or
-(d) arguments for the geom, stat, or position function.}
 }
 \value{
 a gg object
@@ -98,25 +98,28 @@ in another.
 
 \examples{
 gf_point()
-gf_point( (10 * ((1:25) \%/\% 10)) ~ ((1:25) \%\% 10), shape = 1:25,
-  fill = "skyblue", color = "navy", size = 4, stroke = 1, data = NA)
-gf_point(mpg ~ hp, color = ~ cyl, size = ~ wt, data = mtcars)
+gf_point((10 * ((1:25) \%/\% 10)) ~ ((1:25) \%\% 10),
+  shape = 1:25,
+  fill = "skyblue", color = "navy", size = 4, stroke = 1, data = NA
+)
+gf_point(mpg ~ hp, color = ~cyl, size = ~wt, data = mtcars)
 # faceting -- two ways
 gf_point(mpg ~ hp, data = mtcars) \%>\%
-  gf_facet_wrap( ~ am)
-gf_point(mpg ~ hp | am, group = ~ cyl, data = mtcars)
-gf_point(mpg ~ hp | ~ am, group = ~ cyl, data = mtcars)
-gf_point(mpg ~ hp | am ~ ., group = ~ cyl,  data = mtcars)
+  gf_facet_wrap(~am)
+gf_point(mpg ~ hp | am, group = ~cyl, data = mtcars)
+gf_point(mpg ~ hp | ~am, group = ~cyl, data = mtcars)
+gf_point(mpg ~ hp | am ~ ., group = ~cyl, data = mtcars)
 # Chaining in the data
 mtcars \%>\% gf_point(mpg ~ wt)
 
 # short cuts for main labels in the plot
-gf_point(births ~ date, color = ~ wday, data = mosaicData::Births78,
-    xlab = "Date", ylab = "Number of Live Births",
-    title = "Interesting Patterns in the Number of Births",
-    subtitle = "(United States, 1978)",
-    caption = "Source: mosaicData::Births78")
-
+gf_point(births ~ date,
+  color = ~wday, data = mosaicData::Births78,
+  xlab = "Date", ylab = "Number of Live Births",
+  title = "Interesting Patterns in the Number of Births",
+  subtitle = "(United States, 1978)",
+  caption = "Source: mosaicData::Births78"
+)
 }
 \seealso{
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}}, \code{\link[=gf_line]{gf_line()}}, \code{\link[=gf_jitter]{gf_jitter()}}

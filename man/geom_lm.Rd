@@ -35,7 +35,8 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{geom, stat}{Use to override the default connection between
 \code{geom_lm} and \code{stat_lm}.}
@@ -95,15 +96,21 @@ ggplot(data = mosaicData::KidsFeet, aes(y = length, x = width, color = sex)) +
   facet_wrap(~sex)
 # non-standard display
 ggplot(data = mosaicData::KidsFeet, aes(y = length, x = width, color = sex)) +
-  stat_lm(aes(fill = sex), color = NA, interval = "confidence", geom = "ribbon",
-  alpha = 0.2) +
+  stat_lm(aes(fill = sex),
+    color = NA, interval = "confidence", geom = "ribbon",
+    alpha = 0.2
+  ) +
   geom_point() +
   facet_wrap(~sex)
 ggplot(mpg, aes(displ, hwy)) +
-  geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp,
-     interval = "prediction", fill = "skyblue") +
-  geom_lm(formula = log(y) ~ poly(x,3), backtrans = exp, interval = "confidence",
-     color = "red") +
+  geom_lm(
+    formula = log(y) ~ poly(x, 3), backtrans = exp,
+    interval = "prediction", fill = "skyblue"
+  ) +
+  geom_lm(
+    formula = log(y) ~ poly(x, 3), backtrans = exp, interval = "confidence",
+    color = "red"
+  ) +
   geom_point()
 }
 \seealso{

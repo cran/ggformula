@@ -4,11 +4,11 @@
 \alias{gf_col}
 \title{Formula interface to geom_col()}
 \usage{
-gf_col(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
+gf_col(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
   geom = "col", stat = "identity", position = "stack",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,11 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -62,11 +67,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -116,7 +116,7 @@ gf_col(count ~ group, data = SomeData)
 
 # A Pareto chart
 
-if(require(dplyr) && require(mosaicData)) {
+if (require(dplyr) && require(mosaicData)) {
   HELPrct \%>\%
     group_by(substance) \%>\%
     summarise(count = n()) \%>\%
@@ -124,15 +124,15 @@ if(require(dplyr) && require(mosaicData)) {
     dplyr::arrange(-count) \%>\%
     mutate(
       cumcount = cumsum(count),
-      substance = reorder(substance, - count)
+      substance = reorder(substance, -count)
     ) \%>\%
     gf_col(count ~ substance, fill = "skyblue") \%>\%
     gf_point(cumcount ~ substance) \%>\%
     gf_line(cumcount ~ substance, group = 1) \%>\%
     gf_refine(
-      scale_y_continuous(sec.axis = sec_axis( ~ . /nrow(HELPrct)))
+      scale_y_continuous(sec.axis = sec_axis(~ . / nrow(HELPrct)))
     )
-  }
+}
 }
 \seealso{
 \code{\link[ggplot2:geom_col]{ggplot2::geom_col()}}

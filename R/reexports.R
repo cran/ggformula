@@ -8,13 +8,7 @@ magrittr::`%>%`
 #' @export
 mosaicCore::makeFun
 
-# utils::globalVariables(c("stat", "value"))
-
 #' @importFrom mosaicCore df_stats
-# @importFrom tidyr gather
-# @importFrom dplyr %>% bind_rows
-# @importFrom rlang is_character f_rhs eval_tidy quos
-# @importFrom stats as.formula na.exclude
 #' @export
 mosaicCore::df_stats
 

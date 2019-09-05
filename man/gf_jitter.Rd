@@ -4,11 +4,11 @@
 \alias{gf_jitter}
 \title{Formula interface to geom_jitter()}
 \usage{
-gf_jitter(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  size, shape, fill, width, height, group, stroke, xlab, ylab, title,
-  subtitle, caption, geom = "point", stat = "identity",
+gf_jitter(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, size, shape, fill, width, height, group, stroke, xlab, ylab,
+  title, subtitle, caption, geom = "point", stat = "identity",
   position = "jitter", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,11 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -67,11 +72,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -112,8 +112,10 @@ gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct)
 # jitter only horizontally
 gf_jitter(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct, width = 0.2, height = 0)
 # alternative way to get jitter
-gf_point(age ~ sex, alpha = 0.25, data = mosaicData::HELPrct,
-    position = "jitter", width = 0.2, height = 0)
+gf_point(age ~ sex,
+  alpha = 0.25, data = mosaicData::HELPrct,
+  position = "jitter", width = 0.2, height = 0
+)
 }
 \seealso{
 \code{\link[ggplot2:geom_jitter]{ggplot2::geom_jitter()}}, \code{\link[=gf_point]{gf_point()}}

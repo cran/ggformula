@@ -19,6 +19,5 @@ plot layers.
 \examples{
 gf_empty()
 gf_empty() \%>\%
-  gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~ Species)
-
+  gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species)
 }

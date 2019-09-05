@@ -18,13 +18,13 @@
 #' @rdname gf_function2d
 #' @examples
 #' theme_set(theme_bw())
-#' gf_function_2d( fun = function(x, y) sin(2 * x * y), xlim = c(-pi, pi), ylim = c(-pi, pi)) %>%
+#' gf_function_2d(fun = function(x, y) sin(2 * x * y), xlim = c(-pi, pi), ylim = c(-pi, pi)) %>%
 #'   gf_refine(scale_fill_viridis_c())
-#' gf_function_2d( fun = function(x, y) x + y, contour = FALSE)
+#' gf_function_2d(fun = function(x, y) x + y, contour = FALSE)
 #' gf_function_tile(fun = function(x, y) x * y) %>%
-#' gf_function_contour(fun = function(x, y) x * y, color = "white") %>%
+#'   gf_function_contour(fun = function(x, y) x * y, color = "white") %>%
 #'   gf_refine(scale_fill_viridis_c())
-#' gf_fun_tile(x * y ~ x + y, xlim = c(-3,3), ylim = c(-2,2)) %>%
+#' gf_fun_tile(x * y ~ x + y, xlim = c(-3, 3), ylim = c(-2, 2)) %>%
 #'   gf_fun_contour(x * y ~ x + y, color = "white") %>%
 #'   gf_refine(scale_fill_viridis_c()) %>%
 #'   gf_labs(fill = "product")
@@ -33,8 +33,7 @@
 #'
 gf_function_2d <-
   function(object = NULL, fun = identity, xlim = NULL, ylim = NULL, ...,
-           tile = TRUE, contour = TRUE, resolution = 50) {
-
+             tile = TRUE, contour = TRUE, resolution = 50) {
     if (is.function(object)) {
       fun <- object
       object <- NULL
@@ -57,27 +56,31 @@ gf_function_2d <-
       }
     }
 
-  xlim <- range(xlim)
-  ylim <- range(ylim)
-  resolution <- rep(resolution, 2)
+    xlim <- range(xlim)
+    ylim <- range(ylim)
+    resolution <- rep(resolution, 2)
 
-  Layer_Data <-
-    expand.grid(
-     x =  seq(xlim[1], xlim[2], length.out = resolution[1]),
-     y =  seq(ylim[1], ylim[2], length.out = resolution[2])
-    ) %>%
-    dplyr::mutate(value = fun(x, y))
+    Layer_Data <-
+      expand.grid(
+        x = seq(xlim[1], xlim[2], length.out = resolution[1]),
+        y = seq(ylim[1], ylim[2], length.out = resolution[2])
+      ) %>%
+      dplyr::mutate(value = fun(x, y))
 
-  res <- object
-  if (tile) res <-
-    res %>%
-    gf_tile(value ~ x + y, data = Layer_Data, ...) %>%
-    gf_labs(fill = "")
-  if (contour) res <-
-    res %>%
-    gf_contour(value ~ x + y, data = Layer_Data, ...) %>%
-    gf_labs(fill = "")
-  res
+    res <- object
+    if (tile) {
+      res <-
+        res %>%
+        gf_tile(value ~ x + y, data = Layer_Data, ...) %>%
+        gf_labs(fill = "")
+    }
+    if (contour) {
+      res <-
+        res %>%
+        gf_contour(value ~ x + y, data = Layer_Data, ...) %>%
+        gf_labs(fill = "")
+    }
+    res
   }
 
 #' @rdname gf_function2d
@@ -88,7 +91,7 @@ gf_function2d <- gf_function_2d
 #' @export
 gf_function_contour <-
   function(object = NULL, fun = identity, xlim = NULL, ylim = NULL, ...,
-           resolution = 50) {
+             resolution = 50) {
     gf_function_2d(object, fun = fun, xlim = xlim, ylim = ylim, contour = TRUE, tile = FALSE, ...)
   }
 
@@ -98,9 +101,11 @@ gf_function_contour <-
 #'
 gf_function_tile <-
   function(object = NULL, fun = identity, xlim = NULL, ylim = NULL, ...,
-           resolution = 50) {
-    gf_function_2d(object, fun = fun, xlim = xlim, ylim = ylim, contour = FALSE, tile = TRUE,
-                   resolution = resolution, ...)
+             resolution = 50) {
+    gf_function_2d(object,
+      fun = fun, xlim = xlim, ylim = ylim, contour = FALSE, tile = TRUE,
+      resolution = resolution, ...
+    )
   }
 
 #' @rdname gf_function2d
@@ -108,16 +113,17 @@ gf_function_tile <-
 #'
 gf_fun_2d <-
   function(object = NULL, formula = NULL, xlim = NULL, ylim = NULL, tile = TRUE,
-           contour = TRUE, ..., resolution = 50) {
-
+             contour = TRUE, ..., resolution = 50) {
     if (inherits(object, "formula")) {
       formula <- object
       object <- NULL
     }
 
-    gf_function_2d(object, fun = mosaic::makeFun(formula),
-                   xlim = xlim, ylim = ylim, contour = contour,
-                   tile = tile, resolution = resolution, ...)
+    gf_function_2d(object,
+      fun = mosaic::makeFun(formula),
+      xlim = xlim, ylim = ylim, contour = contour,
+      tile = tile, resolution = resolution, ...
+    )
   }
 
 #' @rdname gf_function2d
@@ -129,10 +135,12 @@ gf_fun2d <- gf_fun_2d
 #'
 gf_fun_tile <-
   function(object = NULL, formula = NULL, xlim = NULL, ylim = NULL, ...,
-           resolution = 50) {
-    gf_fun_2d(object, formula = formula,
-              xlim = xlim, ylim = ylim, contour = FALSE,
-              tile = TRUE, resolution = resolution, ...)
+             resolution = 50) {
+    gf_fun_2d(object,
+      formula = formula,
+      xlim = xlim, ylim = ylim, contour = FALSE,
+      tile = TRUE, resolution = resolution, ...
+    )
   }
 
 #' @rdname gf_function2d
@@ -140,13 +148,10 @@ gf_fun_tile <-
 #'
 gf_fun_contour <-
   function(object = NULL, formula = NULL, xlim = NULL, ylim = NULL, ...,
-           resolution = 50) {
-    gf_fun_2d(object, formula = formula,
-              xlim = xlim, ylim = ylim, contour = TRUE,
-              tile = FALSE, resolution = resolution, ...)
+             resolution = 50) {
+    gf_fun_2d(object,
+      formula = formula,
+      xlim = xlim, ylim = ylim, contour = TRUE,
+      tile = FALSE, resolution = resolution, ...
+    )
   }
-
-
-
-
-

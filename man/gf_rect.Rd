@@ -4,11 +4,11 @@
 \alias{gf_rect}
 \title{Formula interface to geom_rect()}
 \usage{
-gf_rect(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
+gf_rect(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, xlab, ylab, title, subtitle, caption,
   geom = "rect", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,11 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -62,11 +67,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -102,14 +102,16 @@ in another.
 }
 
 \examples{
-gf_rect( 1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
+gf_rect(1 + 2 ~ 3 + 4, alpha = 0.3, color = "red")
 # use data = data.frame() so we get 1 rectangle and not 1 per row of faithful
 # use inherit = FALSE because we are not reusing eruptions and waiting
 gf_point(eruptions ~ waiting, data = faithful) \%>\%
-  gf_rect(1.5 + 3 ~ 45 + 68, fill = "red", alpha = 0.2,
-          data = data.frame(), inherit = FALSE) \%>\%
-  gf_rect(3 + 5.5 ~ 68 + 100, fill = "green", alpha = 0.2,
-          data = data.frame(), inherit = FALSE)
+  gf_rect(1.5 + 3 ~ 45 + 68,
+    fill = "red", alpha = 0.2,
+    data = data.frame(), inherit = FALSE) \%>\%
+  gf_rect(3 + 5.5 ~ 68 + 100,
+    fill = "green", alpha = 0.2,
+    data = data.frame(), inherit = FALSE)
 }
 \seealso{
 \code{\link[ggplot2:geom_rect]{ggplot2::geom_rect()}}

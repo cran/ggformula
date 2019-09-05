@@ -4,11 +4,11 @@
 \alias{gf_barh}
 \title{Formula interface to geom_barh()}
 \usage{
-gf_barh(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  fill, group, linetype, size, width = NULL, xlab, ylab, title, subtitle,
-  caption, geom = "barh", stat = "counth", position = "stackv",
-  show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+gf_barh(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, fill, group, linetype, size, width = NULL, xlab, ylab, title,
+  subtitle, caption, geom = "barh", stat = "counth",
+  position = "stackv", show.legend = NA, show.help = NULL,
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -31,8 +31,14 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -64,8 +70,8 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
-\item{stat}{Override the default connection between \code{geom_bar} and
-\code{stat_count}.}
+\item{stat}{Override the default connection between \code{geom_bar()} and
+\code{stat_count()}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
@@ -81,11 +87,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -120,18 +121,20 @@ in another.
 }
 
 \examples{
-gf_barh( ~ Diet, data = ChickWeight)
-gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
-gf_barh( ~ substance, data = mosaicData::HELPrct, fill = ~ sex,
-        position = position_dodgev())
+gf_barh(~Diet, data = ChickWeight)
+gf_barh(~substance, data = mosaicData::HELPrct, fill = ~sex)
+gf_barh(~substance,
+  data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodgev()
+)
 # gf_counts() is another name for gf_bar()
-gf_counts( ~ substance, data = mosaicData::HELPrct, fill = ~ sex)
+gf_counts(~substance, data = mosaicData::HELPrct, fill = ~sex)
 # gf_props() and gf_percents() use proportions or percentages instead of counts
-gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
-gf_percents( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge())
+gf_props(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge())
+gf_percents(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge())
 
 if (require(scales)) {
-  gf_props( ~ substance, data = mosaicData::HELPrct, fill = ~ sex, position = position_dodge()) \%>\%
+  gf_props(~substance, data = mosaicData::HELPrct, fill = ~sex, position = position_dodge()) \%>\%
     gf_refine(scale_y_continuous(labels = scales::percent))
 }
 }

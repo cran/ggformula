@@ -4,11 +4,11 @@
 \alias{gf_spline}
 \title{Formula interface to geom_spline()}
 \usage{
-gf_spline(object = NULL, gformula = NULL, data = NULL, alpha, color,
-  group, linetype, size, weight, df, spar, tol, xlab, ylab, title,
+gf_spline(object = NULL, gformula = NULL, data = NULL, ..., alpha,
+  color, group, linetype, size, weight, df, spar, tol, xlab, ylab, title,
   subtitle, caption, geom = "line", stat = "spline",
   position = "identity", show.legend = NA, show.help = NULL,
-  inherit = TRUE, environment = parent.frame(), ...)
+  inherit = TRUE, environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -19,6 +19,11 @@ See details and examples.}
 Faceting can be achieved by including \code{|} in the formula.}
 
 \item{data}{A data frame with the variables to be plotted.}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -74,11 +79,6 @@ of the attributes of the layer are mapped.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -113,9 +113,9 @@ in another.
 }
 
 \examples{
-gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78)
-gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 20)
-gf_spline(births ~ date, color = ~ wday, data = mosaicData::Births78, df = 4)
+gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78)
+gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78, df = 20)
+gf_spline(births ~ date, color = ~wday, data = mosaicData::Births78, df = 4)
 }
 \seealso{
 \code{\link[=geom_spline]{geom_spline()}}, \code{\link[=gf_smooth]{gf_smooth()}}, \code{\link[=gf_lm]{gf_lm()}}

@@ -4,11 +4,11 @@
 \alias{gf_errorbarh}
 \title{Formula interface to geom_errorbarh()}
 \usage{
-gf_errorbarh(object = NULL, gformula = NULL, data = NULL, alpha,
+gf_errorbarh(object = NULL, gformula = NULL, data = NULL, ..., alpha,
   color, group, linetype, size, xlab, ylab, title, subtitle, caption,
   geom = "errorbarh", stat = "identity", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -30,7 +30,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -75,11 +81,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -87,13 +88,6 @@ a gg object
 \description{
 A rotated version of \code{\link[=geom_errorbar]{geom_errorbar()}}.
 }
-\section{Note}{
-
-There is discrepancy between the information required for \code{gf_errorbar()}
-and \code{gf_errobarh()}.  It expected that this will change in a future release
-of \code{ggplot2}.
-}
-
 \section{Specifying plot attributes}{
 
 
@@ -123,25 +117,26 @@ in another.
 \examples{
 if (require(dplyr)) {
   HELP2 <- mosaicData::HELPrct \%>\%
-  group_by(substance, sex) \%>\%
-  summarise(
-    mean.age = mean(age),
-    median.age = median(age),
-    max.age = max(age),
-    min.age = min(age),
-    sd.age = sd(age),
-    lo = mean.age - sd.age,
-    hi = mean.age + sd.age
+    group_by(substance, sex) \%>\%
+    summarise(
+      mean.age = mean(age),
+      median.age = median(age),
+      max.age = max(age),
+      min.age = min(age),
+      sd.age = sd(age),
+      lo = mean.age - sd.age,
+      hi = mean.age + sd.age
     )
 
   gf_jitter(substance ~ age, data = mosaicData::HELPrct,
       alpha = 0.5, height = 0.2, width = 0, color = "skyblue") \%>\%
-    gf_errorbarh( substance ~ lo + hi,  data = HELP2, inherit = FALSE) \%>\%
-    gf_facet_grid( ~ sex)
+    gf_errorbarh(substance ~ lo + hi, data = HELP2, inherit = FALSE) \%>\%
+    gf_facet_grid(~sex)
+
   gf_jitter(age ~ substance, data = mosaicData::HELPrct,
       alpha = 0.5, width = 0.2, height = 0, color = "skyblue") \%>\%
-    gf_errorbar( lo + hi ~ substance,  data = HELP2) \%>\%
-    gf_facet_grid( ~ sex)
+    gf_errorbar(lo + hi ~ substance, data = HELP2, inherit = FALSE) \%>\%
+    gf_facet_grid(~sex)
 }
 }
 \seealso{

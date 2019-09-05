@@ -5,19 +5,19 @@
 \alias{gf_dens}
 \title{Formula interface to stat_density()}
 \usage{
-gf_density(object = NULL, gformula = NULL, data = NULL,
+gf_density(object = NULL, gformula = NULL, data = NULL, ...,
   alpha = 0.5, color, fill, group, linetype, size, kernel = "gaussian",
   n = 512, trim = FALSE, xlab, ylab, title, subtitle, caption,
   geom = "area", stat = "density", position = "identity",
   show.legend = NA, show.help = NULL, inherit = TRUE,
-  environment = parent.frame(), ...)
+  environment = parent.frame())
 
-gf_dens(object = NULL, gformula = NULL, data = NULL, alpha = 0.5,
-  color, group, linetype, size, kernel = "gaussian", n = 512,
-  trim = FALSE, xlab, ylab, title, subtitle, caption, geom = "line",
-  stat = "density", position = "identity", show.legend = NA,
-  show.help = NULL, inherit = TRUE, environment = parent.frame(),
-  ...)
+gf_dens(object = NULL, gformula = NULL, data = NULL, ...,
+  alpha = 0.5, color, group, linetype, size, kernel = "gaussian",
+  n = 512, trim = FALSE, xlab, ylab, title, subtitle, caption,
+  geom = "line", stat = "density", position = "identity",
+  show.legend = NA, show.help = NULL, inherit = TRUE,
+  environment = parent.frame())
 }
 \arguments{
 \item{object}{When chaining, this holds an object produced in the earlier portions
@@ -39,7 +39,13 @@ data. All objects will be fortified to produce a data frame. See
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
-will be used as the layer data.}
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{...}{Additional arguments.  Typically these are
+(a) ggplot2 aesthetics to be set with \code{attribute = value},
+(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
+(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
@@ -100,11 +106,6 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
-
-\item{...}{Additional arguments.  Typically these are
-(a) ggplot2 aesthetics to be set with \code{attribute = value},
-(b) ggplot2 aesthetics to be mapped with \code{attribute = ~ expression}, or
-(c) attributes of the layer as a whole, which are set with \code{attribute = value}.}
 }
 \value{
 a gg object
@@ -145,11 +146,11 @@ in another.
 
 \examples{
 gf_dens()
-gf_density( ~ Sepal.Length,  fill = ~ Species, data = iris)
-gf_dens( ~ Sepal.Length, color = ~ Species, data = iris)
-gf_freqpoly( ~ Sepal.Length, color = ~ Species, data = iris, bins = 15)
+gf_density(~Sepal.Length, fill = ~Species, data = iris)
+gf_dens(~Sepal.Length, color = ~Species, data = iris)
+gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 15)
 # Chaining in the data
-iris \%>\% gf_dens( ~ Sepal.Length, color = ~ Species)
+iris \%>\% gf_dens(~Sepal.Length, color = ~Species)
 }
 \seealso{
 \code{\link[=gf_ash]{gf_ash()}}, \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}
