@@ -2,7 +2,7 @@ Package: ggformula
 Title: Formula Interface to the Grammar of Graphics
 Description: Provides a formula interface to 'ggplot2' graphics.
 Type: Package
-Version: 0.9.3
+Version: 0.9.4
 Authors@R: c(
     person("Daniel", "Kaplan", email = "kaplan@macalester.edu", role = c("aut")),
     person("Randall", "Pruim", email = "rpruim@calvin.edu", role = c("aut","cre"))
@@ -11,11 +11,11 @@ License: MIT + file LICENSE
 LazyData: TRUE
 LazyLoad: TRUE
 Depends: R (>= 3.1), ggplot2 (>= 3.0), ggstance (>= 0.3.1)
-Imports: mosaicCore, rlang, magrittr, tibble, stringr, tidyr, ggforce,
-        grid
-Suggests: mosaicData, dplyr, lattice, mosaic, mosaicModel, testthat,
-        vdiffr, knitr, rmarkdown, lubridate, survival, broom, scales,
-        maps, maptools, rgeos, sf, purrr, ggthemes, covr, ggplot2movies
+Imports: mosaicCore, rlang, magrittr, tibble, stringr, ggforce, grid
+Suggests: tidyr, mosaicData, dplyr, lattice, mosaic, mosaicModel,
+        testthat, vdiffr, knitr, rmarkdown, lubridate, survival, broom,
+        scales, maps, maptools, rgeos, sf, purrr, ggthemes, covr,
+        ggplot2movies
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2
 Encoding: UTF-8
@@ -26,9 +26,9 @@ Collate: 'MIpop-doc.R' 'formula2aes.R' 'gf_aux.R' 'gf_dist.R'
         'ggstance.R' 'ggstrings.R' 'newplots.R' 'reexports.R'
         'scales.R' 'utils.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2020-02-11 20:57:51 UTC; rpruim
+Packaged: 2020-03-04 07:24:28 UTC; rpruim
 Author: Daniel Kaplan [aut],
   Randall Pruim [aut, cre]
 Maintainer: Randall Pruim <rpruim@calvin.edu>
 Repository: CRAN
-Date/Publication: 2020-02-11 23:30:02 UTC
+Date/Publication: 2020-03-04 09:40:08 UTC
