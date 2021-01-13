@@ -163,9 +163,11 @@ in another.
 }
 
 \examples{
-gf_ash(~Sepal.Length, color = ~Species, data = iris)
-gf_ash(~Sepal.Length, color = ~Species, data = iris, binwidth = 0.3)
-gf_ash(~Sepal.Length, color = ~Species, data = iris, adjust = 2)
+data(penguins, package = "palmerpenguins")
+gf_ash(~bill_length_mm, color = ~species, data = penguins)
+gf_ash(~bill_length_mm, color = ~species, data = penguins, adjust = 2)
+gf_ash(~bill_length_mm, color = ~species, data = penguins, binwidth = 1)
+gf_ash(~bill_length_mm, color = ~species, data = penguins, binwidth = 1, adjust = 2)
 ggplot(faithful, aes(x = eruptions)) +
   geom_histogram(aes(y = stat(density)),
     fill = "lightskyblue", colour = "gray50", alpha = 0.2

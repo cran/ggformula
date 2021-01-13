@@ -123,19 +123,19 @@ in another.
 }
 
 \examples{
-
+\dontrun{
 if (require(maps) && require(maptools) &&
-  require(sf) && require(rgeos) &&
-  utils::packageVersion("ggplot2") > "2.2.1") {
-  US <- sf::st_as_sf(map("state", plot = FALSE, fill = TRUE))
+  require(sf) && require(rgeos))
+  US <- sf::st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
   gf_sf(fill = ~ factor(nchar(ID)), data = US) \%>\%
     gf_refine(coord_sf())
 
   # We can specify shape data and external data separately using geometry
-  MI <- sf::st_as_sf(map("county", "michigan", plot = FALSE, fill = TRUE))
+  MI <- sf::st_as_sf(maps::map("county", "michigan", plot = FALSE, fill = TRUE))
+  MIgeom <- MI$geom
   gf_sf(
     fill = ~ log10(population), data = MIpop \%>\% dplyr::arrange(county),
-    geometry = ~ MI$geometry, color = "white"
+    geometry = ~MIgeom, color = "white"
   ) \%>\%
     gf_refine(coord_sf(), theme_bw())
 
@@ -151,5 +151,5 @@ if (require(maps) && require(maptools) &&
 }
 }
 \seealso{
-\code{\link[ggplot2:geom_line]{ggplot2::geom_line()}}, \code{\link[=gf_point]{gf_point()}}
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}}, \code{\link[=gf_point]{gf_point()}}
 }

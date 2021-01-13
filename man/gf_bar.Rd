@@ -85,7 +85,8 @@ gf_props(
   show.legend = NA,
   show.help = NULL,
   inherit = TRUE,
-  environment = parent.frame()
+  environment = parent.frame(),
+  denom = ~PANEL
 )
 
 gf_percents(
@@ -110,7 +111,8 @@ gf_percents(
   show.legend = NA,
   show.help = NULL,
   inherit = TRUE,
-  environment = parent.frame()
+  environment = parent.frame(),
+  denom = ~PANEL
 )
 
 gf_countsh(
@@ -187,7 +189,8 @@ gf_propsh(
   show.legend = NA,
   show.help = NULL,
   inherit = TRUE,
-  environment = parent.frame()
+  environment = parent.frame(),
+  denom = ~PANEL
 )
 
 gf_percentsh(
@@ -212,7 +215,8 @@ gf_percentsh(
   show.legend = NA,
   show.help = NULL,
   inherit = TRUE,
-  environment = parent.frame()
+  environment = parent.frame(),
+  denom = ~PANEL
 )
 }
 \arguments{
@@ -293,6 +297,10 @@ display.}
 \item{inherit}{A logical indicating whether default attributes are inherited.}
 
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
+
+\item{denom}{A formula, the right hand side of which describes the denominators used for
+computing proportions and percents.  These are computed after the stat has been applied
+to the data and should refer to variables available at that point.  See the examples.}
 }
 \value{
 a gg object
@@ -345,18 +353,56 @@ gf_counts(~substance,
   position = position_dodge()
 )
 # gf_props() and gf_percents() use proportions or percentages instead of counts
+# use denom to control which denominators are used.
 gf_props(~substance,
+  data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodge()
+)
+gf_props(substance ~ .,
+  data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodge(),
+  orientation = 'y'
+)
+gf_propsh(substance ~ .,
+  data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodgev(),
+)
+
+gf_percents(~substance,
   data = mosaicData::HELPrct, fill = ~sex,
   position = position_dodge()
 )
 gf_percents(~substance,
   data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodge(),
+  denom = ~x
+)
+gf_percents(~substance,
+  data = mosaicData::HELPrct, fill = ~sex,
+  position = position_dodge(),
+  denom = ~fill
+)
+gf_percents(~substance | sex,
+  data = mosaicData::HELPrct, fill = ~homeless,
+  position = position_dodge()
+)
+gf_percents(~substance | sex,
+  data = mosaicData::HELPrct,
+  fill = ~homeless,
+  denom = ~fill,
+  position = position_dodge()
+)
+gf_percents(~substance | sex,
+  data = mosaicData::HELPrct,
+  fill = ~homeless,
+  denom = ~interaction(fill, PANEL),
   position = position_dodge()
 )
 if (require(scales)) {
-  gf_props(~substance,
+  gf_percents(~substance,
     data = mosaicData::HELPrct, fill = ~sex,
-    position = position_dodge()
+    position = position_dodge(),
+    denom = ~ x,
   ) \%>\%
     gf_refine(scale_y_continuous(labels = scales::percent))
 }

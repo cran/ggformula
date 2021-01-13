@@ -340,8 +340,14 @@ if (require("ggplot2movies")) {
   m2 \%>\% gf_refine(coord_trans(y="log10"))
 }
 gf_linerangeh(date ~ low_temp + high_temp | ~city,
-  data = Weather,
+  data = mosaicData::Weather,
   color = ~avg_temp
+) \%>\%
+  gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
+gf_linerange(date ~ low_temp + high_temp | ~city,
+  data = mosaicData::Weather,
+  color = ~avg_temp,
+  orientation = 'y'
 ) \%>\%
   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
 gf_pointrangeh(date ~ avg_temp + low_temp + high_temp | ~city,
@@ -353,7 +359,7 @@ gf_pointrangeh(date ~ avg_temp + low_temp + high_temp | ~city,
 \seealso{
 \code{\link[ggplot2:geom_linerange]{ggplot2::geom_linerange()}}
 
-\code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}
+\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}
 
-\code{\link[ggplot2:geom_pointrange]{ggplot2::geom_pointrange()}}, \code{\link[ggplot2:stat_summary]{ggplot2::stat_summary()}}
+\code{\link[ggplot2:geom_linerange]{ggplot2::geom_pointrange()}}, \code{\link[ggplot2:stat_summary]{ggplot2::stat_summary()}}
 }

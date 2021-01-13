@@ -51,11 +51,11 @@ Faceting can be achieved by including \code{|} in the formula.}
 options:
 
 If \code{NULL}, the default, the data is inherited from the plot
-data as specified in the call to \code{\link[=ggplot]{ggplot()}}.
+data as specified in the call to \code{\link[ggplot2:ggplot]{ggplot()}}.
 
 A \code{data.frame}, or other object, will override the plot
 data. All objects will be fortified to produce a data frame. See
-\code{\link[=fortify]{fortify()}} for which variables will be created.
+\code{\link[ggplot2:fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
 the plot data. The return value must be a \code{data.frame}, and
@@ -182,6 +182,14 @@ a gg object
 \description{
 Horizontal version of \code{\link[ggplot2]{geom_boxplot}()}.
 }
+\section{Horizontal Geoms}{
+
+There are two ways to obtain "horizontal" geoms:
+(1) The ggstance package provides a set of "horizontal" geoms and positions;
+(2) Thee ggplot2 now provides an \code{orientation} argument for "native" horizontal
+geoms and positions.  ggformula supports both.
+}
+
 \section{Specifying plot attributes}{
 
 
@@ -210,11 +218,17 @@ in another.
 
 \examples{
 gf_boxploth(sex ~ age, data = mosaicData::HELPrct, varwidth = TRUE)
+gf_boxplot(sex ~ age, data = mosaicData::HELPrct, varwidth = TRUE, orientation = 'y')
 gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex)
 # move boxplots away a bit by adjusting dodge
 gf_boxploth(substance ~ age,
   data = mosaicData::HELPrct, color = ~sex,
   position = position_dodgev(height = 0.9)
+)
+# gf_boxplot guesses horizontal because substance is categorical
+gf_boxplot(substance ~ age,
+  data = mosaicData::HELPrct, color = ~sex,
+  position = position_dodge(width = 0.9)
 )
 gf_boxploth(substance ~ age, data = mosaicData::HELPrct, color = ~sex, outlier.color = "gray50")
 # longer whiskers

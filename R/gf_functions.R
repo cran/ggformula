@@ -1,3 +1,5 @@
+utils::globalVariables(c('s', 'p'))
+
 #' @importFrom mosaicCore makeFun
 #' @importFrom stats dnorm
 
@@ -480,8 +482,9 @@ gf_quantile <-
       )
   )
 
-#' Formula interface to geom_density_2d()
+#' Formula interface to geom_density_2d() and geom_density_2d_filled()
 #'
+#' @rdname gf_density_2d
 #' @inherit ggplot2::geom_density_2d description
 #' @inherit gf_line
 #' @inheritParams ggplot2::geom_density_2d
@@ -512,6 +515,27 @@ gf_density_2d <-
 #' @rdname gf_density_2d
 #' @export
 #' @examples
+#' gf_density_2d_filled(avg_drinks ~ age, data = mosaicData::HELPrct, show.legend = FALSE) %>%
+#'   gf_jitter(avg_drinks ~ age,
+#'     alpha = 0.3, data = mosaicData::HELPrct,
+#'     width = 0.4, height = 0.4,
+#'     color = "white"
+#' )
+gf_density_2d_filled <-
+  layer_factory(
+    geom = "density_2d_filled",
+    stat = "density_2d_filled",
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      contour = TRUE, n = 100, h = NULL, lineend = "butt", linejoin = "round",
+      linemitre = 1
+    )
+  )
+
+
+#' @rdname gf_density_2d
+#' @export
+#' @examples
 #' gf_jitter(avg_drinks ~ age,
 #'   alpha = 0.2, data = mosaicData::HELPrct,
 #'   width = 0.4, height = 0.4
@@ -521,6 +545,27 @@ gf_density2d <-
   layer_factory(
     geom = "density2d",
     stat = "density2d",
+    extras = alist(
+      alpha = , color = , group = , linetype = , size = ,
+      contour = TRUE, n = 100, h = NULL,
+      lineend = "butt", linejoin = "round",
+      linemitre = 1
+    )
+  )
+
+#' @rdname gf_density_2d
+#' @export
+#' @examples
+#' gf_density2d_filled(avg_drinks ~ age, data = mosaicData::HELPrct, show.legend = FALSE) %>%
+#'   gf_jitter(avg_drinks ~ age,
+#'     alpha = 0.4, data = mosaicData::HELPrct,
+#'     width = 0.4, height = 0.4,
+#'     color = "white"
+#' )
+gf_density2d_filled <-
+  layer_factory(
+    geom = "density2d_filled",
+    stat = "density_2d_filled",
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       contour = TRUE, n = 100, h = NULL,
@@ -591,12 +636,7 @@ gf_hex <-
 #' )
 gf_boxplot <-
   layer_factory(
-    aes_form =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        y ~ x
-      } else {
-        list(y ~ x, ~y, y ~ .)
-      },
+    aes_form = list(y ~ x, ~ x, y ~ .),
     geom = "boxplot",
     stat = "boxplot",
     position = "dodge",
@@ -628,14 +668,15 @@ gf_boxplot <-
 #' @seealso [ggplot2::geom_text()]
 #' @export
 #' @examples
-#' gf_text(Sepal.Length ~ Sepal.Width,
-#'   data = iris,
-#'   label = ~Species, color = ~Species, size = 2, angle = 30
+#' data(penguins, package = "palmerpenguins")
+#' gf_text(bill_length_mm ~ bill_depth_mm,
+#'   data = penguins,
+#'   label = ~species, color = ~species, size = 2, angle = 30
 #' )
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) %>%
-#'   gf_text(Sepal.Length ~ Sepal.Width,
-#'     data = iris,
-#'     label = ~Species, color = ~Species,
+#' penguins %>%
+#' gf_point(bill_length_mm ~ bill_depth_mm, color = ~species, alpha = 0.5) %>%
+#'   gf_text(bill_length_mm ~ bill_depth_mm,
+#'     label = ~species, color = ~species,
 #'     size = 2, angle = 0, hjust = 0, nudge_x = 0.1, nudge_y = 0.1
 #'   )
 gf_text <-
@@ -660,14 +701,15 @@ gf_text <-
 #' @export
 #' @examples
 #' if (require(dplyr)) {
-#'   iris_means <-
-#'     iris %>%
-#'     group_by(Species) %>%
-#'     summarise(Sepal.Length = mean(Sepal.Length), Sepal.Width = mean(Sepal.Width))
-#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species) %>%
-#'     gf_label(Sepal.Length ~ Sepal.Width,
-#'       data = iris_means,
-#'       label = ~Species, color = ~Species, size = 2, alpha = 0.7
+#'   data(penguins, package = "palmerpenguins")
+#'   penguins_means <-
+#'     penguins %>%
+#'     group_by(species) %>%
+#'     summarise(bill_length_mm = mean(bill_length_mm), bill_depth_mm = mean(bill_depth_mm))
+#'   gf_point(bill_length_mm ~ bill_depth_mm, data = penguins, color = ~species) %>%
+#'     gf_label(bill_length_mm ~ bill_depth_mm,
+#'       data = penguins_means,
+#'       label = ~species, color = ~species, size = 2, alpha = 0.7
 #'     )
 #' }
 gf_label <-
@@ -895,10 +937,10 @@ gf_bin2d <-
 #' @export
 #' @examples
 #' # Best used in conjunction with scale_size_area which ensures that
-#' # counts of zero would be given size 0. Doesn't make much difference
+#' # counts of zero would be given size 0. This doesn't make much difference
 #' # here because the smallest count is already close to 0.
 #'
-#' gf_count(hwy ~ cty, data = mpg, alpha = 0.5) %>%
+#' gf_count(hwy ~ cty, data = mpg, alpha = 0.3) %>%
 #'   gf_refine(scale_size_area())
 gf_count <-
   layer_factory(
@@ -1009,7 +1051,8 @@ gf_frame <-
 #'
 #' gf_histogram(~x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 #'
-#' gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+#' data(penguins, package = "palmerpenguins")
+#' gf_histogram(~ bill_length_mm | species, data = penguins, binwidth = 0.25)
 #' gf_histogram(~age,
 #'   data = mosaicData::HELPrct, binwidth = 5,
 #'   fill = "skyblue", color = "black"
@@ -1023,17 +1066,17 @@ gf_frame <-
 #'   data = mosaicData::HELPrct,
 #'   binwidth = 5, fill = "skyblue", color = "black", boundary = 40
 #' )
+#' gf_histogram(age ~ .,
+#'   data = mosaicData::HELPrct,
+#'   binwidth = 5, fill = "skyblue", color = "black", boundary = 40
+#' )
 gf_histogram <-
   layer_factory(
     geom = "bar", stat = "bin", position = "stack",
-    aes_form = list(~x, y ~ x),
+    aes_form = list(~x, y ~ ., y ~ x),
     extras = alist(bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = , linetype = , size = ),
     note =
-      if (packageVersion("ggplot2") <= "2.2.1") {
-        "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.., but see gf_dhistogram()."
-      } else {
-        "y may be stat(density) or stat(count) or stat(ndensity) or stat(ncount), but see gf_dhistogram()."
-      }
+        "y may be stat(density) or stat(count) or stat(ndensity) or stat(ncount), but see gf_dhistogram().",
   )
 
 #' @rdname gf_histogram
@@ -1041,24 +1084,15 @@ gf_histogram <-
 gf_dhistogram <-
   layer_factory(
     geom = "bar", stat = "bin", position = "stack",
-    aes_form = list(~x, y ~ x),
+    aes_form = list(~x, y ~ .,  y ~ x),
     extras =
       alist(
         bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
         linetype = , size =
         ),
     note =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        "y may be ..density.. or ..count.. or ..ndensity.. or ..ncount.."
-      } else {
-        "y may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)"
-      },
-    aesthetics =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        aes(y = ..density..)
-      } else {
-        aes(y = stat(density))
-      }
+        "y may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)",
+    aesthetics = aes(y = stat(density))
   )
 
 #' Formula interface to stat_density()
@@ -1084,26 +1118,26 @@ gf_dhistogram <-
 #' @export
 #' @examples
 #' gf_dens()
-#' gf_density(~Sepal.Length, fill = ~Species, data = iris)
-#' gf_dens(~Sepal.Length, color = ~Species, data = iris)
-#' gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 15)
+#' data(penguins, package = "palmerpenguins")
+#' gf_density(~bill_length_mm, fill = ~species, data = penguins)
+#' gf_dens(~bill_length_mm, color = ~species, data = penguins)
+#' gf_dens2(~bill_length_mm, color = ~species, fill = ~species, data = penguins)
+#' gf_freqpoly(~bill_length_mm, color = ~species, data = penguins, bins = 15)
 #' # Chaining in the data
-#' iris %>% gf_dens(~Sepal.Length, color = ~Species)
+#' data(penguins, package = "palmerpenguins")
+#' penguins %>% gf_dens(~bill_length_mm, color = ~species)
+#' # horizontal orientation
+#' penguins %>% gf_dens(bill_length_mm ~ ., color = ~species)
 gf_density <-
   layer_factory(
     geom = "area", stat = "density",
-    aes_form = ~x,
+    aes_form = list( ~x, y ~ .),
     extras = alist(
       alpha = 0.5, color = , fill = ,
       group = , linetype = , size = ,
       kernel = "gaussian", n = 512, trim = FALSE
     ),
-    aesthetics =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        aes(y = ..density..)
-      } else {
-        aes(y = stat(density))
-      }
+    aesthetics = aes(y = stat(density))
   )
 
 #' @rdname gf_density
@@ -1112,20 +1146,29 @@ gf_density <-
 gf_dens <-
   layer_factory(
     geom = "line", stat = "density",
-    aes_form = ~x,
+    aes_form = list( ~x, y ~ .),
     extras = alist(
-      alpha = 0.5, color = ,
+      alpha = 0.5, color = , fill = NA,
       group = , linetype = , size = ,
       kernel = "gaussian", n = 512, trim = FALSE
     ),
-    aesthetics =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        aes(y = ..density..)
-      } else {
-        aes(y = stat(density))
-      }
+    aesthetics = aes(y = stat(density))
   )
 
+#' @rdname gf_density
+#' @export
+
+gf_dens2 <-
+  layer_factory(
+    geom = "density_line", stat = "density",
+    aes_form = list( ~x, y ~ .),
+    extras = alist(
+      alpha = 0.5, color = , fill = NA,
+      group = , linetype = , size = ,
+      kernel = "gaussian", n = 512, trim = FALSE
+    ),
+    aesthetics = aes(y = stat(density))
+  )
 #' Formula interface to geom_dotplot()
 #'
 #' @inherit gf_point
@@ -1145,7 +1188,8 @@ gf_dens <-
 #' @seealso [ggplot2::geom_dotplot()]
 #' @export
 #' @examples
-#' gf_dotplot(~Sepal.Length, fill = ~Species, data = iris)
+#' data(penguins, package = "palmerpenguins")
+#' gf_dotplot(~bill_length_mm, fill = ~species, data = penguins)
 gf_dotplot <-
   layer_factory(
     geom = "dotplot",
@@ -1173,6 +1217,9 @@ gf_dotplot <-
 #'   to using this formula shape.)
 #'   Faceting can be achieved by including `|` in the formula.
 #' @param width Width of the bars.
+#' @param denom A formula, the right hand side of which describes the denominators used for
+#'   computing proportions and percents.  These are computed after the stat has been applied
+#'   to the data and should refer to variables available at that point.  See the examples.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
@@ -1192,25 +1239,63 @@ gf_dotplot <-
 #'   position = position_dodge()
 #' )
 #' # gf_props() and gf_percents() use proportions or percentages instead of counts
+#' # use denom to control which denominators are used.
 #' gf_props(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge()
+#' )
+#' gf_props(substance ~ .,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge(),
+#'   orientation = 'y'
+#' )
+#' gf_propsh(substance ~ .,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodgev(),
+#' )
+#'
+#' gf_percents(~substance,
 #'   data = mosaicData::HELPrct, fill = ~sex,
 #'   position = position_dodge()
 #' )
 #' gf_percents(~substance,
 #'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge(),
+#'   denom = ~x
+#' )
+#' gf_percents(~substance,
+#'   data = mosaicData::HELPrct, fill = ~sex,
+#'   position = position_dodge(),
+#'   denom = ~fill
+#' )
+#' gf_percents(~substance | sex,
+#'   data = mosaicData::HELPrct, fill = ~homeless,
+#'   position = position_dodge()
+#' )
+#' gf_percents(~substance | sex,
+#'   data = mosaicData::HELPrct,
+#'   fill = ~homeless,
+#'   denom = ~fill,
+#'   position = position_dodge()
+#' )
+#' gf_percents(~substance | sex,
+#'   data = mosaicData::HELPrct,
+#'   fill = ~homeless,
+#'   denom = ~interaction(fill, PANEL),
 #'   position = position_dodge()
 #' )
 #' if (require(scales)) {
-#'   gf_props(~substance,
+#'   gf_percents(~substance,
 #'     data = mosaicData::HELPrct, fill = ~sex,
-#'     position = position_dodge()
+#'     position = position_dodge(),
+#'     denom = ~ x,
 #'   ) %>%
 #'     gf_refine(scale_y_continuous(labels = scales::percent))
 #' }
 gf_bar <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list(~x, y ~ x),
+    aes_form = list(~x, y ~ ., y ~ x),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
       width = NULL
@@ -1223,30 +1308,69 @@ gf_bar <-
 gf_counts <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = ~x,
+    aes_form = list(~x, y ~.),
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , size = ,
       width = NULL
     )
   )
 
+#' Compute groupwise proportions and percents
+#'
+#' Transform a vector of counts and a vector of groups into
+#' a vector of proportions or percentages within groups.
+#'
+#' @rdname proportions
+#' @param x A vector of counts
+#' @param group A vector to determine groups.
+#'
+#' @export
+#' @examples
+#'
+#' x <- c(20, 30, 30, 70)
+#' g1 <- c("A", "A", "B", "B")
+#' g2 <- c("A", "B", "A", "B")
+#' props_by_group(x, g1)
+#' percs_by_group(x, g1)
+#' props_by_group(x, g2)
+
+percs_by_group <-
+  function(x, group) {
+    tibble(x, group = rep(!!group, length.out = length(x))) %>%
+      dplyr::group_by(group) %>%
+      dplyr::mutate(s = sum(x), p = 100 * x / s) %>%
+      dplyr::pull(p)
+  }
+
+#' @rdname proportions
+#' @export
+props_by_group <-
+  function(x, group) {
+    tibble(x, group = rep(!!group, length.out = length(x))) %>%
+      dplyr::group_by(group) %>%
+      dplyr::mutate(s = sum(x), p = x / s) %>%
+      dplyr::pull(p)
+  }
+
 #' @rdname gf_bar
 #' @export
 gf_props <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list(~x),
+    aes_form = list(~x, y ~ ., y ~ x),
     extras =
       alist(
         alpha = , color = , fill = , group = ,
         linetype = , size = , ylab = "proportion"
       ),
-    aesthetics =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        aes(y = ..count.. / sum(..count..))
-      } else {
-        aes(y = stat(count / sum(count)))
-      }
+    aesthetics = aes(y = after_stat(props_by_group(count, DENOM))),
+    # pre = { aesthetics[['y']][[2]][[2]][[3]] <- rlang::f_rhs(denom) },
+    pre = {
+      yaes_expr <- rlang::quo_get_expr(aesthetics[['y']]);
+      yaes_expr[[2]][[3]] <- rlang::f_rhs(denom) ;
+      aesthetics[['y']] <- yaes_expr
+    },
+    denom = ~ PANEL
   )
 
 #' @rdname gf_bar
@@ -1254,17 +1378,18 @@ gf_props <-
 gf_percents <-
   layer_factory(
     geom = "bar", stat = "count", position = "stack",
-    aes_form = list(~x),
+    aes_form = list(~x, y ~ .),
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , size = , ylab = "percent"
     ),
-    aesthetics =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        aes(y = 100 * ..count.. / sum(..count..))
-      } else {
-        aes(y = stat(100 * count / sum(count)))
-      }
+    aesthetics = aes(y = after_stat(percs_by_group(count, DENOM))),
+    pre = {
+      yaes_expr <- rlang::quo_get_expr(aesthetics[['y']]);
+      yaes_expr[[2]][[3]] <- rlang::f_rhs(denom) ;
+      aesthetics[['y']] <- yaes_expr
+    },
+    denom = ~ PANEL
   )
 
 #' Formula interface to geom_freqpoly()
@@ -1282,30 +1407,25 @@ gf_percents <-
 #' @seealso [ggplot2::geom_freqpoly()]
 #' @export
 #' @examples
-#' gf_histogram(~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) %>%
-#'   gf_freqpoly(~Sepal.Length, data = iris, color = ~Species, bins = 20)
-#' gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 20)
-#' if (utils::packageVersion("ggplot2") > "2.2.1") {
-#'   gf_dens(~Sepal.Length, data = iris, color = "navy") %>%
-#'     gf_freqpoly(stat(density) ~ Sepal.Length,
-#'       data = iris,
-#'       color = "red", bins = 20
-#'     )
-#' }
+#' data(penguins, package = "palmerpenguins")
+#' gf_histogram(~ bill_length_mm | species, alpha = 0.2, data = penguins, bins = 20) %>%
+#'   gf_freqpoly(~bill_length_mm, data = penguins, color = ~species, bins = 20)
+#' gf_freqpoly(~bill_length_mm, color = ~species, data = penguins, bins = 20)
+#' gf_dens(~bill_length_mm, data = penguins, color = "navy") %>%
+#'   gf_freqpoly(stat(density) ~ bill_length_mm,
+#'     data = penguins,
+#'     color = "red", bins = 20
+#'   )
 gf_freqpoly <-
   layer_factory(
     geom = "path", stat = "bin",
-    aes_form = list(~x, y ~ x),
+    aes_form = list(~x, y ~ .),
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       binwidth = , bins = , center = , boundary =
       ),
     note =
-      if (utils::packageVersion("ggplot2") <= "2.2.1") {
-        "y may be omitted or ..density.. or ..count.. or ..ndensity.. or ..ncount.."
-      } else {
         "y may be omitted or stat(density) or stat(count) or stat(ndensity) or stant(ncount)."
-      }
   )
 
 #' Formula interface to geom_qq()
@@ -1328,10 +1448,11 @@ gf_freqpoly <-
 #' @export
 #' @examples
 #' gf_qq(~ rnorm(100))
-#' gf_qq(~ Sepal.Length | Species, data = iris) %>% gf_qqline()
-#' gf_qq(~ Sepal.Length | Species, data = iris) %>% gf_qqline(tail = 0.10)
-#' gf_qq(~Sepal.Length, color = ~Species, data = iris) %>%
-#'   gf_qqstep(~Sepal.Length, color = ~Species, data = iris)
+#' data(penguins, package = "palmerpenguins")
+#' gf_qq(~ bill_length_mm | species, data = penguins) %>% gf_qqline()
+#' gf_qq(~ bill_length_mm | species, data = penguins) %>% gf_qqline(tail = 0.10)
+#' gf_qq(~bill_length_mm, color = ~species, data = penguins) %>%
+#'   gf_qqstep(~bill_length_mm, color = ~species, data = penguins)
 gf_qq <-
   layer_factory(
     geom = "point", stat = "qq",
@@ -1389,7 +1510,7 @@ gf_qqstep <-
 gf_ecdf <-
   layer_factory(
     geom = "step", stat = "ecdf", position = "identity",
-    aes_form = ~ x,
+    aes_form = list(~ x, y ~ .),
     extras = alist(group = , pad = , n = NULL)
   )
 
@@ -1414,24 +1535,25 @@ gf_ecdf <-
 #' @seealso [ggplot2::geom_rug()]
 #' @export
 #' @examples
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#'   gf_rug(Sepal.Length ~ Sepal.Width)
+#' data(penguins, package = "palmerpenguins")
+#' gf_point(bill_length_mm ~ bill_depth_mm, data = penguins) %>%
+#'   gf_rug(bill_length_mm ~ bill_depth_mm)
 #'
 #' # There are several ways to control x- and y-rugs separately
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#'   gf_rugx(~Sepal.Width, data = iris, color = "red") %>%
-#'   gf_rugy(Sepal.Length ~ ., data = iris, color = "green")
+#' gf_point(bill_length_mm ~ bill_depth_mm, data = penguins) %>%
+#'   gf_rugx(~bill_depth_mm, data = penguins, color = "red") %>%
+#'   gf_rugy(bill_length_mm ~ ., data = penguins, color = "green")
 #'
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#'   gf_rug(. ~ Sepal.Width, data = iris, color = "red", inherit = FALSE) %>%
-#'   gf_rug(Sepal.Length ~ ., data = iris, color = "green", inherit = FALSE)
+#' gf_point(bill_length_mm ~ bill_depth_mm, data = penguins) %>%
+#'   gf_rug(. ~ bill_depth_mm, data = penguins, color = "red", inherit = FALSE) %>%
+#'   gf_rug(bill_length_mm ~ ., data = penguins, color = "green", inherit = FALSE)
 #'
-#' gf_point(Sepal.Length ~ Sepal.Width, data = iris) %>%
-#'   gf_rug(. ~ Sepal.Width, data = iris, color = "red", sides = "b") %>%
-#'   gf_rug(Sepal.Length ~ ., data = iris, color = "green", sides = "l")
+#' gf_point(bill_length_mm ~ bill_depth_mm, data = penguins) %>%
+#'   gf_rug(. ~ bill_depth_mm, data = penguins, color = "red", sides = "b") %>%
+#'   gf_rug(bill_length_mm ~ ., data = penguins, color = "green", sides = "l")
 #'
 #' # jitter requires both an x and a y, but we can turn off one or the other with sides
-#' gf_jitter(Sepal.Length ~ Sepal.Width, data = iris) %>%
+#' gf_jitter(bill_length_mm ~ bill_depth_mm, data = penguins) %>%
 #'   gf_rug(color = "green", sides = "b", position = "jitter")
 #'
 #' # rugs work with some 1-varialbe plots as well.
@@ -1449,12 +1571,12 @@ gf_ecdf <-
 #'   gf_rug(~eruptions, data = faithful, color = "red", inherit = FALSE)
 #'
 #' # using jitter with gf_histogram() requires manually setting the y value.
-#' gf_dhistogram(~Sepal.Width, data = iris) %>%
-#'   gf_rug(0 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
+#' gf_dhistogram(~bill_depth_mm, data = penguins) %>%
+#'   gf_rug(0 ~ bill_depth_mm, data = penguins, color = "green", sides = "b", position = "jitter")
 #'
 #' # the choice of y value can affect how the plot looks.
-#' gf_dhistogram(~Sepal.Width, data = iris) %>%
-#'   gf_rug(0.5 ~ Sepal.Width, data = iris, color = "green", sides = "b", position = "jitter")
+#' gf_dhistogram(~bill_depth_mm, data = penguins) %>%
+#'   gf_rug(0.5 ~ bill_depth_mm, data = penguins, color = "green", sides = "b", position = "jitter")
 gf_rug <-
   layer_factory(
     geom = "rug",
@@ -1498,8 +1620,9 @@ gf_rugy <-
     }
   )
 
-#' Formula interface to geom_contour()
+#' Formula interface to geom_contour() and geom_contour_filled()
 #'
+#' @rdname gf_contour
 #' @inherit ggplot2::geom_contour description references
 #' @inherit gf_point
 #' @inheritParams ggplot2::geom_contour
@@ -1516,6 +1639,19 @@ gf_rugy <-
 gf_contour <-
   layer_factory(
     geom = "contour", stat = "contour",
+    aes_form = z ~ x + y
+  )
+
+#' @rdname gf_contour
+#' @export
+#' @examples
+#' gf_contour_filled(density ~ waiting + eruptions, data = faithfuld, bins = 10,
+#'     show.legend = FALSE) %>%
+#'   gf_jitter(eruptions ~ waiting, data = faithful, color = "white", alpha = 0.5,
+#'     inherit = FALSE)
+gf_contour_filled <-
+  layer_factory(
+    geom = "contour_filled", stat = "contour_filled",
     aes_form = z ~ x + y
   )
 
@@ -1551,7 +1687,8 @@ gf_contour <-
 #'   gf_facet_grid(city ~ .)
 gf_ribbon <-
   layer_factory(
-    geom = "ribbon", aes_form = ymin + ymax ~ x,
+    geom = "ribbon",
+    aes_form = list(ymin + ymax ~ x, y ~ xmin + xmax),
     extras = list(alpha = 0.3)
   )
 
@@ -1647,7 +1784,7 @@ gf_segment <-
 gf_linerange <-
   layer_factory(
     geom = "linerange",
-    aes_form = ymin + ymax ~ x,
+    aes_form = list(ymin + ymax ~ x, y ~ xmin + xmax),
     extras = alist(alpha = , color = , group = , linetype = , size = )
   )
 
@@ -1692,7 +1829,7 @@ gf_linerange <-
 gf_pointrange <-
   layer_factory(
     geom = "pointrange",
-    aes_form = y + ymin + ymax ~ x,
+    aes_form = list(y + ymin + ymax ~ x, y ~ x + xmin + xmax),
     extras = alist(
       alpha = , color = , group = , linetype = , size = ,
       fatten = 2
@@ -1836,7 +1973,7 @@ gf_summary <-
 gf_crossbar <-
   layer_factory(
     geom = "crossbar",
-    aes_form = y + ymin + ymax ~ x,
+    aes_form = list(y + ymin + ymax ~ x, y ~ x + xmin + xmax),
     extras = alist(
       alpha = , color = , group = , linetype = , size = , fatten = 2.5
     )
@@ -1887,7 +2024,7 @@ gf_crossbar <-
 gf_errorbar <-
   layer_factory(
     geom = "errorbar",
-    aes_form = ymin + ymax ~ x,
+    aes_form = list(ymin + ymax ~ x, y ~ xmin + xmax),
     inherit.aes = TRUE, # changed from FALSE to TRUE after aesthetic renaming in ggplot2
     check.aes = FALSE,
     extras = alist(
@@ -2083,7 +2220,7 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
   }
   qdots <- rlang::quos(...)
   afq <- aes_from_qdots(qdots)
-  object +
+  p <- object +
     do.call(
       ggplot2::layer,
       list(
@@ -2094,6 +2231,8 @@ gf_function <- function(object = NULL, fun, xlim, ..., inherit = FALSE) {
         params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
       )
     )
+  class(p) <- unique(c('gf_ggplot', class(p)))
+  p
 }
 
 #' @rdname gf_function
@@ -2120,7 +2259,7 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
   qdots <- rlang::quos(...)
   fun <- function(x, ...) mosaicCore::makeFun(formula)(x, ...)
   afq <- aes_from_qdots(qdots)
-  object +
+  p <- object +
     do.call(
       ggplot2::layer,
       list(
@@ -2131,6 +2270,8 @@ gf_fun <- function(object = NULL, formula, xlim, ..., inherit = FALSE) {
         params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
       )
     )
+  class(p) <- unique(c('gf_ggplot', class(p)))
+  p
 }
 
 #' Plot density function based on fit to data
@@ -2232,19 +2373,19 @@ gf_sina <-
 # #' @seealso [`ggplot2::geom_sf()`]
 #' @export
 #' @examples
-#'
+#' \dontrun{
 #' if (require(maps) && require(maptools) &&
-#'   require(sf) && require(rgeos) &&
-#'   utils::packageVersion("ggplot2") > "2.2.1") {
-#'   US <- sf::st_as_sf(map("state", plot = FALSE, fill = TRUE))
+#'   require(sf) && require(rgeos))
+#'   US <- sf::st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
 #'   gf_sf(fill = ~ factor(nchar(ID)), data = US) %>%
 #'     gf_refine(coord_sf())
 #'
 #'   # We can specify shape data and external data separately using geometry
-#'   MI <- sf::st_as_sf(map("county", "michigan", plot = FALSE, fill = TRUE))
+#'   MI <- sf::st_as_sf(maps::map("county", "michigan", plot = FALSE, fill = TRUE))
+#'   MIgeom <- MI$geom
 #'   gf_sf(
 #'     fill = ~ log10(population), data = MIpop %>% dplyr::arrange(county),
-#'     geometry = ~ MI$geometry, color = "white"
+#'     geometry = ~MIgeom, color = "white"
 #'   ) %>%
 #'     gf_refine(coord_sf(), theme_bw())
 #'
@@ -2259,15 +2400,6 @@ gf_sina <-
 #'     )
 #' }
 gf_sf <-
-  if (utils::packageVersion("ggplot2") <= "2.2.1") {
-    function(object = NULL, gformula = NULL, data = NULL, alpha,
-                 color, fill, group, linetype, size, geometry, xlab,
-                 ylab, title, subtitle, caption, stat = "sf", position
-                 = "identity", show.legend = NA, show.help = NULL,
-                 inherit = TRUE, environment = parent.frame(), ...) {
-      message("gf_sf() requires a newer version of ggplot2.")
-    }
-  } else {
     layer_factory(
       layer_fun = quo(ggplot2::geom_sf),
       geom = "sf", stat = "sf",
@@ -2283,7 +2415,6 @@ gf_sf <-
         }
       }
     )
-  }
 
 
 #' Create an "empty" plot
@@ -2295,8 +2426,9 @@ gf_sf <-
 #' @return A plot with now layers.
 #' @examples
 #' gf_empty()
+#' data(penguins, package = "palmerpenguins")
 #' gf_empty() %>%
-#'   gf_point(Sepal.Length ~ Sepal.Width, data = iris, color = ~Species)
+#'   gf_point(bill_length_mm ~ bill_depth_mm, data = penguins, color = ~species)
 #' @export
 gf_empty <- function(environment = parent.frame()) {
   ggplot2::ggplot(environment = environment)

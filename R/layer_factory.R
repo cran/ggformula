@@ -5,9 +5,11 @@ utils::globalVariables("role")
 #' @importFrom stringr str_split str_match
 #' @importFrom stats as.formula
 #' @importFrom utils modifyList
-#' @importFrom rlang is_character exprs f_rhs is_formula is_null enquo
+#' @importFrom rlang is_character exprs f_rhs f_lhs is_formula is_null enquo
 #' @importFrom rlang get_expr
+#' @importFrom rlang is_missing
 #' @import ggplot2
+#' @import scales
 NA
 
 
@@ -40,6 +42,7 @@ NA
 #' @param data A data frame or `NULL` or `NA`.
 #' @param layer_fun The function used to create the layer or a quosure that evaluates
 #'   to such a function.
+#' @param ... Additional arguments.
 #' @return A function.
 #' @export
 
@@ -56,7 +59,8 @@ layer_factory <-
     inherit.aes = TRUE,
     check.aes = TRUE,
     data = NULL,
-    layer_fun = quo(ggplot2::layer)) {
+    layer_fun = quo(ggplot2::layer),
+    ...) {
 
   pre <- substitute(pre)
 
@@ -215,7 +219,7 @@ layer_factory <-
       }
 
       # If no ..., be sure to remove things not in the formals list
-      if (!"..." %in% names(formals(layer_fun))) {
+      if (! "..." %in% names(formals(layer_fun))) {
         layer_args <- cull_list(layer_args, names(formals(layer_fun)))
       }
 
@@ -265,27 +269,30 @@ layer_factory <-
         }
       }
 
-      if (have_arg("ylab")) {
+      if (! rlang::is_missing(ylab)) {
         p <- p + ggplot2::ylab(ylab)
       }
-      if (have_arg("xlab")) {
+      if (! rlang::is_missing(xlab)) {
         p <- p + ggplot2::xlab(xlab)
       }
-      if (have_arg("title")) {
+      if (! rlang::is_missing(title)) {
         p <- p + ggplot2::labs(title = title)
       }
-      if (have_arg("subtitle")) {
+      if (! rlang::is_missing(subtitle)) {
         p <- p + ggplot2::labs(subtitle = subtitle)
       }
-      if (have_arg("caption")) {
+      if (! rlang::is_missing(caption)) {
         p <- p + ggplot2::labs(caption = caption)
       }
+      class(p) <- unique(c("gf_ggplot", class(p)))
       p
     }
   formals(res) <-
-    create_formals(
-      extras, layer_fun = layer_fun, geom = geom, stat = stat,
-      position = position, inherit.aes = inherit.aes)
+    c(
+      create_formals(
+        extras, layer_fun = layer_fun, geom = geom, stat = stat,
+        position = position, inherit.aes = inherit.aes),
+      list(...))
 
   assign("inherit.aes", inherit.aes, environment(res))
   assign("check.aes", check.aes, environment(res))
@@ -503,7 +510,7 @@ response2explanatory <-
 # themselves are at the end of this file....
 
 # traverse a formula and return a nested list of "nodes"
-# stop traversal if we encouter a binary operator in stop_binops
+# stop traversal if we encounter a binary operator in stop_binops
 formula_slots <- function(x, stop_binops = c(":", "::")) {
   if (length(x) == 2L && deparse(x[[1]]) == "~") {
     formula_slots(x[[2]])
@@ -518,6 +525,56 @@ formula_slots <- function(x, stop_binops = c(":", "::")) {
   } else {
     list(formula_slots(x[[2]]), formula_slots(x[[3]]))
   }
+}
+
+
+as_formula <- function(x, ...) {
+  UseMethod("as_formula", x)
+}
+
+as_formula.formula <- function(x, ...) {
+  x
+}
+
+
+as_formula.call <- function(x, ...) {
+  res <- ~ x
+  # environment(res) <- env
+  res[[2]] <- x[[2]]
+  res
+}
+
+as_formula.name <- function(x, env = parent.frame(), ...) {
+  res <- ~ x
+  environment(res) <- env
+  res[[2]] <- x
+  res
+}
+
+f_formula_slots <- function(x, env = parent.frame()) {
+  if (is.null(x)) {
+    return(x)
+  }
+  if (length(x) == 1L) {
+    return(as_formula(x, env))
+  }
+  if (x[[1]] == as.symbol("~")) {
+    return(list(f_formula_slots(rlang::f_lhs(x), env), f_formula_slots(rlang::f_rhs(x), env)))
+  }
+  if (x[[1]] == as.symbol("(")) {
+    res <- ~ x
+    res[[2]] <- x[[2]]  # strip parens
+    environment(res) <- env
+    return(res)
+  }
+  if (length(x) == 2L) {
+    res <- ~ x
+    res[[2]] <- x  # leave call as is
+    environment(res) <- env
+    return(res)
+  }
+  # if we get here, we should have a binary operation
+  return(list(f_formula_slots(rlang::f_lhs(x), env), f_formula_slots(rlang::f_rhs(x), env)))
 }
 
 # add quotes to character elements of list x and returns a vector of character
@@ -638,13 +695,28 @@ formula_split <- function(formula) {
   list(formula = formula, condition = condition, facet_type = facet_type)
 }
 
-have_arg <- function(arg, env = sys.frame(-1)) {
-  L <- as.list(env)
-  arg %in% names(L) &&
-    !(inherits(L[[arg]], "name") && as.character(L[[arg]]) == "")
-}
+#  #' @export
+#  match_call <- function(n = 1L, include_missing = FALSE) {
+#    call <- evalq(match.call(), parent.frame(n))
+#    formals <- evalq(formals(), parent.frame(n))
+#
+#    for(i in setdiff(names(formals), names(call))) {
+#      if (include_missing || !rlang::is_missing(formals[[i]])) {
+#        call[i] <- list( formals[[i]] )
+#      }
+#    }
+#    match.call(sys.function(sys.parent()), call)
+#  }
+#
+#  #' @export
+#  have_arg <-
+#    function(arg, n = 1L,
+#             call = evalq(match_call(include_missing = FALSE), parent.frame(n))
+#    ) {
+#    arg %in% names(call)
+#  }
 
-#' @importFrom utils packageVersion
+
 
 gf_ingredients <-
   function(formula = NULL, data = NULL,
@@ -736,7 +808,7 @@ remove_dot_from_mapping <- function(mapping) {
   mapping
 }
 
-formula_shape <- function(x) {
+formula_shape0 <- function(x) {
   if (length(x) < 2) {
     return(0)
   }
@@ -753,50 +825,93 @@ formula_shape <- function(x) {
   }
 
   # if (as.character(x[[1]]) %in% c("|")){
-  #   return(formula_shape(x[[2]]))
+  #   return(formula_shape0(x[[2]]))
   # }
 
   if (arity == 1L) {
-    right_shape <- formula_shape(x[[2]])
-    arity <- arity - (right_shape[1] < 0)
+    right_shape0 <- formula_shape0(x[[2]])
+    arity <- arity - (right_shape0[1] < 0)
     if (arity == 0) {
       return(arity)
     }
-    return(right_shape)
+    return(right_shape0)
   }
   if (arity == 2L) {
-    right_shape <- formula_shape(x[[3]])
-    left_shape <- formula_shape(x[[2]])
-    if (left_shape[1] < 0 && right_shape < 0) {
+    right_shape0 <- formula_shape0(x[[3]])
+    left_shape0 <- formula_shape0(x[[2]])
+    if (left_shape0[1] < 0 && right_shape0 < 0) {
       return(0)
     }
-    if (left_shape[1] < 0) {
-      if (right_shape[1] == 1L) {
-        return(right_shape[-1])
+    if (left_shape0[1] < 0) {
+      if (right_shape0[1] == 1L) {
+        return(right_shape0[-1])
       }
-      return(right_shape)
+      return(right_shape0)
     }
-    if (right_shape[1] < 0) {
-      if (left_shape[1] == 1L) {
-        return(left_shape[-1])
+    if (right_shape0[1] < 0) {
+      if (left_shape0[1] == 1L) {
+        return(left_shape0[-1])
       }
-      return(left_shape)
+      return(left_shape0)
     }
-    return(c(2, left_shape, right_shape))
+    return(c(2, left_shape0, right_shape0))
   }
-  stop("Bug: problems determining formula shape.")
+  stop("Bug: problems determining formula shape (0).")
 
-  c(length(x) - 1, unlist(sapply(x[-1], formula_shape)))
-  # list(length(x) - 1, lapply(x[-1], formula_shape))
+  c(length(x) - 1, unlist(sapply(x[-1], formula_shape0)))
+  # list(length(x) - 1, lapply(x[-1], formula_shape0))
 }
 
-formula_match <- function(formula, aes_form = y ~ x) {
+
+formula_shape <- function(x) {
+  if (is.null(x)) {
+    return(integer(0))
+  }
+  if (length(x) == 1L) {
+    return(0L)
+  }
+  if (x[[1]] == as.symbol("~")) {
+    return(c( length(x) - 1, formula_shape(rlang::f_lhs(x)), formula_shape(rlang::f_rhs(x))))
+  }
+  if (x[[1]] == as.symbol("(")) {
+    return(0L)
+  }
+  # this is covered by fall through below now
+  # if (length(x) == 2L) {
+  #   return(0L)
+  # }
+
+  if (length(x) == 3 && as.character(x[[1]]) %in% c('+')) {
+    # treat as binary op and call recusively on lhs and rhs
+    return(c(2L, formula_shape(rlang::f_lhs(x)), formula_shape(rlang::f_rhs(x))))
+  }
+
+  return(0)
+}
+
+# @param formula a formula describing aesthetics
+# @param aes_form a list of template formulas (or a single formula)
+# @param value a logical indicating whether the first matching value should be returend
+#   rather than a vector of logicals
+# @param unmatched value of retun if value = TRUE and there are no matches.
+
+formula_match <-
+  function(formula, aes_form = y ~ x, value = FALSE, unmatched = NULL) {
   if (!is.list(aes_form)) {
     aes_form <- list(aes_form)
   }
   user_shape <- formula_shape(formula_split(formula)$formula)
   shapes <- lapply(aes_form, formula_shape)
-  sapply(shapes, function(s) identical(s, user_shape))
+  bools <- sapply(shapes, function(s) identical(s, user_shape))
+  if (value) {
+    if (any(bools)) {
+      aes_form[[which.max(bools)]]
+    } else {
+      unmatched
+    }
+  } else {
+    bools
+  }
 }
 
 formula_to_df <- function(formula = NULL, data_names = character(0),

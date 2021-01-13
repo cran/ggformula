@@ -211,6 +211,14 @@ a gg object
 \description{
 Count and density histograms in \code{ggformula}.
 }
+\section{Horizontal Geoms}{
+
+There are two ways to obtain "horizontal" geoms:
+(1) The ggstance package provides a set of "horizontal" geoms and positions;
+(2) Thee ggplot2 now provides an \code{orientation} argument for "native" horizontal
+geoms and positions.  ggformula supports both.
+}
+
 \section{Specifying plot attributes}{
 
 
@@ -248,7 +256,8 @@ gf_dhistogram(~x, bins = 30) \%>\%
 
 gf_histogram(~x, fill = ~ (abs(x) <= 2), boundary = 2, binwidth = 0.25)
 
-gf_histogram(~ Sepal.Length | Species, data = iris, binwidth = 0.25)
+data(penguins, package = "palmerpenguins")
+gf_histogram(~ bill_length_mm | species, data = penguins, binwidth = 0.25)
 gf_histogram(~age,
   data = mosaicData::HELPrct, binwidth = 5,
   fill = "skyblue", color = "black"
@@ -262,14 +271,18 @@ gf_histogram(~age,
   data = mosaicData::HELPrct,
   binwidth = 5, fill = "skyblue", color = "black", boundary = 40
 )
+gf_histogram(age ~ .,
+  data = mosaicData::HELPrct,
+  binwidth = 5, fill = "skyblue", color = "black", boundary = 40
+)
 
 gf_histogramh(~x, bins = 30)
+gf_histogram(x ~., bins = 30)
 gf_histogramh(x ~ ., bins = 30)
 gf_histogramh(x ~ stat(density), bins = 30)
 gf_dhistogramh(~x, bins = 30)
+gf_dhistogram(x ~ ., bins = 30)
 gf_dhistogramh(x ~ ., bins = 30)
-# better to use gf_histogramh() here, but this works
-gf_dhistogramh(x ~ stat(count), bins = 30)
 }
 \seealso{
 \code{\link[ggplot2:geom_histogram]{ggplot2::geom_histogram()}}

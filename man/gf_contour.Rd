@@ -2,7 +2,8 @@
 % Please edit documentation in R/gf_functions.R
 \name{gf_contour}
 \alias{gf_contour}
-\title{Formula interface to geom_contour()}
+\alias{gf_contour_filled}
+\title{Formula interface to geom_contour() and geom_contour_filled()}
 \usage{
 gf_contour(
   object = NULL,
@@ -16,6 +17,25 @@ gf_contour(
   caption,
   geom = "contour",
   stat = "contour",
+  position = "identity",
+  show.legend = NA,
+  show.help = NULL,
+  inherit = TRUE,
+  environment = parent.frame()
+)
+
+gf_contour_filled(
+  object = NULL,
+  gformula = NULL,
+  data = NULL,
+  ...,
+  xlab,
+  ylab,
+  title,
+  subtitle,
+  caption,
+  geom = "contour_filled",
+  stat = "contour_filled",
   position = "identity",
   show.legend = NA,
   show.help = NULL,
@@ -88,13 +108,13 @@ display.}
 a gg object
 }
 \description{
-ggplot2 can not draw true 3d surfaces, but you can use \code{geom_contour}
-and \code{\link[ggplot2:geom_tile]{geom_tile()}} to visualise 3d surfaces in 2d. To be a valid
-surface, the data must contain only a single row for each unique combination
-of the variables mapped to the \code{x} and \code{y} aesthetics. Contouring
+ggplot2 can not draw true 3D surfaces, but you can use \code{geom_contour()},
+\code{geom_contour_filled()}, and \code{\link[ggplot2:geom_tile]{geom_tile()}} to visualise 3D surfaces in 2D.
+To specify a valid surface, the data must contain \code{x}, \code{y}, and \code{z} coordinates,
+and each unique combination of \code{x} and \code{y} can appear exactly once. Contouring
 tends to work best when \code{x} and \code{y} form a (roughly) evenly
 spaced grid. If your data is not evenly spaced, you may want to interpolate
-to a grid before visualising.
+to a grid before visualising, see \code{\link[ggplot2:geom_density_2d]{geom_density_2d()}}.
 }
 \section{Specifying plot attributes}{
 
@@ -125,6 +145,10 @@ in another.
 \examples{
 gf_density_2d(eruptions ~ waiting, data = faithful, alpha = 0.5, color = "navy") \%>\%
   gf_contour(density ~ waiting + eruptions, data = faithfuld, bins = 10, color = "red")
+gf_contour_filled(density ~ waiting + eruptions, data = faithfuld, bins = 10,
+    show.legend = FALSE) \%>\%
+  gf_jitter(eruptions ~ waiting, data = faithful, color = "white", alpha = 0.5,
+    inherit = FALSE)
 }
 \seealso{
 \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour()}}, \code{\link[=gf_density_2d]{gf_density_2d()}}

@@ -3,6 +3,7 @@
 \name{gf_density}
 \alias{gf_density}
 \alias{gf_dens}
+\alias{gf_dens2}
 \title{Formula interface to stat_density()}
 \usage{
 gf_density(
@@ -40,6 +41,7 @@ gf_dens(
   ...,
   alpha = 0.5,
   color,
+  fill = NA,
   group,
   linetype,
   size,
@@ -52,6 +54,34 @@ gf_dens(
   subtitle,
   caption,
   geom = "line",
+  stat = "density",
+  position = "identity",
+  show.legend = NA,
+  show.help = NULL,
+  inherit = TRUE,
+  environment = parent.frame()
+)
+
+gf_dens2(
+  object = NULL,
+  gformula = NULL,
+  data = NULL,
+  ...,
+  alpha = 0.5,
+  color,
+  fill = NA,
+  group,
+  linetype,
+  size,
+  kernel = "gaussian",
+  n = 512,
+  trim = FALSE,
+  xlab,
+  ylab,
+  title,
+  subtitle,
+  caption,
+  geom = "density_line",
   stat = "density",
   position = "identity",
   show.legend = NA,
@@ -187,11 +217,16 @@ in another.
 
 \examples{
 gf_dens()
-gf_density(~Sepal.Length, fill = ~Species, data = iris)
-gf_dens(~Sepal.Length, color = ~Species, data = iris)
-gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 15)
+data(penguins, package = "palmerpenguins")
+gf_density(~bill_length_mm, fill = ~species, data = penguins)
+gf_dens(~bill_length_mm, color = ~species, data = penguins)
+gf_dens2(~bill_length_mm, color = ~species, fill = ~species, data = penguins)
+gf_freqpoly(~bill_length_mm, color = ~species, data = penguins, bins = 15)
 # Chaining in the data
-iris \%>\% gf_dens(~Sepal.Length, color = ~Species)
+data(penguins, package = "palmerpenguins")
+penguins \%>\% gf_dens(~bill_length_mm, color = ~species)
+# horizontal orientation
+penguins \%>\% gf_dens(bill_length_mm ~ ., color = ~species)
 }
 \seealso{
 \code{\link[=gf_ash]{gf_ash()}}, \code{\link[ggplot2:geom_density]{ggplot2::geom_density()}}

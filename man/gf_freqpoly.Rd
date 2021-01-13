@@ -90,20 +90,20 @@ bin width of a time variable is the number of seconds.}
 \code{boundary}, may be specified for a single plot. \code{center} specifies the
 center of one of the bins. \code{boundary} specifies the boundary between two
 bins. Note that if either is above or below the range of the data, things
-will be shifted by the appropriate integer multiple of \code{width}.
-For example, to center on integers use \code{width = 1} and \code{center = 0}, even
+will be shifted by the appropriate integer multiple of \code{binwidth}.
+For example, to center on integers use \code{binwidth = 1} and \code{center = 0}, even
 if \code{0} is outside the range of the data. Alternatively, this same alignment
-can be specified with \code{width = 1} and \code{boundary = 0.5}, even if \code{0.5} is
+can be specified with \code{binwidth = 1} and \code{boundary = 0.5}, even if \code{0.5} is
 outside the range of the data.}
 
 \item{boundary}{bin position specifiers. Only one, \code{center} or
 \code{boundary}, may be specified for a single plot. \code{center} specifies the
 center of one of the bins. \code{boundary} specifies the boundary between two
 bins. Note that if either is above or below the range of the data, things
-will be shifted by the appropriate integer multiple of \code{width}.
-For example, to center on integers use \code{width = 1} and \code{center = 0}, even
+will be shifted by the appropriate integer multiple of \code{binwidth}.
+For example, to center on integers use \code{binwidth = 1} and \code{center = 0}, even
 if \code{0} is outside the range of the data. Alternatively, this same alignment
-can be specified with \code{width = 1} and \code{boundary = 0.5}, even if \code{0.5} is
+can be specified with \code{binwidth = 1} and \code{boundary = 0.5}, even if \code{0.5} is
 outside the range of the data.}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
@@ -178,17 +178,16 @@ in another.
 }
 
 \examples{
-gf_histogram(~ Sepal.Length | Species, alpha = 0.2, data = iris, bins = 20) \%>\%
-  gf_freqpoly(~Sepal.Length, data = iris, color = ~Species, bins = 20)
-gf_freqpoly(~Sepal.Length, color = ~Species, data = iris, bins = 20)
-if (utils::packageVersion("ggplot2") > "2.2.1") {
-  gf_dens(~Sepal.Length, data = iris, color = "navy") \%>\%
-    gf_freqpoly(stat(density) ~ Sepal.Length,
-      data = iris,
-      color = "red", bins = 20
-    )
-}
+data(penguins, package = "palmerpenguins")
+gf_histogram(~ bill_length_mm | species, alpha = 0.2, data = penguins, bins = 20) \%>\%
+  gf_freqpoly(~bill_length_mm, data = penguins, color = ~species, bins = 20)
+gf_freqpoly(~bill_length_mm, color = ~species, data = penguins, bins = 20)
+gf_dens(~bill_length_mm, data = penguins, color = "navy") \%>\%
+  gf_freqpoly(stat(density) ~ bill_length_mm,
+    data = penguins,
+    color = "red", bins = 20
+  )
 }
 \seealso{
-\code{\link[ggplot2:geom_freqpoly]{ggplot2::geom_freqpoly()}}
+\code{\link[ggplot2:geom_histogram]{ggplot2::geom_freqpoly()}}
 }
