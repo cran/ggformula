@@ -371,6 +371,21 @@ gf_polygon <-
 #'     interval = "confidence", color = "red"
 #'   ) %>%
 #'   gf_point()
+#'
+#'   clotting <- data.frame(
+#'    u = c(5,10,15,20,30,40,60,80,100),
+#'    lot1 = c(118,58,42,35,27,25,21,19,18),
+#'    lot2 = c(69,35,26,21,18,16,13,12,12))
+#'   gf_point(lot1 ~ u, data = clotting) %>%
+#'     gf_smooth(formula = y ~ log(x), method = "glm",
+#'               method.args = list(family = Gamma))
+#'   gf_point(lot2 ~ u, data = clotting) %>%
+#'     gf_smooth(formula = y ~ log(x), color = "red", method = "glm",
+#'               method.args = list(family = Gamma))
+#'
+
+# summary(glm(lot1 ~ log(u), data = clotting, family = Gamma))
+# summary(glm(lot2 ~ log(u), data = clotting, family = Gamma))
 gf_smooth <-
   layer_factory(
     geom = "smooth",
@@ -605,6 +620,17 @@ gf_hex <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
+#'
+#' @param outlier.color,outlier.fill,outlier.shape,outlier.size,outlier.stroke,outlier.alpha
+#' 	 Default aesthetics for outliers.
+#' 	 Set to NULL to inherit from the aesthetics used for the box.
+#' 	 In the unlikely event you specify both US and UK spellings of colour,
+#' 	 the US spelling will take precedence.
+#'   Sometimes it can be useful to hide the outliers, for example when overlaying the
+#'   raw data points on top of the boxplot. Hiding the outliers can be achieved by
+#'   setting outlier.shape = NA. Importantly, this does not remove the outliers, it only
+#'   hides them, so the range calculated for the y-axis will be the same with outliers shown
+#'   and outliers hidden.
 #'
 #' @seealso [ggplot2::geom_boxplot()], [fivenum()], [df_stats()]
 #' @export

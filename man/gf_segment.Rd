@@ -76,13 +76,7 @@ for mapping linetype.}
 
 \item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
+\item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
@@ -110,7 +104,7 @@ a gg object
 }
 \description{
 \code{geom_segment()} draws a straight line between points (x, y) and
-(xend, yend). \code{geom_curve} draws a curved line. See the underlying
+(xend, yend). \code{geom_curve()} draws a curved line. See the underlying
 drawing function \code{\link[grid:grid.curve]{grid::curveGrob()}} for the parameters that
 control the curve.
 }

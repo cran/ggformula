@@ -103,7 +103,9 @@ function defined by \code{method}.}
 
 \item{span}{Controls the amount of smoothing for the default loess smoother.
 Smaller numbers produce wigglier lines, larger numbers produce smoother
-lines.}
+lines. Only used with loess, i.e. when \code{method = "loess"},
+or when \code{method = NULL} (the default) and there are fewer than 1,000
+observations.}
 
 \item{fullrange}{Should the fit span the full range of the plot, or just
 the data?}
@@ -114,13 +116,7 @@ the data?}
 
 \item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
+\item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
@@ -225,6 +221,18 @@ gf_lm(hwy ~ displ,
     interval = "confidence", color = "red"
   ) \%>\%
   gf_point()
+
+  clotting <- data.frame(
+   u = c(5,10,15,20,30,40,60,80,100),
+   lot1 = c(118,58,42,35,27,25,21,19,18),
+   lot2 = c(69,35,26,21,18,16,13,12,12))
+  gf_point(lot1 ~ u, data = clotting) \%>\%
+    gf_smooth(formula = y ~ log(x), method = "glm",
+              method.args = list(family = Gamma))
+  gf_point(lot2 ~ u, data = clotting) \%>\%
+    gf_smooth(formula = y ~ log(x), color = "red", method = "glm",
+              method.args = list(family = Gamma))
+
 }
 \seealso{
 \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}, \code{\link[=gf_spline]{gf_spline()}}

@@ -234,6 +234,12 @@ layer_factory <-
       # remove any duplicated arguments
       layer_args <- layer_args[unique(names(layer_args))]
 
+      # remove mapping and data if mapping is empty -- to avoid warnings from gf_abline() and friends
+      if (length(layer_args[['mapping']]) < 1) {
+        layer_args[['mapping']] <- NULL
+        layer_args[['data']] <- NULL
+      }
+
       new_layer <- do.call(layer_fun, layer_args, envir = environment)
 
       if (is.null(ingredients[["facet"]])) {
@@ -349,10 +355,11 @@ add_aes <- function(mapping, new, envir = parent.frame()) {
 # grab formuls from a stat or geom (or similar)
 
 grab_formals <- function(f, type = "stat") {
+  # wrapping with c() is per issue #150 due to change in "union() and friends"
   if (is.character(f) && !grepl(paste0("^", type), f)) {
-    return(formals(paste0(type, "_", f)))
+    return(c(formals(paste0(type, "_", f))))
   } else if (is.function(f)) {
-    return(formals(f))
+    return(c(formals(f)))
   } else {
     return(list())
   }
@@ -716,8 +723,6 @@ formula_split <- function(formula) {
 #    arg %in% names(call)
 #  }
 
-
-
 gf_ingredients <-
   function(formula = NULL, data = NULL,
              extras = list(),
@@ -751,19 +756,15 @@ gf_ingredients <-
     names(mapped_list) <- aes_df[["role"]][aes_df$map]
     # . is placeholder for "no aesthetic mapping", so remove the dots
     mapped_list[mapped_list == "."] <- NULL
-    more_mapped_list <-
-      lapply(aesthetics, function(x) deparse(rlang::get_expr(x))) %>%
-      stats::setNames(names(aesthetics))
-    mapped_list <- modifyList(more_mapped_list, mapped_list)
+
+    mapping <- modifyList(aesthetics, do.call(aes, mapped_list))  # was aes_string
+    mapping <- aes_env(mapping, envir)
+    mapping <- remove_dot_from_mapping(mapping)
 
     set_list <- as.list(aes_df[["expr"]][!aes_df$map])
     names(set_list) <- aes_df[["role"]][!aes_df$map]
     set_list <- modifyList(extras, set_list)
 
-    mapping <- modifyList(aesthetics, do.call(aes_string, mapped_list))
-    mapping <- aes_env(mapping, envir)
-
-    mapping <- remove_dot_from_mapping(mapping)
 
     res <-
       list(
@@ -923,57 +924,63 @@ formula_to_df <- function(formula = NULL, data_names = character(0),
       map = logical(0)
     ))
   }
-  parts <- formula_slots(formula) %>%
-    rapply(deparse, how = "replace") %>%
-    unlist()
-  aes_names <- formula_slots(aes_form) %>%
-    rapply(deparse, how = "replace") %>%
-    unlist()
-
-  # trim leading/trailing blanks
-  parts <- gsub("^\\s+|\\s+$", "", parts)
-
-  # split into pairs/nonpairs
-  pairs <- parts[grepl(":+", parts)]
-  nonpairs <- parts[ !grepl(":+", parts)]
-
-  ## !! turning off support for attribute:value !!
-  pairs <- parts[FALSE]
-  nonpairs <- parts[TRUE]
-
-  pair_list <- list()
-  mapped_pairs <- character(0)
-  for (pair in pairs) {
-    this_pair <- stringr::str_split(pair, ":+", n = 2)[[1]]
-    pair_list[this_pair[1]] <- this_pair[2]
-    if (stringr::str_match(pair, ":+") == "::") {
-      mapped_pairs <- c(mapped_pairs, this_pair[1])
-    }
+  get_leaf <- function(x) {
+    # if there are any special cases, add them here
+    return(x)
   }
 
-  nonpair_list <- nonpairs
-  # remove items specified explicitly
-  aes_names <- setdiff(all.vars(aes_form), names(pair_list))
-  names(nonpair_list) <- head(aes_names, length(nonpair_list))
+  parts <- formula_slots(formula) %>%
+    rapply(get_leaf, how = "replace") %>%
+    unlist()
+  aes_names <- formula_slots(aes_form) %>%
+    rapply(get_leaf, how = "replace") %>%
+    unlist()
 
-  if (length(nonpair_list) > length(aes_names)) {
+  # trim leading/trailing blanks and turn `some name` into "`some name`"
+  # parts <- gsub("^\\s+|\\s+$", "", parts)
+
+  # # split into pairs/nonpairs
+  # pairs <- parts[grepl(":+", parts)]
+  # nonpairs <- parts[ !grepl(":+", parts)]
+
+  # ## !! turning off support for attribute:value !!
+  # pairs <- parts[FALSE]
+  # nonpairs <- parts[TRUE]
+
+  # pair_list <- list()
+  # mapped_pairs <- character(0)
+  # for (pair in pairs) {
+  #   this_pair <- stringr::str_split(pair, ":+", n = 2)[[1]]
+  #   pair_list[this_pair[1]] <- this_pair[2]
+  #   if (stringr::str_match(pair, ":+") == "::") {
+  #     mapped_pairs <- c(mapped_pairs, this_pair[1])
+  #   }
+  # }
+
+  parts_list <- parts # nonpairs
+
+  # remove items specified explicitly
+  aes_names <- all.vars(aes_form)  # setdiff(all.vars(aes_form), names(pair_list))
+  names(parts_list) <- head(aes_names, length(parts_list))
+
+  if (length(parts_list) > length(aes_names)) {
     stop("Formula too large.  I'm looking for ", format(aes_form),
       call. = FALSE
     )
   }
-  if (length(nonpair_list) < length(aes_names)) {
+  if (length(parts_list) < length(aes_names)) {
     stop("Formula too small.  I'm looking for ", format(aes_form),
       call. = FALSE
     )
   }
 
-  res <- c(nonpair_list, pair_list)
+  # res <- c(parts_list, pair_list)
 
   res <-
     tibble::tibble(
-      role = names(res),
-      expr = unlist(res),
-      map = unlist(res) %in% c(data_names) | role %in% aes_names | role %in% mapped_pairs
+      role = names(parts_list),
+      expr = unlist(parts_list),
+      map = unlist(parts_list) %in% c(data_names) | role %in% aes_names #  | role %in% mapped_pairs
     )
   row.names(res) <- NULL
   res

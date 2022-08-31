@@ -98,20 +98,11 @@ function defined by \code{method}.}
 
 \item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{title}{Title, sub-title, and caption for the plot.
+\item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{geom}{Use to override the default connection between
-\code{geom_quantile} and \code{stat_quantile}.}
-
-\item{stat}{Use to override the default connection between
-\code{geom_quantile} and \code{stat_quantile}.}
+\item{geom, stat}{Use to override the default connection between
+\code{geom_quantile()} and \code{stat_quantile()}.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}

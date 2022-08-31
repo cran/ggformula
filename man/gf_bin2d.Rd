@@ -61,13 +61,7 @@ for mapping linetype.}
 
 \item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
+\item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
@@ -91,7 +85,7 @@ of the attributes of the layer are mapped.}
 a gg object
 }
 \description{
-\code{geom_bin2d()} uses \code{\link[ggplot2:geom_bin2d]{ggplot2::stat_bin2d()}} to bin the data before using
+\code{geom_bin2d()} uses \code{\link[ggplot2:geom_bin_2d]{ggplot2::stat_bin2d()}} to bin the data before using
 \code{\link[=gf_tile]{gf_tile()}} to display the results.
 }
 \section{Specifying plot attributes}{
@@ -147,5 +141,5 @@ gf_bin2d(eruptions ~ waiting, data = faithful, bins = 15) \%>\%
   gf_refine(scale_fill_viridis_c(begin = 0.1, end = 0.9))
 }
 \seealso{
-\code{\link[ggplot2:geom_bin2d]{ggplot2::geom_bin2d()}}, \code{\link[=gf_tile]{gf_tile()}}
+\code{\link[ggplot2:geom_bin_2d]{ggplot2::geom_bin2d()}}, \code{\link[=gf_tile]{gf_tile()}}
 }

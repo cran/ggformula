@@ -61,13 +61,7 @@ for mapping linetype.}
 
 \item{ylab}{Label for y-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{title}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{subtitle}{Title, sub-title, and caption for the plot.
-See also \code{\link[=gf_labs]{gf_labs()}}.}
-
-\item{caption}{Title, sub-title, and caption for the plot.
+\item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
@@ -95,7 +89,7 @@ a gg object
 parameterised differently: \code{geom_rect()} uses the locations of the four
 corners (\code{xmin}, \code{xmax}, \code{ymin} and \code{ymax}), while
 \code{geom_tile()} uses the center of the tile and its size (\code{x},
-\code{y}, \code{width}, \code{height}). \code{geom_raster} is a high
+\code{y}, \code{width}, \code{height}). \code{geom_raster()} is a high
 performance special case for when all the tiles are the same size.
 }
 \section{Specifying plot attributes}{
