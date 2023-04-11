@@ -56,7 +56,7 @@ gf_barh <-
     geom = "barh", stat = "counth", position = "stackv",
     aes_form = list(~y, y ~ x),
     extras = alist(
-      alpha = , color = , fill = , group = , linetype = , size = ,
+      alpha = , color = , fill = , group = , linetype = , linewidth = ,
       width = NULL
     )
   )
@@ -69,7 +69,7 @@ gf_countsh <-
     geom = "barh", stat = "counth", position = "stackv",
     aes_form = list(~y, y ~ .),
     extras = alist(
-      alpha = , color = , fill = , group = , linetype = , size = ,
+      alpha = , color = , fill = , group = , linetype = , linewidth = ,
       width = NULL
     )
   )
@@ -82,7 +82,7 @@ gf_colh <-
     geom = "colh", position = "stackv",
     aes_form = list(y ~ x),
     extras = alist(
-      alpha = , color = , fill = , group = , linetype = , size = ,
+      alpha = , color = , fill = , group = , linetype = , linewidth = ,
       width = NULL
     )
   )
@@ -96,7 +96,7 @@ gf_propsh <-
     extras =
       alist(
         alpha = , color = , fill = , group = ,
-        linetype = , size = , xlab = "proportion"
+        linetype = , linewidth = , xlab = "proportion"
       ),
     aesthetics = aes(x = after_stat(props_by_group(count, DENOM))),
     pre = {
@@ -115,7 +115,7 @@ gf_percentsh <-
     aes_form = list(~y, y ~ .),
     extras = alist(
       alpha = , color = , fill = , group = ,
-      linetype = , size = , xlab = "percent"
+      linetype = , linewidth = , xlab = "percent"
     ),
     aesthetics = aes(x = after_stat(percs_by_group(count, DENOM))),
     pre = {
@@ -194,7 +194,7 @@ gf_boxploth <-
     stat = "boxploth",
     position = "dodgev",
     extras = alist(
-      alpha = , color = , fill = , group = , linetype = , size = , # shape = ,
+      alpha = , color = , fill = , group = , linetype = , linewidth = , # shape = ,
       coef = ,
       outlier.color = NULL, outlier.fill = NULL,
       outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
@@ -216,17 +216,17 @@ gf_boxploth <-
 #' gf_histogramh(~x, bins = 30)
 #' gf_histogram(x ~., bins = 30)
 #' gf_histogramh(x ~ ., bins = 30)
-#' gf_histogramh(x ~ stat(density), bins = 30)
+#' gf_histogramh(x ~ after_stat(density), bins = 30)
 gf_histogramh <-
   layer_factory(
     aes_form = list(y ~ x, ~y, y ~ .),
     geom = "barh",
     stat = "binh",
     position = "stackv",
-    note = "x may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)",
+    note = "x may be after_stat(density) or after_stat(count) or after_stat(ndensity) or after_stat(ncount)",
     extras = alist(
       bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
-      linetype = , size =
+      linetype = , linewidth =
       )
   )
 
@@ -241,45 +241,50 @@ gf_dhistogramh <-
     geom = "barh", stat = "binh", position = "stackv",
     aes_form = list(y ~ x, ~y, y ~ .),
     extras =
-      alist(bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = , linetype = , size = ),
-    note = "x may be stat(density) or stat(count) or stat(ndensity) or stat(ncount)",
-    aesthetics = aes(x = stat(density))
+      alist(bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = , linetype = , linewidth = ),
+    note = "x may be after_stat(density) or after_stat(count) or after_stat(ndensity) or after_stat(ncount)",
+    aesthetics = aes(x = after_stat(density))
   )
 
 #' @rdname gf_linerange
 #' @export
 #' @examples
+#' \dontrun{
 #' gf_linerangeh(date ~ low_temp + high_temp | ~city,
 #'   data = mosaicData::Weather,
 #'   color = ~avg_temp
-#' ) %>%
+#'   ) %>%
 #'   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
 #' gf_linerange(date ~ low_temp + high_temp | ~city,
 #'   data = mosaicData::Weather,
 #'   color = ~avg_temp,
 #'   orientation = 'y'
-#' ) %>%
+#'   ) %>%
 #'   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
+#' }
 gf_linerangeh <-
   layer_factory(
     geom = "linerangeh",
     aes_form = list(y ~ xmin + xmax),
-    extras = alist(alpha = , color = , group = , linetype = , size = )
+    extras = alist(alpha = , color = , group = , linetype = , linewidth = )
   )
 
 #' @rdname gf_linerange
 #' @export
 #' @examples
-#' gf_pointrangeh(date ~ avg_temp + low_temp + high_temp | ~city,
-#'   data = Weather,
-#'   color = ~avg_temp
-#' ) %>%
-#'   gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
+#' \dontrun{
+#'   gf_pointrangeh(date ~ avg_temp + low_temp + high_temp | ~city,
+#'     data = Weather,
+#'     color = ~avg_temp
+#'     ) %>%
+#'     gf_refine(scale_color_viridis_c(begin = 0.1, end = 0.9, option = "C"))
+#' }
+
 gf_pointrangeh <-
   layer_factory(
     geom = "pointrangeh",
     aes_form = y ~ x + xmin + xmax,
-    extras = alist(alpha = , color = , group = , linetype = , size = )
+    extras = alist(alpha = , color = , group = , linetype = , linewidth = )
   )
 
 #' @rdname gf_crossbar
@@ -289,7 +294,7 @@ gf_crossbarh <-
     geom = "crossbarh",
     aes_form = y ~ x + xmin + xmax,
     extras = alist(
-      alpha = , color = , group = , linetype = , size = , fatten = 2.5
+      alpha = , color = , group = , linetype = , linewidth = , fatten = 2.5
     )
   )
 
@@ -306,7 +311,7 @@ gf_violinh <-
     position = "dodgev",
     extras = alist(
       alpha = , color = , fill = , group = , linetype = ,
-      size = , weight = , draw_quantiles = NULL, trim = TRUE,
+      linewidth = , weight = , draw_quantiles = NULL, trim = TRUE,
       scale = "area", bw = , adjust = 1, kernel = "gaussian"
     )
   )
@@ -356,6 +361,6 @@ gf_errorbarh <-
     aes_form = y ~ xmin + xmax,
     check.aes = FALSE,
     extras = alist(
-      alpha = , color = , group = , linetype = , size =
+      alpha = , color = , group = , linetype = , linewidth =
       )
   )
