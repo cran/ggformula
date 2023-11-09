@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 theme_set(theme_light())
 
-## ---- eval = ! have_packages, echo = FALSE, results = 'asis'------------------
+## ----eval = ! have_packages, echo = FALSE, results = 'asis'-------------------
 #  cat(
 #  "
 #  ## Warning: Missing packages
@@ -33,25 +33,25 @@ theme_set(theme_light())
 #  "
 #  )
 
-## ---- plottype, eval = FALSE--------------------------------------------------
+## ----plottype, eval = FALSE---------------------------------------------------
 #  gf_plottype(formula, data = mydata)
 
-## ---- plottype2, eval = FALSE-------------------------------------------------
-#  mydata %>% gf_plottype(formula)
+## ----plottype2, eval = FALSE--------------------------------------------------
+#  mydata |> gf_plottype(formula)
 
-## ---- simple-example----------------------------------------------------------
+## ----simple-example-----------------------------------------------------------
 library(ggformula)
 gf_point(mpg ~ hp, data = mtcars)
-mtcars %>% gf_point(mpg ~ hp)
+mtcars |> gf_point(mpg ~ hp)
 
-## ---- mapping-setting---------------------------------------------------------
+## ----mapping-setting----------------------------------------------------------
 gf_point(mpg ~ hp, color = ~ cyl, size = ~ carb, alpha = 0.50, data = mtcars) 
 
-## ---- on-the-fly--------------------------------------------------------------
+## ----on-the-fly---------------------------------------------------------------
 library(dplyr)
 gf_point(mpg ~ hp,  color = ~ factor(cyl), size = ~ carb, alpha = 0.75, data = mtcars)
-mtcars %>% 
-  mutate(cylinders = factor(cyl)) %>% 
+mtcars |> 
+  mutate(cylinders = factor(cyl)) |> 
   gf_point(mpg ~ hp,  color = ~ cylinders, size = ~ carb, alpha = 0.75)
 
 ## ----penguins, warning=FALSE--------------------------------------------------
@@ -64,9 +64,9 @@ gf_dens( ~ bill_length_mm, color = ~ species,  alpha = 0.7, data = penguins)
 gf_dens2( ~ bill_length_mm, fill = ~ species, data = penguins,
           color = "gray50", alpha = 0.4) 
 
-## ---- dens--------------------------------------------------------------------
+## ----dens---------------------------------------------------------------------
 # less smoothing
-penguins %>% gf_dens( ~ bill_length_mm, color = ~ species, alpha = 0.7, adjust = 0.25)  
+penguins |> gf_dens( ~ bill_length_mm, color = ~ species, alpha = 0.7, adjust = 0.25)  
 # more smoothing
-penguins %>% gf_dens( ~ bill_length_mm, color = ~ species, alpha = 0.7, adjust = 4)     
+penguins |> gf_dens( ~ bill_length_mm, color = ~ species, alpha = 0.7, adjust = 4)     
 
