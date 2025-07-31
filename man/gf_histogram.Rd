@@ -3,7 +3,6 @@
 \name{gf_histogram}
 \alias{gf_histogram}
 \alias{gf_dhistogram}
-\alias{gf_dhistogramh}
 \title{Formula interface to geom_histogram()}
 \usage{
 gf_histogram(
@@ -11,7 +10,7 @@ gf_histogram(
   gformula = NULL,
   data = NULL,
   ...,
-  bins = 25,
+  bins,
   binwidth,
   alpha = 0.5,
   color,
@@ -38,34 +37,7 @@ gf_dhistogram(
   gformula = NULL,
   data = NULL,
   ...,
-  bins = 25,
-  binwidth,
-  alpha = 0.5,
-  color,
-  fill,
-  group,
-  linetype,
-  linewidth,
-  xlab,
-  ylab,
-  title,
-  subtitle,
-  caption,
-  geom = "bar",
-  stat = "bin",
-  position = "stack",
-  show.legend = NA,
-  show.help = NULL,
-  inherit = TRUE,
-  environment = parent.frame()
-)
-
-gf_dhistogramh(
-  object = NULL,
-  gformula = NULL,
-  data = NULL,
-  ...,
-  bins = 25,
+  bins,
   binwidth,
   alpha = 0.5,
   color,
@@ -151,12 +123,22 @@ for mapping linetype.}
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom, stat}{Use to override the default connection between
-\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}.}
+\code{geom_histogram()}/\code{geom_freqpoly()} and \code{stat_bin()}. For more information
+at overriding these connections, see how the \link[ggplot2:layer_stats]{stat} and
+\link[ggplot2:layer_geoms]{geom} arguments work.}
 
-\item{position}{Position adjustment, either as a string naming the adjustment
-(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
-position adjustment function. Use the latter if you need to change the
-settings of the adjustment.}
+\item{position}{A position adjustment to use on the data for this layer. This
+can be used in various ways, including to prevent overplotting and
+improving the display. The \code{position} argument accepts the following:
+\itemize{
+\item The result of calling a position function, such as \code{position_jitter()}.
+This method allows for passing extra arguments to the position.
+\item A string naming the position adjustment. To give the position as a
+string, strip the function name of the \code{position_} prefix. For example,
+to use \code{position_jitter()}, give the position as \code{"jitter"}.
+\item For more information and other ways to specify the position, see the
+\link[ggplot2:layer_positions]{layer position} documentation.
+}}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -186,7 +168,7 @@ Attributes can be set can be set using arguments of the form \code{attribute = v
 mapped using arguments of the form \code{attribute = ~ expression}.
 
 In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+\code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}.
 This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
@@ -206,9 +188,9 @@ in another.
 x <- rnorm(1000)
 gf_histogram(~x, bins = 30)
 gf_dhistogram(~x, bins = 30)
-gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black")
-gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black")
-gf_dhistogramh(x ~ ., binwidth = 0.5, boundary = 0, color = "black")
+gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black", bins = 30)
+gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black", bins = 30)
+gf_dhistogram(x ~ ., binwidth = 0.5, boundary = 0, color = "black", bins = 30)
 gf_dhistogram(~x, bins = 30) |>
   gf_fitdistr(dist = "dnorm") # see help for gf_fitdistr() for more info.
 

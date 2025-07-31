@@ -137,9 +137,9 @@
 <line x1='96.19' y1='385.49' x2='96.19' y2='206.53' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='201.86' y1='413.83' x2='201.86' y2='274.91' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='307.52' y1='436.57' x2='307.52' y2='256.37' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<circle cx='96.19' cy='296.01' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
-<circle cx='201.86' cy='344.37' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
-<circle cx='307.52' cy='346.47' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='96.19' cy='296.01' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='201.86' cy='344.37' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='307.52' cy='346.47' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
 <rect x='32.79' y='39.43' width='338.12' height='505.68' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -500,9 +500,9 @@
 <line x1='439.80' y1='394.59' x2='439.80' y2='224.71' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='545.46' y1='427.15' x2='545.46' y2='272.65' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='651.12' y1='453.96' x2='651.12' y2='275.15' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<circle cx='439.80' cy='309.65' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
-<circle cx='545.46' cy='349.90' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
-<circle cx='651.12' cy='364.56' r='1.78' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='439.80' cy='309.65' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='545.46' cy='349.90' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
+<circle cx='651.12' cy='364.56' r='2.84' style='stroke-width: 1.42; fill: #000000;' />
 <rect x='376.40' y='39.43' width='338.12' height='505.68' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>

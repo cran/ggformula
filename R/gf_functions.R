@@ -18,7 +18,7 @@ NA
 #' mapped using arguments of the form `attribute = ~ expression`.
 #'
 #' In formulas of the form `A | B`, `B` will be used to form facets using
-#' [facet_wrap()] or [facet_grid()].
+#' [ggplot2::facet_wrap()] or [ggplot2::facet_grid()].
 #' This provides an alternative to
 #' [gf_facet_wrap()] and
 #' [gf_facet_grid()] that is terser and may feel more familiar to users
@@ -60,10 +60,10 @@ NA
 #'   of the attributes of the layer are mapped.
 #' @param show.help If `TRUE`, display some minimal help.
 #' @param inherit A logical indicating whether default attributes are inherited.
-#' @param xlab Label for x-axis. See also [`gf_labs()`].
-#' @param ylab Label for y-axis. See also [`gf_labs()`].
+#' @param xlab Label for x-axis. See also [gf_labs()].
+#' @param ylab Label for y-axis. See also [gf_labs()].
 #' @param title,subtitle,caption Title, sub-title, and caption for the plot.
-#'   See also [`gf_labs()`].
+#'   See also [gf_labs()].
 #'
 #' @return a gg object
 #' @seealso [ggplot2::geom_point()], [gf_line()], [gf_jitter()]
@@ -159,7 +159,6 @@ gf_line <-
     geom = "line",
     extras = alist(
       alpha = , color = , fill = , group = , linetype = , linewidth =,
-      # size = ,  # remove eventually?
       lineend = , linejoin = , linemitre = , arrow =
       )
   )
@@ -180,7 +179,6 @@ gf_path <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       lineend = "butt", linejoin = "round", linemitre = 1, arrow = NULL
     )
   )
@@ -270,7 +268,6 @@ gf_polygon <-
   layer_factory(
     geom = "polygon",
     extras = alist(alpha = , color = , linewidth =,
-                   # size = , # remove eventually?
                    shape = , fill = , group = , stroke = )
   )
 
@@ -372,7 +369,14 @@ gf_lm <-
     geom = "lm",
     stat = "lm",
     aes_form = y ~ x,
-    extras = alist(alpha = 0.3, lm.args = list(), interval = "none", level = 0.95, fullrange = TRUE)
+    extras = alist(
+      alpha = 0.3, 
+      linewidth = 1,
+      linetype = ,
+      lm.args = list(), 
+      interval = "none", 
+      level = 0.95, 
+      fullrange = TRUE)
   )
 
 #' Formula interface to geom_spline()
@@ -399,7 +403,6 @@ gf_spline <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       weight = , df = , spar = , tol =
       )
   )
@@ -434,7 +437,6 @@ gf_raster <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       hjust = 0.5, vjust = 0.5, interpolate = FALSE
     )
   )
@@ -463,7 +465,6 @@ gf_quantile <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       lineend = "butt", linejoin = "round", linemitre = 1, quantiles = ,
       formula = , method = , method.args =
       )
@@ -495,7 +496,6 @@ gf_density_2d <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       contour = TRUE, n = 100, h = NULL, lineend = "butt", linejoin = "round",
       linemitre = 1
     )
@@ -517,7 +517,6 @@ gf_density_2d_filled <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       contour = TRUE, n = 100, h = NULL, lineend = "butt", linejoin = "round",
       linemitre = 1
     )
@@ -539,7 +538,6 @@ gf_density2d <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       contour = TRUE, n = 100, h = NULL,
       lineend = "butt", linejoin = "round",
       linemitre = 1
@@ -562,7 +560,6 @@ gf_density2d_filled <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       contour = TRUE, n = 100, h = NULL,
       lineend = "butt", linejoin = "round",
       linemitre = 1
@@ -589,7 +586,6 @@ gf_hex <-
     stat = "binhex",
     extras = alist(bins = , binwidth = , alpha = , color = , fill = , group = ,
                    linetype = , linewidth =
-                   #size =  # remove eventually?
     )
   )
 
@@ -652,11 +648,11 @@ gf_boxplot <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       coef = ,
       outlier.color = NULL, outlier.fill = NULL,
       outlier.shape = 19, outlier.size = 1.5, outlier.stroke = 0.5,
-      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE
+      outlier.alpha = NULL, notch = FALSE, notchwidth = 0.5, varwidth = FALSE,
+      orientation = NA # , show.legend = NA
     )
   )
 
@@ -671,6 +667,8 @@ gf_boxplot <-
 #' @param hjust,vjust Numbers between 0 and 1 indicating how to justify
 #'   text relative the the specified location.
 #' @param lineheight Line height.
+#' @param nudge_x,nudge_y Passed to [ggplot2::position_nudge()] to nudge text or labels
+#'        horizontally or vertically.
 #' @param fontface One of `"plain"`, `"bold"`, `"italic"`, or `"bold italic"`.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
@@ -703,7 +701,7 @@ gf_text <-
       label = , alpha = , angle = , color = ,
       family = , fontface = , group = , hjust = ,
       lineheight = , size = , vjust = , parse = FALSE,
-      nudge_x = 0, nudge_y = 0,
+      nudge_x = 0, nudge_y = 0,   # change in ggplot2?
       check_overlap = FALSE
     )
   )
@@ -740,11 +738,10 @@ gf_label <-
       label = , alpha = , angle = , color = ,
       family = , fontface = ,
       group = , hjust = , vjust = ,
-      lineheight = , size = ,
+      size = ,
       parse = ,
       nudge_x = 0, nudge_y = 0,
-      label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines"),
-      label.size = 0.25
+      label.padding = unit(0.25, "lines"), label.r = unit(0.15, "lines")
     )
   )
 
@@ -780,7 +777,6 @@ gf_area <-
     geom = "area",
     extras = alist(
       alpha = , color = , fill = , group = ,
-      # size = , # remove eventually?
       linetype = , linewidth =
     )
   )
@@ -812,7 +808,6 @@ gf_violin <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       weight = , draw_quantiles = NULL, trim = TRUE,
       scale = "area", bw = , adjust = 1, kernel = "gaussian"
     )
@@ -852,7 +847,6 @@ gf_spoke <-
     extras = alist(
       angle = , radius = ,
       alpha = , color = , group = ,
-      # size = , # remove eventually?
       linetype = , linewidth =
       ),
     note = "Note: angle and radius must be set or mapped."
@@ -894,7 +888,6 @@ gf_step <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       direction = "hv")
   )
 
@@ -921,15 +914,14 @@ gf_tile <-
     aes_form = list(y ~ x, fill ~ x + y),
     extras = alist(
       alpha = , color = , fill = , group = ,
-      # size = , # remove eventually?
       linetype = , linewidth =
     )
   )
 
 #' Formula interface to geom_bin2d()
 #'
-#' `geom_bin2d()` uses [`ggplot2::stat_bin2d()`] to bin the data before using
-#' [`gf_tile()`] to display the results.
+#' `geom_bin2d()` uses [ggplot2::stat_bin2d()] to bin the data before using
+#' [gf_tile()] to display the results.
 #'
 #' @inherit ggplot2::geom_tile references
 #' @inherit gf_tile
@@ -938,7 +930,7 @@ gf_tile <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#' @seealso [`ggplot2::geom_bin2d()`], [`gf_tile()`]
+#' @seealso [ggplot2::geom_bin2d()], [gf_tile()]
 #' @export
 #' @examples
 #' gf_bin2d(eruptions ~ waiting, data = faithful, bins = 15) |>
@@ -950,7 +942,6 @@ gf_bin2d <-
     aes_form = list(y ~ x),
     extras = alist(
       alpha = , color = , fill = , group = ,
-      # size = , # remove eventually?
       linetype = , linewidth =
     )
   )
@@ -1025,7 +1016,6 @@ gf_col <-
     position = "stack",
     extras = alist(
       alpha = , color = , fill = , group = ,
-      # size = ,# remove eventually?
       linetype = , linewidth =
       )
   )
@@ -1077,9 +1067,9 @@ gf_frame <-
 #' x <- rnorm(1000)
 #' gf_histogram(~x, bins = 30)
 #' gf_dhistogram(~x, bins = 30)
-#' gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black")
-#' gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black")
-#' gf_dhistogramh(x ~ ., binwidth = 0.5, boundary = 0, color = "black")
+#' gf_dhistogram(~x, binwidth = 0.5, center = 0, color = "black", bins = 30)
+#' gf_dhistogram(~x, binwidth = 0.5, boundary = 0, color = "black", bins = 30)
+#' gf_dhistogram(x ~ ., binwidth = 0.5, boundary = 0, color = "black", bins = 30)
 #' gf_dhistogram(~x, bins = 30) |>
 #'   gf_fitdistr(dist = "dnorm") # see help for gf_fitdistr() for more info.
 #'
@@ -1109,8 +1099,7 @@ gf_histogram <-
     geom = "bar", stat = "bin", position = "stack",
     aes_form = list(~x, y ~ ., y ~ x),
     extras = alist(
-      bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
-      # size = # remove eventually?
+      bins = , binwidth = , alpha = 0.5, color = , fill = , group = ,
       linetype = , linewidth =
     ),
     note =
@@ -1125,7 +1114,7 @@ gf_dhistogram <-
     aes_form = list(~x, y ~ x,  y ~ .),
     extras =
       alist(
-        bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
+        bins = , binwidth = , alpha = 0.5, color = , fill = , group = ,
         linetype = , linewidth =
       ),
     note =
@@ -1133,21 +1122,23 @@ gf_dhistogram <-
     aesthetics = aes(y = ggplot2::after_stat(density))
   )
 
-#' @rdname gf_histogram
-#' @export
-gf_dhistogramh <-
-  layer_factory(
-    geom = "bar", stat = "bin", position = "stack",
-    aes_form = list(y ~ x,  y ~ .),
-    extras =
-      alist(
-        bins = 25, binwidth = , alpha = 0.5, color = , fill = , group = ,
-        linetype = , linewidth =
-      ),
-    note =
-        "x may be after_stat(density) or after_stat(count) or after_stat(ndensity) or after_stat(ncount)",
-    aesthetics = aes(x = ggplot2::after_stat(density))
-  )
+# #' @rdname gf_histogram
+# #' @export
+# gf_dhistogramh <-
+#   layer_factory(
+#     geom = "bar", stat = "bin", position = "stack",
+#     aes_form = list(y ~ x,  y ~ .),
+#     extras =
+#       alist(
+#         bins = , binwidth = , alpha = 0.5, color = , fill = , group = ,
+#         linetype = , linewidth =
+#       ),
+#     note =
+#         "x may be after_stat(density) or after_stat(count) or after_stat(ndensity) or after_stat(ncount)",
+#     aesthetics = aes(x = ggplot2::after_stat(density))
+#   )
+
+
 #' Formula interface to stat_density()
 #'
 #' Computes and draws a kernel density estimate, which is a smoothed version of the
@@ -1167,7 +1158,7 @@ gf_dhistogramh <-
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
 #'   (c) attributes of the layer as a whole, which are set with `attribute = value`.
-#' @seealso [`gf_ash()`], [`ggplot2::geom_density()`]
+#' @seealso [gf_ash()], [ggplot2::geom_density()]
 #' @export
 #' @examples
 #' gf_dens()
@@ -1189,7 +1180,6 @@ gf_density <-
       alpha = 0.5, color = , fill = ,
       group = ,
       linetype = , linewidth =,
-      # size = , # remove eventually?
       kernel = "gaussian", n = 512, trim = FALSE
     ),
     aesthetics = aes(y = ggplot2::after_stat(density))
@@ -1206,7 +1196,6 @@ gf_dens <-
       alpha = 0.5, color = , fill = NA,
       group = ,
       linetype = , linewidth =,
-      # size = , # remove eventually?
       kernel = "gaussian", n = 512, trim = FALSE
     ),
     aesthetics = aes(y = ggplot2::after_stat(density))
@@ -1223,7 +1212,6 @@ gf_dens2 <-
       alpha = 0.5, color = , fill = NA,
       group = ,
       linetype = , linewidth =,
-      # size = , # remove eventually?
       kernel = "gaussian", n = 512, trim = FALSE
     ),
     aesthetics = aes(y = ggplot2::after_stat(density))
@@ -1358,7 +1346,6 @@ gf_bar <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       width = NULL
     )
   )
@@ -1373,7 +1360,6 @@ gf_counts <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       width = NULL
     )
   )
@@ -1425,7 +1411,6 @@ gf_props <-
       alist(
         alpha = , color = , fill = , group = ,
         linetype = , linewidth = ,
-        # size = , # remove eventually?
         ylab = "proportion"
       ),
     aesthetics = aes(y = ggplot2::after_stat(props_by_group(count, DENOM))),
@@ -1447,7 +1432,6 @@ gf_percents <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       ylab = "percent"
     ),
     aesthetics = aes(y = ggplot2::after_stat(percs_by_group(count, DENOM))),
@@ -1490,7 +1474,6 @@ gf_freqpoly <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       binwidth = , bins = , center = , boundary =
       ),
     note =
@@ -1626,12 +1609,12 @@ gf_ecdf <-
 #'   gf_rug(color = "green", sides = "b", position = "jitter")
 #'
 #' # rugs work with some 1-varialbe plots as well.
-#' gf_histogram(~eruptions, data = faithful) |>
+#' gf_histogram(~eruptions, data = faithful, bins = 25) |>
 #'   gf_rug(~eruptions, data = faithful, color = "red") |>
 #'   gf_rug(~eruptions, data = faithful, color = "navy", sides = "t")
 #'
 #' # we can take advantage of inheritance to shorten the code
-#' gf_histogram(~eruptions, data = faithful) |>
+#' gf_histogram(~eruptions, data = faithful, bins = 25) |>
 #'   gf_rug(color = "red") |>
 #'   gf_rug(color = "navy", sides = "t")
 #'
@@ -1652,7 +1635,6 @@ gf_rug <-
     aes_form = list(~x, y ~ x, NULL),
     extras = alist(
       sides = "bl", alpha = , color = , group = ,
-      # size =  # remove eventually?
       linetype = , linewidth =
     )
   )
@@ -1665,11 +1647,10 @@ gf_rugx <-
     geom = "rug",
     aes_form = list( ~ x, y ~ x, NULL),
     check.aes = FALSE,
-    inherit = FALSE,
+    inherit.aes = FALSE,
     extras = alist(
       sides = "b", alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       height = 0),
     pre = {
       if (inherits(object, "gg")) {
@@ -1686,11 +1667,10 @@ gf_rugy <-
   layer_factory(
     geom = "rug",
     aes_form = list(~y, y ~ ., NULL),
-    inherit = FALSE,
+    inherit.aes = FALSE,
     extras = alist(
       sides = "l", alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       width = 0),
     pre = {
       if (inherits(object, "gg")) {
@@ -1799,7 +1779,6 @@ gf_curve <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       curvature = 0.5, angle = 90, ncp = 5, arrow = NULL, lineend = "butt"
     )
   )
@@ -1828,7 +1807,6 @@ gf_segment <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       arrow = NULL, lineend = "butt"
     )
   )
@@ -1838,8 +1816,9 @@ gf_segment <-
 #' @inherit ggplot2::geom_linerange description references
 #' @inherit gf_ribbon
 #' @inheritParams ggplot2::geom_linerange
-#' @inheritParams gf_line
-#'
+#' @param group Use to set or map group.
+#' @param linetype,linewidth Set or map style of the line.
+#' @param color Set or map color.
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
@@ -1875,7 +1854,6 @@ gf_linerange <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth =
-      # size =  # remove eventually?
     )
   )
 
@@ -1889,7 +1867,6 @@ gf_linerange <-
 #'   HELP2 <- HELPrct |>
 #'     group_by(substance, sex) |>
 #'     summarise(
-#'       age = NA,
 #'       mean.age = mean(age),
 #'       median.age = median(age),
 #'       max.age = max(age),
@@ -1925,8 +1902,7 @@ gf_pointrange <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth = ,
-      size = ,
-      fatten = 2
+      size =
     )
   )
 
@@ -2011,10 +1987,9 @@ gf_summary <-
     aes_form = y ~ x,
     extras = alist(
       alpha = , color = , group = ,
-      linetype = , linewidth = ,
+      linetype = , linewidth = 1,
       size = , # now separate from linewidth
-      fun.y = NULL, fun.ymax = NULL, fun.ymin = NULL, fun.args = list(),
-      fatten = 2
+      fun.y = NULL, fun.ymax = NULL, fun.ymin = NULL, fun.args = list()
     )
   )
 
@@ -2026,6 +2001,11 @@ gf_summary <-
 #'
 #' @param gformula A formula with shape `y + ymin + ymax ~ x`.
 #'   Faceting can be achieved by including `|` in the formula.
+#' @param middle.linetype,middle.colour,middle.color,middle.linewidth
+#'   Arguments to control the middle line.
+#' @param box.colour,box.color,box.linetype,box.linewidth
+#'   Arguments to control the box.
+#'
 #' @param ... Additional arguments.  Typically these are
 #'   (a) ggplot2 aesthetics to be set with `attribute = value`,
 #'   (b) ggplot2 aesthetics to be mapped with `attribute = ~ expression`, or
@@ -2058,7 +2038,7 @@ gf_summary <-
 #'   gf_jitter(age ~ substance, data = HELPrct,
 #'       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") |>
 #'     gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2,
-#'       fill = "transparent") |>
+#'       fill = "transparent", middle.linewidth = 1, middle.color = "red") |>
 #'     gf_facet_grid(~sex)
 #'
 #'   gf_jitter(substance ~ age, data = HELPrct,
@@ -2074,9 +2054,13 @@ gf_crossbar <-
     aes_form = list(y + ymin + ymax ~ x, y ~ x + xmin + xmax),
     extras = alist(
       alpha = , color = , group = ,
-      linetype = , linewidth = ,
-      # size = , # remove eventually?
-      fatten = 2.5
+      middle.linetype = ,
+      middle.colour = NULL, middle.color = NULL, middle.linetype = NULL,
+      middle.linewidth = NULL, box.colour = NULL, box.color = NULL,
+      box.linetype = NULL, box.linewidth = NULL,
+      na.rm = FALSE,
+      orientation = NA, # show.legend = NA,
+      inherit.aes = TRUE
     )
   )
 
@@ -2131,7 +2115,6 @@ gf_errorbar <-
     extras = alist(
       alpha = , color = , group = ,
       linetype = , linewidth =
-      # size = # remove eventually?
       )
   )
 
@@ -2170,7 +2153,6 @@ gf_rect <-
     extras = alist(
       alpha = , color = , fill = , group = ,
       linetype = , linewidth =
-      # size = # remove eventually?
     )
   )
 
@@ -2254,7 +2236,6 @@ gf_abline <-
     extras = alist(
       slope = , intercept = , color = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       alpha = ),
     inherit.aes = FALSE,
     data = NA,
@@ -2270,7 +2251,6 @@ gf_hline <-
     extras = alist(
       yintercept = , color = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       alpha = ),
     inherit.aes = FALSE,
     data = NA,
@@ -2286,7 +2266,6 @@ gf_vline <-
     extras = alist(
       xintercept = , color = ,
       linetype = , linewidth = ,
-      # size = , # remove eventually?
       alpha = ),
     inherit.aes = FALSE,
     data = NA,
@@ -2370,19 +2349,15 @@ gf_function <- function(object = NULL, fun, data = NULL, ..., inherit = FALSE) {
 #' f <- makeFun(lm(totalbill ~ poly(month, 2), data = mosaicData::Utilities))
 #' gf_point(totalbill ~ month, data = mosaicData::Utilities, alpha = 0.6) |>
 #'   gf_fun(f(m) ~ m, color = "red")
-gf_fun <- function(object = NULL, formula, data = NULL, ..., inherit = FALSE) {
+gf_fun <- function(object = NULL, formula, # data = NULL,
+                   ..., inherit = FALSE) {
   if (rlang::is_formula(object) && missing(formula)) {
     formula <- object
     object <- NULL
   }
 
-  if (is.null(data)) {
-    data <- ensure_nonempty_data
-  }
-
   if (is.null(object)) {
-    object <- ggplot() # data = data.frame(x = xlim), aes(x))
-    # inherit <- TRUE
+    object <- ggplot()
   }
 
   qdots <- rlang::quos(...)
@@ -2390,17 +2365,20 @@ gf_fun <- function(object = NULL, formula, data = NULL, ..., inherit = FALSE) {
   afq <- aes_from_qdots(qdots)
   p <- object +
     do.call(
-      ggplot2::layer,
-      list(
-        geom = "path", stat = "function", position = "identity",
-        mapping = afq$mapping,
-        inherit.aes = inherit,
-        data = data, # if (missing(xlim)) NULL else data.frame(x = xlim),
-        params = c(list(fun = fun), lapply(afq$qdots, rlang::f_rhs))
+      "stat_function",
+      c(
+        list(
+          geom = "path", position = "identity",
+          mapping = afq$mapping,
+          inherit.aes = inherit,
+          # data = data,
+          fun = fun
+        ),
+        lapply(afq$qdots, rlang::f_rhs)
       )
     )
   class(p) <- unique(c('gf_ggplot', class(p)))
-  p
+  return(p)
 }
 
 #' Plot density function based on fit to data
@@ -2415,7 +2393,7 @@ gf_fun <- function(object = NULL, formula, data = NULL, ..., inherit = FALSE) {
 #'   to be fit to a family of distributions.
 #' @param data A data frame containing the variable to be fitted.
 #' @param dist A quoted name of a distribution function.
-#'   See [`mosaicCore::fit_distr_fun()`] for more details about allowable distributions.
+#'   See [mosaicCore::fit_distr_fun()] for more details about allowable distributions.
 #' @param size size aesthetic for dots in pmf plots.
 #' @param start Starting value(s) for the search for MLE.  (See [MASS::fitdistr].)
 #' @param environment An environment in which to look for variables not found in `data`.
@@ -2447,9 +2425,10 @@ gf_fun <- function(object = NULL, formula, data = NULL, ..., inherit = FALSE) {
 #' )
 #' gf_dhistogram(~g, data = Dat) |>
 #'   gf_fitdistr(dist = "dgamma", linewidth = 1.4)
-#'
+#
+#' fitted_density <- mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma")
 #' gf_dhistogram(~g, data = Dat) |>
-#'   gf_fun(mosaicCore::fit_distr_fun(~g, data = Dat, dist = "dgamma"))
+#'   gf_fun(fitted_density(x) ~ x, inherit = FALSE)
 #'
 #' gf_dhistogram(~f, data = Dat) |>
 #'   gf_fitdistr(dist = "df", start = list(df1 = 2, df2 = 50))
@@ -2514,7 +2493,7 @@ gf_sina <-
 #' @param geometry A column of class sfc containing simple features data. (Another option
 #'   is that `data` may contain a column named `geometry`.)  `geometry` is never
 #'   inherited.
-# #' @seealso [`ggplot2::geom_sf()`]
+# #' @seealso [ggplot2::geom_sf()]
 #' @export
 #' @examples
 #'
@@ -2569,7 +2548,6 @@ gf_sf <-
       extras = alist(
         alpha = , color = , fill = , group = ,
         linetype = , linewidth = ,
-        # size = , # remove eventually?
         geometry =
         ),
       pre = {
@@ -2583,7 +2561,7 @@ gf_sf <-
 #' This is primarily useful as a way to start a sequence of piped
 #' plot layers.
 #'
-#' @param environment An environment passed to [`ggplot2::ggplot()`]
+#' @param environment An environment passed to [ggplot2::ggplot()]
 #' @return A plot with now layers.
 #' @examples
 #' gf_empty()

@@ -21,23 +21,23 @@ knitr::opts_chunk$set(
 theme_set(theme_light())
 
 ## ----eval = ! have_packages, echo = FALSE, results = 'asis'-------------------
-#  cat(
-#  "
-#  ## Warning: Missing packages
-#  
-#  Because one or more of
-#  `ggformula`, `ggplot2`, `dplyr`, `mosaic`, `mosaicData`, `palmerpenguins`,
-#  and `maps`, appears to be missing, this vignette is compiling
-#  without executing any code.
-#  
-#  "
-#  )
+# cat(
+# "
+# ## Warning: Missing packages
+# 
+# Because one or more of
+# `ggformula`, `ggplot2`, `dplyr`, `mosaic`, `mosaicData`, `palmerpenguins`,
+# and `maps`, appears to be missing, this vignette is compiling
+# without executing any code.
+# 
+# "
+# )
 
 ## ----plottype, eval = FALSE---------------------------------------------------
-#  gf_plottype(formula, data = mydata)
+# gf_plottype(formula, data = mydata)
 
 ## ----plottype2, eval = FALSE--------------------------------------------------
-#  mydata |> gf_plottype(formula)
+# mydata |> gf_plottype(formula)
 
 ## ----simple-example-----------------------------------------------------------
 library(ggformula)

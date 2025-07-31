@@ -12,7 +12,7 @@
 #' @param contour A logical indicating whether the contour layer should be drawn.
 #' @param resolution  A numeric vector of length 1 or 2 specifying the
 #'   number of grid points at which the function is evaluated (in each dimension).
-#' @param ... additional arguments passed to [`gf_tile()`] or [`gf_contour()`].
+#' @param ... additional arguments passed to [gf_tile()] or [gf_contour()].
 #' @return A gg plot.
 #'
 #' @rdname gf_function2d
@@ -70,15 +70,14 @@ gf_function_2d <-
     if (tile) {
       res <-
         res |>
-        gf_tile(value ~ x + y, data = Layer_Data, ...) |>
-        gf_labs(fill = "")
+        gf_tile(value ~ x + y, data = Layer_Data, ...)
     }
     if (contour) {
       res <-
         res |>
-        gf_contour(value ~ x + y, data = Layer_Data, ...) |>
-        gf_labs(fill = "")
+        gf_contour(value ~ x + y, data = Layer_Data, ...)
     }
+    res <- res |> gf_labs(fill = "")
     class(res) <- unique(c('gf_ggplot', class(res)))
     res
   }

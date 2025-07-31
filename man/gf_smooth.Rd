@@ -38,6 +38,8 @@ gf_lm(
   data = NULL,
   ...,
   alpha = 0.3,
+  linewidth = 1,
+  linetype,
   lm.args = list(),
   interval = "none",
   level = 0.95,
@@ -139,6 +141,11 @@ of the attributes of the layer are mapped.}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
+\item{linewidth}{A numerical line width or a formula used for mapping linewidth.}
+
+\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
+for mapping linetype.}
+
 \item{lm.args}{A list of arguments to \code{\link[stats:lm]{stats::lm()}}.}
 
 \item{interval}{One of \code{"none"}, \code{"confidence"} or \code{"prediction"}.}
@@ -159,7 +166,7 @@ Attributes can be set can be set using arguments of the form \code{attribute = v
 mapped using arguments of the form \code{attribute = ~ expression}.
 
 In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+\code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}.
 This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users

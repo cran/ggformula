@@ -41,7 +41,6 @@ gf_pointrange(
   linetype,
   linewidth,
   size,
-  fatten = 2,
   xlab,
   ylab,
   title,
@@ -65,13 +64,12 @@ gf_summary(
   color,
   group,
   linetype,
-  linewidth,
+  linewidth = 1,
   size,
   fun.y = NULL,
   fun.ymax = NULL,
   fun.ymin = NULL,
   fun.args = list(),
-  fatten = 2,
   xlab,
   ylab,
   title,
@@ -116,14 +114,11 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{alpha}{Opacity (0 = invisible, 1 = opaque).}
 
-\item{color}{A color or a formula used for mapping color.}
+\item{color}{Set or map color.}
 
-\item{group}{Used for grouping.}
+\item{group}{Use to set or map group.}
 
-\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
-for mapping linetype.}
-
-\item{linewidth}{A numerical line width or a formula used for mapping linewidth.}
+\item{linetype, linewidth}{Set or map style of the line.}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -132,19 +127,44 @@ for mapping linetype.}
 \item{title, subtitle, caption}{Title, sub-title, and caption for the plot.
 See also \code{\link[=gf_labs]{gf_labs()}}.}
 
-\item{geom}{The geometric object to use to display the data, either as a
-\code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
-\code{geom_} prefix (e.g. \code{"point"} rather than \code{"geom_point"})}
+\item{geom}{The geometric object to use to display the data for this layer.
+When using a \verb{stat_*()} function to construct a layer, the \code{geom} argument
+can be used to override the default coupling between stats and geoms. The
+\code{geom} argument accepts the following:
+\itemize{
+\item A \code{Geom} ggproto subclass, for example \code{GeomPoint}.
+\item A string naming the geom. To give the geom as a string, strip the
+function name of the \code{geom_} prefix. For example, to use \code{geom_point()},
+give the geom as \code{"point"}.
+\item For more information and other ways to specify the geom, see the
+\link[ggplot2:layer_geoms]{layer geom} documentation.
+}}
 
-\item{stat}{The statistical transformation to use on the data for this
-layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
-stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
-\code{"stat_count"})}
+\item{stat}{The statistical transformation to use on the data for this layer.
+When using a \verb{geom_*()} function to construct a layer, the \code{stat}
+argument can be used the override the default coupling between geoms and
+stats. The \code{stat} argument accepts the following:
+\itemize{
+\item A \code{Stat} ggproto subclass, for example \code{StatCount}.
+\item A string naming the stat. To give the stat as a string, strip the
+function name of the \code{stat_} prefix. For example, to use \code{stat_count()},
+give the stat as \code{"count"}.
+\item For more information and other ways to specify the stat, see the
+\link[ggplot2:layer_stats]{layer stat} documentation.
+}}
 
-\item{position}{Position adjustment, either as a string naming the adjustment
-(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
-position adjustment function. Use the latter if you need to change the
-settings of the adjustment.}
+\item{position}{A position adjustment to use on the data for this layer. This
+can be used in various ways, including to prevent overplotting and
+improving the display. The \code{position} argument accepts the following:
+\itemize{
+\item The result of calling a position function, such as \code{position_jitter()}.
+This method allows for passing extra arguments to the position.
+\item A string naming the position adjustment. To give the position as a
+string, strip the function name of the \code{position_} prefix. For example,
+to use \code{position_jitter()}, give the position as \code{"jitter"}.
+\item For more information and other ways to specify the position, see the
+\link[ggplot2:layer_positions]{layer position} documentation.
+}}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -159,10 +179,6 @@ display.}
 \item{environment}{An environment in which to look for variables not found in \code{data}.}
 
 \item{size}{size aesthetic for points (\code{gf_pointrange()}).}
-
-\item{fatten}{A multiplicative factor used to increase the size of the
-middle bar in \code{geom_crossbar()} and the middle point in
-\code{geom_pointrange()}.}
 
 \item{fun.ymin, fun.y, fun.ymax}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use the
 versions specified above instead.}
@@ -199,7 +215,6 @@ if (require(mosaicData) && require(dplyr)) {
   HELP2 <- HELPrct |>
     group_by(substance, sex) |>
     summarise(
-      age = NA,
       mean.age = mean(age),
       median.age = median(age),
       max.age = max(age),

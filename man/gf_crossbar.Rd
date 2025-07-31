@@ -12,9 +12,17 @@ gf_crossbar(
   alpha,
   color,
   group,
-  linetype,
-  linewidth,
-  fatten = 2.5,
+  middle.linetype,
+  middle.colour = NULL,
+  middle.color = NULL,
+  middle.linewidth = NULL,
+  box.colour = NULL,
+  box.color = NULL,
+  box.linetype = NULL,
+  box.linewidth = NULL,
+  na.rm = FALSE,
+  orientation = NA,
+  inherit.aes = TRUE,
   xlab,
   ylab,
   title,
@@ -63,14 +71,22 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{group}{Used for grouping.}
 
-\item{linetype}{A linetype (numeric or "dashed", "dotted", etc.) or a formula used
-for mapping linetype.}
+\item{middle.linetype, middle.colour, middle.color, middle.linewidth}{Arguments to control the middle line.}
 
-\item{linewidth}{A numerical line width or a formula used for mapping linewidth.}
+\item{box.colour, box.color, box.linetype, box.linewidth}{Arguments to control the box.}
 
-\item{fatten}{A multiplicative factor used to increase the size of the
-middle bar in \code{geom_crossbar()} and the middle point in
-\code{geom_pointrange()}.}
+\item{na.rm}{If \code{FALSE}, the default, missing values are removed with
+a warning. If \code{TRUE}, missing values are silently removed.}
+
+\item{orientation}{The orientation of the layer. The default (\code{NA})
+automatically determines the orientation from the aesthetic mapping. In the
+rare event that this fails it can be given explicitly by setting \code{orientation}
+to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
+
+\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{xlab}{Label for x-axis. See also \code{\link[=gf_labs]{gf_labs()}}.}
 
@@ -81,15 +97,31 @@ See also \code{\link[=gf_labs]{gf_labs()}}.}
 
 \item{geom}{A character string naming the geom used to make the layer.}
 
-\item{stat}{The statistical transformation to use on the data for this
-layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
-stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
-\code{"stat_count"})}
+\item{stat}{The statistical transformation to use on the data for this layer.
+When using a \verb{geom_*()} function to construct a layer, the \code{stat}
+argument can be used the override the default coupling between geoms and
+stats. The \code{stat} argument accepts the following:
+\itemize{
+\item A \code{Stat} ggproto subclass, for example \code{StatCount}.
+\item A string naming the stat. To give the stat as a string, strip the
+function name of the \code{stat_} prefix. For example, to use \code{stat_count()},
+give the stat as \code{"count"}.
+\item For more information and other ways to specify the stat, see the
+\link[ggplot2:layer_stats]{layer stat} documentation.
+}}
 
-\item{position}{Position adjustment, either as a string naming the adjustment
-(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
-position adjustment function. Use the latter if you need to change the
-settings of the adjustment.}
+\item{position}{A position adjustment to use on the data for this layer. This
+can be used in various ways, including to prevent overplotting and
+improving the display. The \code{position} argument accepts the following:
+\itemize{
+\item The result of calling a position function, such as \code{position_jitter()}.
+This method allows for passing extra arguments to the position.
+\item A string naming the position adjustment. To give the position as a
+string, strip the function name of the \code{position_} prefix. For example,
+to use \code{position_jitter()}, give the position as \code{"jitter"}.
+\item For more information and other ways to specify the position, see the
+\link[ggplot2:layer_positions]{layer position} documentation.
+}}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
@@ -120,7 +152,7 @@ Attributes can be set can be set using arguments of the form \code{attribute = v
 mapped using arguments of the form \code{attribute = ~ expression}.
 
 In formulas of the form \code{A | B}, \code{B} will be used to form facets using
-\code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+\code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}.
 This provides an alternative to
 \code{\link[=gf_facet_wrap]{gf_facet_wrap()}} and
 \code{\link[=gf_facet_grid]{gf_facet_grid()}} that is terser and may feel more familiar to users
@@ -162,7 +194,7 @@ if (require(mosaicData) && require(dplyr)) {
   gf_jitter(age ~ substance, data = HELPrct,
       alpha = 0.7, width = 0.2, height = 0, color = "skyblue") |>
     gf_crossbar(mean.age + lo + hi ~ substance, data = HELP2,
-      fill = "transparent") |>
+      fill = "transparent", middle.linewidth = 1, middle.color = "red") |>
     gf_facet_grid(~sex)
 
   gf_jitter(substance ~ age, data = HELPrct,

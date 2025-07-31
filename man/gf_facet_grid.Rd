@@ -12,7 +12,7 @@ gf_facet_grid(object, ...)
 \arguments{
 \item{object}{A ggplot object}
 
-\item{...}{Additional arguments passed to \code{\link[=facet_wrap]{facet_wrap()}} or \code{\link[=facet_grid]{facet_grid()}}.
+\item{...}{Additional arguments passed to \code{\link[ggplot2:facet_wrap]{ggplot2::facet_wrap()}} or \code{\link[ggplot2:facet_grid]{ggplot2::facet_grid()}}.
 This typically includes an unnamed formula argument describing the facets.
 \code{scales} and \code{space} are additional useful arguments.  See the examples.}
 }
@@ -21,11 +21,11 @@ These functions provide more control over faceting than is possible using
 the formula interface.
 }
 \examples{
-gf_histogram(~avg_drinks, data = mosaicData::HELPrct) |>
+gf_histogram(~avg_drinks, data = mosaicData::HELPrct, bins =25) |>
   gf_facet_grid(~substance)
-gf_histogram(~avg_drinks, data = mosaicData::HELPrct) |>
+gf_histogram(~avg_drinks, data = mosaicData::HELPrct, bins =25) |>
   gf_facet_grid(~substance, scales = "free")
-gf_histogram(~avg_drinks, data = mosaicData::HELPrct) |>
+gf_histogram(~avg_drinks, data = mosaicData::HELPrct, bins =25) |>
   gf_facet_grid(~substance, scales = "free", space = "free")
 gf_line(births ~ date, data = mosaicData::Births, color = ~wday) |>
   gf_facet_wrap(~year, scales = "free_x", nrow = 5) |>
