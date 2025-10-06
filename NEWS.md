@@ -1,4 +1,7 @@
-# ggformula
+# ggformula 1.0.0
+
+* Added support for interactive graphics based on {ggiraph}.
+* Modifications to support {ggplot2} version 4.0.
 
 # ggformula 0.12.2
 

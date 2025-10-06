@@ -86,11 +86,15 @@
 <polyline points='673.99,278.65 673.99,276.06 ' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
 <rect x='667.51' y='278.65' width='12.96' height='8.64' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFFFFF;' />
 <polyline points='667.51,282.97 680.47,282.97 ' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
+<polyline points='673.99,289.89 673.99,289.89 ' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
+<polyline points='673.99,276.06 673.99,276.06 ' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
 <rect x='665.35' y='291.61' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <polyline points='673.99,307.17 673.99,304.57 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter;' />
 <polyline points='673.99,295.93 673.99,293.34 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter;' />
 <rect x='667.51' y='295.93' width='12.96' height='8.64' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFFFFF;' />
 <polyline points='667.51,300.25 680.47,300.25 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter;' />
+<polyline points='673.99,307.17 673.99,307.17 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter;' />
+<polyline points='673.99,293.34 673.99,293.34 ' style='stroke-width: 1.07; stroke: #00BFC4; stroke-linecap: butt; stroke-linejoin: miter;' />
 <text x='688.10' y='286.00' style='font-size: 8.80px; font-family: sans;' textLength='26.42px' lengthAdjust='spacingAndGlyphs'>female</text>
 <text x='688.10' y='303.28' style='font-size: 8.80px; font-family: sans;' textLength='19.08px' lengthAdjust='spacingAndGlyphs'>male</text>
 <text x='32.79' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='68.26px' lengthAdjust='spacingAndGlyphs'>gf_boxplot2</text>

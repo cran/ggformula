@@ -117,10 +117,8 @@ in another.
 }
 
 \examples{
-
 if (requireNamespace('maps', quietly = TRUE)) {
-  library(maps)
-  world1 <- sf::st_as_sf(map('world', plot = FALSE, fill = TRUE))
+  world1 <- sf::st_as_sf(maps::map('world', plot = FALSE, fill = TRUE))
   gf_sf(data = world1)
 }
 
