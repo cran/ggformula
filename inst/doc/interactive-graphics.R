@@ -30,7 +30,7 @@ cars_scatter <-
     size = 3
   )
 
-# to display the graph with interactive compontents enabled, use
+# to display the graph with interactive components enabled, use
 # gf_girafe() to convert it to an HTML widget.
 
 gf_girafe(cars_scatter)

@@ -1,7 +1,7 @@
-e15a067c9c90d910575347f195ab1824 *DESCRIPTION
+f626f373903b89bd6dc388c8b19ea89e *DESCRIPTION
 746c1f114ae48b06ba9c1d890ec9db15 *LICENSE
 bfe5d1c38f7871056fc087dcd4368fb9 *NAMESPACE
-878d21d5035f95b195b44ca78c22a9db *NEWS.md
+ad54b64e9ed9c281be0e9dcdb0dd2c0f *NEWS.md
 c0ab179dcb2b5a90aca32f6a0d9858b4 *R/MIpop-doc.R
 6bb4503028eac98b6e53c204f256ae7e *R/formula2aes.R
 afd3a94a1f4a2ee6352be39b99145b39 *R/gf_aux.R
@@ -23,15 +23,15 @@ c7ff8aacc13df7a0afe4d00013460b4e *R/relabel.R
 57db14c26185f2774bb6f098070f138f *R/scales.R
 7249db14f552569d6ae11cc4254fc8c7 *R/utils.R
 6646ea6987df1bac7e2a8734df339456 *R/vdiffr.R
-51b3137a21fe04e39117c197b6a133b8 *R/zzz.R
+d4b46b7bb591de56eeecda960534958d *R/zzz.R
 9371e53b272a39fd00385219d49cddc4 *build/vignette.rds
 c606372b6c102bb14ced61331f2970ff *data/MIpop.rda
 aba9572927dbbbb41f126ccbfc7d97e9 *inst/doc/ggformula.R
 ac32bbfee227342e6b3a4cd3e395f8b2 *inst/doc/ggformula.html
 f1595fae5170b5602cfa6b2a605f999f *inst/doc/ggformula.qmd
-ac74d275a22edb83d4f3afb841a7ded0 *inst/doc/interactive-graphics.R
-933c0e289f880bc56eace9e2f2c25f39 *inst/doc/interactive-graphics.html
-dceef1a3833c4f957910a5b3b54e2330 *inst/doc/interactive-graphics.qmd
+a299dada4a3e3b217eccf9cd464ac2f7 *inst/doc/interactive-graphics.R
+9884b0ed4fd87729fdd04f4863033dfc *inst/doc/interactive-graphics.html
+bc4efe0d985417db00e351ee01c09129 *inst/doc/interactive-graphics.qmd
 b775bdea2d9e9c1feac330a757571424 *inst/logo.png
 1c898b703ed91dc669edc953ef883c21 *inst/rmarkdown/templates/ggformala-fancy/skeleton/skeleton.Rmd
 b6bfd5d6943238f57f5afa9de845abac *inst/rmarkdown/templates/ggformala-fancy/template.yaml
@@ -69,7 +69,7 @@ c5bf436627bfa1f93572edf7b8a1bac2 *man/gf_ash.Rd
 8733c32d7b15990af2fd82e353f561c6 *man/gf_col_interactive.Rd
 b058058917f8fab7110996a4e0cc4336 *man/gf_contour.Rd
 3aa5d7df807e20161fab0fcd46d1e0d0 *man/gf_contour_interactive.Rd
-bbc47c6282cb15aa266cad188778f2cf *man/gf_count.Rd
+10c901031a5be3fb463777433cd5d659 *man/gf_count.Rd
 7de2794d24b1a45fba0e06c7378ea502 *man/gf_count_interactive.Rd
 f303684985d69f242f9a381772b5cf4a *man/gf_crossbar.Rd
 d21bd715776a2cbd1e52b72c25fff550 *man/gf_crossbar_interactive.Rd
@@ -108,7 +108,7 @@ d4ad9375b2b82aaa620f6fc49895fecf *man/gf_labeller_interactive.Rd
 0894d465450e5a2a81f168906958d320 *man/gf_line_interactive.Rd
 f886f1113969473fc43dd47b902175b9 *man/gf_linerange.Rd
 863bebc189f8b190064edf6d8a430c94 *man/gf_linerange_interactive.Rd
-c9270949d65c06913d7b037d7e595072 *man/gf_lines.Rd
+69d5334d5f1f223ab1efd94c8d94ccb7 *man/gf_lines.Rd
 a9d50aba7153c39b2c44a725af0ac545 *man/gf_path_interactive.Rd
 6b8ddb02c24d179a56320719698ff177 *man/gf_plot.Rd
 f6be51ad15fc0156f74f9818b576ced5 *man/gf_point.Rd
@@ -320,7 +320,7 @@ b55af0957ce894b4732616831d8681aa *tests/testthat/_snaps/layer-factory/gf-ash1.sv
 e076786029cb82b8511ca289c914a5c9 *tests/testthat/_snaps/layer-factory/gf-ash2.svg
 e965b89ca45c3ea27891f382a2f4c2e9 *tests/testthat/_snaps/layer-factory/gf-ash3.svg
 82ec116a6fc6a52cd814ba05da0ef29c *tests/testthat/_snaps/layer-factory/gf-bar1.svg
-6696362406d9ceb80360330add68bda6 *tests/testthat/_snaps/layer-factory/gf-bin2d1.svg
+5c1a85c6f4febef5c468f9a66562bf49 *tests/testthat/_snaps/layer-factory/gf-bin2d1.svg
 863b55bebc51d251e0570579867f7896 *tests/testthat/_snaps/layer-factory/gf-blank1.svg
 958fecea37c20f679a1a9f4327b26dbf *tests/testthat/_snaps/layer-factory/gf-boxplot1.svg
 2f8737ec3e287e9851992c9deb3be3d5 *tests/testthat/_snaps/layer-factory/gf-boxplot2.svg
@@ -412,7 +412,7 @@ d43c79e14e53dcae8f5a9ef3519343fc *tests/testthat/_snaps/layer-factory/gf-rugx-gf
 150641fbadebf28a70b0b6447add6f8a *tests/testthat/_snaps/layer-factory/gf-text1.svg
 b1b854516f414b442b4dcbc4d92267e6 *tests/testthat/_snaps/layer-factory/gf-text2.svg
 6079d6b6c8cca79e98bb72967d8dc622 *tests/testthat/_snaps/layer-factory/gf-tile1.svg
-75161a8ae75b8e9851fae73a692d3e62 *tests/testthat/_snaps/layer-factory/multiple-ellipses-of-two-different-types.svg
+40cde267e6b26ed1229c74e85dd906db *tests/testthat/_snaps/layer-factory/multiple-ellipses-of-two-different-types.svg
 76625162483533320e5d9ca574ebe11e *tests/testthat/_snaps/layer-factory/proportions-within-all-dodge.svg
 ae3521c25204585a85a52931ed5d214b *tests/testthat/_snaps/layer-factory/proportions-within-fill-dodge.svg
 9b850bba40ce8bbeb9a866f919071443 *tests/testthat/_snaps/layer-factory/proportions-within-fill-facet-grid-and-group.svg
@@ -423,4 +423,4 @@ ae3521c25204585a85a52931ed5d214b *tests/testthat/_snaps/layer-factory/proportion
 cd404c9c5cfae85deda6034bf7af04c9 *tests/testthat/test-labeling.R
 8472829c5db3425cbcf7520d312fd4bf *tests/testthat/test-layer-factory.R
 f1595fae5170b5602cfa6b2a605f999f *vignettes/ggformula.qmd
-dceef1a3833c4f957910a5b3b54e2330 *vignettes/interactive-graphics.qmd
+bc4efe0d985417db00e351ee01c09129 *vignettes/interactive-graphics.qmd
